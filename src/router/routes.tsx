@@ -2,7 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Signin from "../pages/signin";
 import NotFound from "../pages/notFound";
 import Home from "../pages/home";
-import PrivateRoute from "./privateRoute";
+// import PrivateRoute from "./privateRoute";
 import TableauDeBord from "../pages/admin";
 
 const AppRoutes: React.FC = () => {
