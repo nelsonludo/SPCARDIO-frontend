@@ -20,7 +20,7 @@ import ImpotsContent from "./contents/ImpotsContent";
 import RapportsContent from "./contents/RapportsContent";
 import AvancementsContent from "./contents/AvancementsContent";
 import LaureatsContent from "./contents/LaureatsContent";
-import EtudiantsContent from "./contents/etudiantsContent";
+import EtudiantsContent from "./contents/EtudiantsContent";
 
 [
   {
@@ -46,7 +46,7 @@ import EtudiantsContent from "./contents/etudiantsContent";
 const NAVIGATION: Navigation = [
   {
     segment: "dashboard",
-    title: "Tableau de bord",
+    title: "Filières",
     icon: <DashboardIcon />,
     // content: <DashboardContent />,
   },
@@ -126,7 +126,7 @@ const NAVIGATION: Navigation = [
   },
   {
     segment: "filieres",
-    title: "Tableau de bord",
+    title: "Filières",
     icon: <DashboardIcon />,
     children: [
       {
