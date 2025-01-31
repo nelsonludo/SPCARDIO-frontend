@@ -4,8 +4,6 @@ import {
   CalendarDaysIcon,
   UserGroupIcon,
   ChartBarSquareIcon,
-  ChartPieIcon,
-  WalletIcon,
   FolderPlusIcon,
   UserIcon,
   QuestionMarkCircleIcon,
