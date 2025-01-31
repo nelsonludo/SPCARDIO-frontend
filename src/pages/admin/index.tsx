@@ -271,6 +271,16 @@ const NAVIGATION: Navigation = [
   },
 ];
 
+type I3SBrandType = {
+  title?: string;
+  logo?: React.ReactNode;
+  homeUrl?: string;
+};
+const I3SBrand: I3SBrandType = {
+  title: "I3S",
+  homeUrl: "/home",
+};
+
 const demoTheme = createTheme({
   cssVariables: {
     colorSchemeSelector: "data-toolpad-color-scheme",
@@ -405,16 +415,13 @@ export default function TableauDeBord(props: DemoProps) {
 
   const router = useDemoRouter("/dashboard");
 
-  // Remove this const when copying and pasting into your project.
-  const demoWindow = window !== undefined ? window() : undefined;
-
   return (
     // preview-start
     <AppProvider
       navigation={NAVIGATION}
       router={router}
       theme={demoTheme}
-      window={demoWindow}
+      branding={I3SBrand}
     >
       <DashboardLayout>
         <DemoPageContent pathname={router.pathname} />
