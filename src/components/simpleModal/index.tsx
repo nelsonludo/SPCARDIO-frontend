@@ -1,3 +1,4 @@
+import { useState } from "react";
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -24,28 +25,56 @@ type BasicModalPropsType<T> = {
 const BasicModal: React.FC<BasicModalPropsType<EnseignantsType>> = ({
   info,
 }) => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   return (
     <div>
-      <Button onClick={handleOpen}>
-        <span className="text-black">Details</span>
+      <Button variant="contained" color="primary" onClick={handleOpen}>
+        Voir Fiche
       </Button>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+      <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            {info?.name}
+          <img
+            src={info?.photo || "/images/user.png"}
+            alt={info?.nom}
+            style={{
+              width: 100,
+              height: 100,
+              borderRadius: "50%",
+              objectFit: "cover",
+              marginBottom: 16,
+            }}
+          />
+          <Typography variant="h5" fontWeight="bold">
+            {info?.nom}
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {info?.info}
+          <Typography variant="subtitle1" color="text.secondary">
+            {info?.grade}
           </Typography>
+          <Box mt={2}>
+            <Typography variant="body1">
+              <strong>Université:</strong> {info?.universite}
+            </Typography>
+            <Typography variant="body1">
+              <strong>Faculté:</strong> {info?.faculte}
+            </Typography>
+            <Typography variant="body1">
+              <strong>Département:</strong> {info?.departement}
+            </Typography>
+            <Typography variant="body1">
+              <strong>Pays:</strong> {info?.pays}
+            </Typography>
+          </Box>
+          <Button
+            onClick={handleClose}
+            variant="outlined"
+            color="secondary"
+            sx={{ mt: 3 }}
+          >
+            Fermer
+          </Button>
         </Box>
       </Modal>
     </div>
@@ -53,3 +82,9 @@ const BasicModal: React.FC<BasicModalPropsType<EnseignantsType>> = ({
 };
 
 export default BasicModal;
+
+// const TeacherFicheModal = ({ info }) => {
+
+// };
+
+// export default TeacherFicheModal;

@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FcGoogle } from "react-icons/fc";
-import { FaUser, FaEnvelope, FaLock } from "react-icons/fa";
+// import { FcGoogle } from "react-icons/fc";
+import { FaEnvelope, FaLock } from "react-icons/fa";
 import { useAuthStore } from "../../stores/authStore";
 import { useNavigate } from "react-router-dom";
 import { User } from "../../types/auth";
@@ -17,21 +17,21 @@ const loginSchema = z.object({
     .min(6, "Le mot de passe doit comporter au moins 6 caractères"),
 });
 
-const signupSchema = z.object({
-  username: z
-    .string()
-    .min(3, "Le nom d'utilisateur doit comporter au moins 3 caractères"),
-  email: z.string().email("Email invalide"),
-  password: z
-    .string()
-    .min(6, "Le mot de passe doit comporter au moins 6 caractères"),
-});
+// const signupSchema = z.object({
+//   username: z
+//     .string()
+//     .min(3, "Le nom d'utilisateur doit comporter au moins 3 caractères"),
+//   email: z.string().email("Email invalide"),
+//   password: z
+//     .string()
+//     .min(6, "Le mot de passe doit comporter au moins 6 caractères"),
+// });
 
 type LoginFormData = z.infer<typeof loginSchema>;
-type SignupFormData = z.infer<typeof signupSchema>;
+// type SignupFormData = z.infer<typeof signupSchema>;
 
 const LoginSignupTab: React.FC = () => {
-  const [activeTab, setActiveTab] = useState(0);
+  // const [activeTab, setActiveTab] = useState(0);
   const { login } = useAuthStore();
   const navigate = useNavigate();
 
@@ -43,13 +43,13 @@ const LoginSignupTab: React.FC = () => {
     resolver: zodResolver(loginSchema),
   });
 
-  const {
-    register: signupRegister,
-    handleSubmit: handleSignupSubmit,
-    formState: { errors: signupErrors },
-  } = useForm<SignupFormData>({
-    resolver: zodResolver(signupSchema),
-  });
+  // const {
+  //   register: signupRegister,
+  //   handleSubmit: handleSignupSubmit,
+  //   formState: { errors: signupErrors },
+  // } = useForm<SignupFormData>({
+  //   resolver: zodResolver(signupSchema),
+  // });
 
   const onLoginSubmit = (data: LoginFormData) => {
     console.log("Login Data:", data);
@@ -88,37 +88,37 @@ const LoginSignupTab: React.FC = () => {
     // }
   };
 
-  const onSignupSubmit = (data: SignupFormData) => {
-    console.log("Signup Data:", data);
+  // const onSignupSubmit = (data: SignupFormData) => {
+  //   console.log("Signup Data:", data);
 
-    // Mock user data
-    const user: User = {
-      id: "1",
-      name: data.username,
-      email: data.email,
-      role: "admin",
-    };
+  //   // Mock user data
+  //   const user: User = {
+  //     id: "1",
+  //     name: data.username,
+  //     email: data.email,
+  //     role: "admin",
+  //   };
 
-    login(user);
+  //   login(user);
 
-    // Navigate to the appropriate section based on the user role
-    //using mock data for now
-    switch (user.role) {
-      case "admin":
-        navigate("/admin");
-        break;
-      default:
-        navigate("/"); // Redirect to a safe default route
-    }
-  };
+  //   // Navigate to the appropriate section based on the user role
+  //   //using mock data for now
+  //   switch (user.role) {
+  //     case "admin":
+  //       navigate("/admin");
+  //       break;
+  //     default:
+  //       navigate("/"); // Redirect to a safe default route
+  //   }
+  // };
 
-  const tabs = [
-    { title: "Se connecter", content: "login" },
-    { title: "S'inscrire", content: "signup" },
-  ];
+  // const tabs = [
+  //   { title: "Se connecter", content: "login" },
+  //   // { title: "S'inscrire", content: "signup" },
+  // ];
 
   return (
-    <div className="flex flex-col md:flex-row items-center justify-center h-screen p-6">
+    <div className="flex flex-col md:flex-row items-center justify-center h-screen p-6 bg-emerald-200">
       <div className="w-full md:w-1/2 max-w-lg bg-white p-8 rounded-lg shadow-lg -ml-8 mt-8">
         {/* Logo and Company Nam e */}
         {/* <div className="flex justify-center mb-8">
@@ -129,14 +129,13 @@ const LoginSignupTab: React.FC = () => {
           /> 
           <h1 className="text-2xl font-extrabold text-blue-500">I3S</h1>
         </div>*/}
-
         <div className="mt-5 pt-2 mb-16 text-2xl ml-3  font-bold">
-          Bienvenue Sur I3S
+          Bienvenue Sur SPCARDIO.
           <div className="text-sm font-light">
             Content de vous Voir!! Connectez ou Inscrivez vous
           </div>
         </div>
-        {/* Tabs */}
+        {/* Tabs
         <div className="flex justify-center space-x-4 mb-20 -mt-14 ">
           {tabs.map((tab, index) => (
             <button
@@ -151,80 +150,80 @@ const LoginSignupTab: React.FC = () => {
               {tab.title}
             </button>
           ))}
-        </div>
+        </div> */}
 
         {/* Form */}
         <div className="space-y-6 -mt-10">
-          {activeTab === 0 && (
-            <form
-              onSubmit={handleLoginSubmit(onLoginSubmit)}
-              className="space-y-6 "
-            >
-              <div className="flex items-center">
-                <FaEnvelope className="text-gray-500 mr-3" />
-                <div className="w-full">
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
-                    placeholder="Email"
-                    {...loginRegister("email")}
-                  />
-                  {loginErrors.email && (
-                    <p className="text-red-500 text-xs mt-1">
-                      {loginErrors.email.message}
-                    </p>
-                  )}
-                </div>
-              </div>
-
-              <div className="flex items-center">
-                <FaLock className="text-gray-500 mr-3" />
-                <div className="w-full">
-                  <label
-                    htmlFor="password"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Mot de passe
-                  </label>
-                  <input
-                    type="password"
-                    id="password"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
-                    placeholder="Mot de passe"
-                    {...loginRegister("password")}
-                  />
-                  {loginErrors.password && (
-                    <p className="text-red-500 text-xs mt-1">
-                      {loginErrors.password.message}
-                    </p>
-                  )}
-                </div>
-              </div>
-              <div className="my-2">
-                <Link
-                  to="/login/resetPassword"
-                  className="text-blue-500 text-sm hover:text-blue-700 "
+          {/* {activeTab === 0 && ( */}
+          <form
+            onSubmit={handleLoginSubmit(onLoginSubmit)}
+            className="space-y-6 "
+          >
+            <div className="flex items-center">
+              <FaEnvelope className="text-gray-500 mr-3" />
+              <div className="w-full">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700"
                 >
-                  Mot de Passe Oublié ?
-                </Link>
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
+                  placeholder="Email"
+                  {...loginRegister("email")}
+                />
+                {loginErrors.email && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {loginErrors.email.message}
+                  </p>
+                )}
               </div>
-              <button
-                type="submit"
-                className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600"
-              >
-                Se connecter
-              </button>
-            </form>
-          )}
+            </div>
 
-          {activeTab === 1 && (
+            <div className="flex items-center">
+              <FaLock className="text-gray-500 mr-3" />
+              <div className="w-full">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Mot de passe
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
+                  placeholder="Mot de passe"
+                  {...loginRegister("password")}
+                />
+                {loginErrors.password && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {loginErrors.password.message}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="my-2">
+              <Link
+                to="/login/resetPassword"
+                className="text-blue-500 text-sm hover:text-blue-700 "
+              >
+                Mot de Passe Oublié ?
+              </Link>
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600"
+            >
+              Se connecter
+            </button>
+          </form>
+          {/* )} */}
+
+          {/* {activeTab === 1 && (
             <form
               onSubmit={handleSignupSubmit(onSignupSubmit)}
               className="space-y-6 "
@@ -308,21 +307,8 @@ const LoginSignupTab: React.FC = () => {
                 S'inscrire
               </button>
             </form>
-          )}
+          )} */}
         </div>
-
-        {/* Divider */}
-        <div className="relative flex items-center my-6">
-          <div className="flex-grow border-t border-gray-300"></div>
-          <span className="px-4 text-gray-500">Ou</span>
-          <div className="flex-grow border-t border-gray-300"></div>
-        </div>
-
-        {/* Google Button */}
-        <button className="w-full flex items-center justify-center py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-blue-500 hover:text-white transition">
-          <FcGoogle className="mr-2 text-lg" />
-          Connexion avec Google
-        </button>
       </div>
     </div>
   );

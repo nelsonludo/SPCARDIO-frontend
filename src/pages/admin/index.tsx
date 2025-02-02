@@ -1,147 +1,67 @@
 // import { useProjectStore } from '../../stores/projectStore';
 
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import { createTheme } from "@mui/material/styles";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import BarChartIcon from "@mui/icons-material/BarChart";
 import { AppProvider, type Navigation } from "@toolpad/core/AppProvider";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
 import { useDemoRouter } from "@toolpad/core/internal";
-import { UserIcon } from "@heroicons/react/24/outline";
 import DashboardContent from "./contents/DashboardContent";
 import EnseignantsContent from "./contents/EnseignantsContent";
-import FicheEmployeeContent from "./contents/FicheEmployeeContent";
-import DossierDuPersonnelContent from "./contents/DossierDuPersonnelContent";
-import CotisationCNPSContent from "./contents/CotisationCNPSContent";
-import CritereDeNotationDuPersonnelContent from "./contents/CritereDeNotationDuPersonnelContent";
-import ImpotsContent from "./contents/ImpotsContent";
-import RapportsContent from "./contents/RapportsContent";
-import AvancementsContent from "./contents/AvancementsContent";
 import LaureatsContent from "./contents/LaureatsContent";
 import EtudiantsContent from "./contents/EtudiantsContent";
 
-[
-  {
-    name: "DOCUMENTATION",
-    path: "/admin/documentation",
-    paths: [
-      "/admin/documentation/listeTheses",
-      "/admin/documentation/listeMemoires",
-      "/admin/documentation/listeRapportsAdministratifs",
-    ],
-    icon: (
-      <UserIcon
-        className={`w-5 h-5 mr-2 ${
-          location.pathname === "/admin/documentation"
-            ? "text-rajapiBlue"
-            : "text-rajapiGray"
-        }`}
-      />
-    ),
-  },
-];
+import { FaSchool, FaUserGraduate, FaUserNurse } from "react-icons/fa";
+import { NiveauEtudiants } from "../../types/enums/actors-types";
+import CoursTheoriquesContent from "./contents/CoursTheoriqueContent";
 
 const NAVIGATION: Navigation = [
   {
     segment: "dashboard",
-    title: "Filières",
+    title: "Tableau de bord",
     icon: <DashboardIcon />,
     // content: <DashboardContent />,
   },
-  {
-    segment: "personel",
-    title: "Personnel De l'institut",
-    icon: <BarChartIcon />,
-    children: [
-      {
-        segment: "ficheEmploye",
-        title: "Fiche de l'employé",
-        icon: <DashboardIcon />,
-        // content: <FicheEmployeeContent />,
-      },
-      {
-        segment: "dossierDuPersonnel",
-        title: "Dossiers du personnel",
-        icon: <DashboardIcon />,
-        // content: <DossierDuPersonnelContent />,
-      },
-      {
-        segment: "cotisationCNPS",
-        title: "Cotisation CNPS",
-        icon: <DashboardIcon />,
-        // content: <CotisationCNPSContent />,
-      },
-      {
-        segment: "critereDeNotationDuPersonnel",
-        title: "Critère de notation du personnel",
-        icon: <DashboardIcon />,
-        // content: <CritereDeNotationDuPersonnelContent />,
-      },
-      {
-        segment: "impots",
-        title: "Impôts",
-        icon: <DashboardIcon />,
-        // content: <ImpotsContent />,
-      },
-      {
-        segment: "rapports",
-        title: "Rapports",
-        icon: <DashboardIcon />,
-        // content: <RapportsContent />,
-      },
-      {
-        segment: "avancements",
-        title: "Avancements",
-        icon: <DashboardIcon />,
-        // content: <AvancementsContent />,
-      },
-    ],
-  },
+
   {
     segment: "enseignants",
     title: "Enseignants",
-    icon: <ShoppingCartIcon />,
+    icon: <FaUserGraduate />,
+
     // content: <EnseignantsContent />,
   },
   {
-    segment: "etudiantsLaureats",
-    title: "Etudiants & Laureats",
-    icon: <BarChartIcon />,
+    segment: "etudiants",
+    title: "Etudiants",
+    icon: <FaUserNurse />,
     children: [
       {
-        segment: "etudiants",
-        title: "Etudiants",
-        icon: <DashboardIcon />,
-        // content: <EtudiantsContent />,
+        segment: "niveau1",
+        title: "Niveau 1",
+        icon: <FaSchool />,
       },
       {
-        segment: "laureats",
-        title: "Laureats",
-        icon: <DashboardIcon />,
-        // content: <LaureatsContent />,
+        segment: "niveau2",
+        title: "Niveau 2",
+        icon: <FaSchool />,
+      },
+      {
+        segment: "niveau3",
+        title: "Niveau 3",
+        icon: <FaSchool />,
+      },
+      {
+        segment: "niveau4",
+        title: "Niveau 4",
+        icon: <FaSchool />,
       },
     ],
   },
   {
-    segment: "filieres",
-    title: "Filières",
-    icon: <DashboardIcon />,
-    children: [
-      {
-        segment: "minsante",
-        title: "MINSANTE",
-        icon: <DashboardIcon />,
-        // content: <MinsanteContent />,
-      },
-      {
-        segment: "minesup",
-        title: "MINESUP",
-        icon: <DashboardIcon />,
-        // content: <MinesupContent />,
-      },
-    ],
+    segment: "laureats",
+    title: "Laureats",
+    icon: <FaUserGraduate />,
+    // content: <LaureatsContent />,
   },
   {
     segment: "programmesDeCoursTheoriques",
@@ -149,15 +69,58 @@ const NAVIGATION: Navigation = [
     icon: <DashboardIcon />,
     children: [
       {
-        segment: "programmation",
-        title: "Programmation",
+        segment: "coursTheoriques",
+        title: "Cours Theoriques",
         icon: <DashboardIcon />,
-        // content: <ProgrammationContent />,
+        children: [
+          {
+            segment: "niveau1",
+            title: "Niveau 1",
+            icon: <FaSchool />,
+          },
+          {
+            segment: "niveau2",
+            title: "Niveau 2",
+            icon: <FaSchool />,
+          },
+          {
+            segment: "niveau3",
+            title: "Niveau 3",
+            icon: <FaSchool />,
+          },
+          {
+            segment: "niveau4",
+            title: "Niveau 4",
+            icon: <FaSchool />,
+          },
+        ],
       },
       {
-        segment: "ficheDeCours",
-        title: "Fiche De Cours",
+        segment: "seminaire",
+        title: "Seminaires",
         icon: <DashboardIcon />,
+        children: [
+          {
+            segment: "niveau1",
+            title: "Niveau 1",
+            icon: <FaSchool />,
+          },
+          {
+            segment: "niveau2",
+            title: "Niveau 2",
+            icon: <FaSchool />,
+          },
+          {
+            segment: "niveau3",
+            title: "Niveau 3",
+            icon: <FaSchool />,
+          },
+          {
+            segment: "niveau4",
+            title: "Niveau 4",
+            icon: <FaSchool />,
+          },
+        ],
         // content: <FicheDeCoursContent />,
       },
     ],
@@ -205,44 +168,6 @@ const NAVIGATION: Navigation = [
     title: "Espace Collaboratif",
     icon: <DashboardIcon />,
     // content: <EspaceCollaboratifContent />,
-  },
-  {
-    segment: "suiviGestionFinanciere",
-    title: "Suivi De La Gestion Financière",
-    icon: <DashboardIcon />,
-    children: [
-      {
-        segment: "suiviExecutionBudgetPrevisionnel",
-        title: "Suivi de l'Execution du Budget Prévisionnel",
-        icon: <DashboardIcon />,
-        // content: <SuiviExecutionBudgetPrevisionnelContent />,
-      },
-      {
-        segment: "suiviEntreesDepenses",
-        title: "Suivi Des Entrées et Des Dépenses",
-        icon: <DashboardIcon />,
-        // content: <SuiviEntreesDepensesContent />,
-      },
-    ],
-  },
-  {
-    segment: "gestionComptabiliteMatieres",
-    title: "Gestion De La Comptabilité Matières",
-    icon: <DashboardIcon />,
-    children: [
-      {
-        segment: "inventaire",
-        title: "Inventaire",
-        icon: <DashboardIcon />,
-        // content: <InventaireContent />,
-      },
-      {
-        segment: "etatDuStock",
-        title: "Suivi De l'état Du Stock Des Accessoires",
-        icon: <DashboardIcon />,
-        // content: <etatDuStockContent />,
-      },
-    ],
   },
   {
     segment: "documentation",
@@ -299,91 +224,92 @@ const demoTheme = createTheme({
 
 function DemoPageContent({ pathname }: { pathname: string }) {
   var content: React.ReactNode;
+  var title: string;
+
   switch (pathname) {
-    case "/dashboard":
-      content = <DashboardContent />;
-      break;
     case "/enseignants":
       content = <EnseignantsContent />;
-      break;
-    case "/personel/avancements":
-      content = <AvancementsContent />;
-      break;
-    case "/personel/rapports":
-      content = <RapportsContent />;
-      break;
-    case "/personel/impots":
-      content = <ImpotsContent />;
-      break;
-    case "/personel/critereDeNotationDuPersonnel":
-      content = <CritereDeNotationDuPersonnelContent />;
-      break;
-    case "/personel/cotisationCNPS":
-      content = <CotisationCNPSContent />;
-      break;
-    case "/personel/dossierDuPersonnel":
-      content = <DossierDuPersonnelContent />;
-      break;
-    case "/personel/ficheEmploye":
-      content = <FicheEmployeeContent />;
+
+      title = "Liste des Enseignants";
       break;
     case "espaceCollaboratif":
       content = <EspaceCollaboratifContent />;
+
+      title = "Espace Collaboratif";
+
       break;
     case "stageCliniquesSuivi":
       content = <StageCliniquesSuiviContent />;
+
+      title = "Suive De Stage Cliniques";
+
       break;
     case "stageCliniquesProgrammation":
       content = <StageCliniquesProgrammationContent />;
+
+      title = "Programmation De Stage Cliniques";
       break;
     case "travauxDirigesSuivi":
       content = <TravauxDirigesSuiviContent />;
+
+      title = "Suivi De Travaux Dirigés";
       break;
     case "travauxDirigesProgrammation":
       content = <TravauxDirigesProgrammationContent />;
+      title = "Programmation De Travaux Dirigés";
+
       break;
-    case "ficheDeCours":
-      content = <FicheDeCoursContent />;
+    case "/programmesDeCoursTheoriques/coursTheoriques/niveau2":
+      content = <CoursTheoriquesContent niveau={NiveauEtudiants.NiVEAU2} />;
+      title = "Programme de cours niveau 2";
       break;
-    case "programmation":
-      content = <ProgrammationContent />;
+    case "/programmesDeCoursTheoriques/coursTheoriques/niveau3":
+      content = <CoursTheoriquesContent niveau={NiveauEtudiants.NiVEAU3} />;
+      title = "Programme de cours niveau 3";
       break;
-    case "minesup":
-      content = <MinesupContent />;
+    case "/programmesDeCoursTheoriques/coursTheoriques/niveau1":
+      content = <CoursTheoriquesContent niveau={NiveauEtudiants.NiVEAU1} />;
+      title = "Programme de cours niveau 1";
       break;
-    case "minsante":
-      content = <MinsanteContent />;
+    case "/programmesDeCoursTheoriques/coursTheoriques/niveau2":
+      content = <CoursTheoriquesContent niveau={NiveauEtudiants.NiVEAU4} />;
+      title = "Programme de cours niveau 4";
       break;
-    case "/etudiantsLaureats/laureats":
+    case "/laureats":
       content = <LaureatsContent />;
+      title = "Liste des Laureats";
       break;
-    case "/etudiantsLaureats/etudiants":
-      content = <EtudiantsContent />;
+    case "/etudiants/niveau1":
+      content = <EtudiantsContent niveau={NiveauEtudiants.NiVEAU1} />;
+      title = "Liste des etudiants du Niveau 1";
       break;
-    case "rapportsAdministratifsFinancier":
-      content = <rapportsAdministratifsFinancierThesesContent />;
+    case "/etudiants/niveau2":
+      content = <EtudiantsContent niveau={NiveauEtudiants.NiVEAU2} />;
+      title = "Liste des etudiants du Niveau 2";
       break;
+    case "/etudiants/niveau3":
+      content = <EtudiantsContent niveau={NiveauEtudiants.NiVEAU3} />;
+      title = "Liste des etudiants du Niveau 3";
+      break;
+    case "/etudiants/niveau4":
+      content = <EtudiantsContent niveau={NiveauEtudiants.NiVEAU4} />;
+      title = "Liste des etudiants du Niveau 4";
+      break;
+
     case "listeDeMemoires":
       content = <ListeDeMemoiresContent />;
+
+      title = "Liste De Mémoires";
       break;
     case "listeDeTheses":
       content = <ListeDeThesesContent />;
-      break;
-    case "etatDuStock":
-      content = <etatDuStockContent />;
-      break;
-    case "inventaire":
-      content = <InventaireContent />;
-      break;
-    case "suiviEntreesDepenses":
-      content = <SuiviEntreesDepensesContent />;
-      break;
-    case "suiviExecutionBudgetPrevisionnel":
-      content = <SuiviExecutionBudgetPrevisionnelContent />;
+
+      title = "Liste De Thèses";
       break;
 
     default:
-      content = <>What</>; // get DashboardContent component by default
+      content = <DashboardContent />;
+      title = "Tableau de bord";
   }
 
   return (
@@ -396,23 +322,13 @@ function DemoPageContent({ pathname }: { pathname: string }) {
         textAlign: "center",
       }}
     >
-      {pathname}
+      {title}
       {content}
     </Box>
   );
 }
 
-interface DemoProps {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * Remove this when copying and pasting into your project.
-   */
-  window?: () => Window;
-}
-
-export default function TableauDeBord(props: DemoProps) {
-  const { window } = props;
-
+export default function TableauDeBord() {
   const router = useDemoRouter("/dashboard");
 
   return (
