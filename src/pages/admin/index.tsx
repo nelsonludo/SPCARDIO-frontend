@@ -271,7 +271,7 @@ function DemoPageContent({ pathname }: { pathname: string }) {
       content = <CoursTheoriquesContent niveau={NiveauEtudiants.NiVEAU1} />;
       title = "Programme de cours niveau 1";
       break;
-    case "/programmesDeCoursTheoriques/coursTheoriques/niveau2":
+    case "/programmesDeCoursTheoriques/coursTheoriques/niveau4":
       content = <CoursTheoriquesContent niveau={NiveauEtudiants.NiVEAU4} />;
       title = "Programme de cours niveau 4";
       break;
