@@ -118,8 +118,8 @@ const LoginSignupTab: React.FC = () => {
   // ];
 
   return (
-    <div className="flex flex-col md:flex-row items-center justify-center h-screen p-6 bg-emerald-200">
-      <div className="w-full md:w-1/2 max-w-lg bg-white p-8 rounded-lg shadow-lg -ml-8 mt-8">
+    <div className="flex items-center justify-center h-screen p-6 bg-emerald-200">
+      <div className="w-full max-w-lg bg-white p-8 rounded-lg shadow-lg mt-8">
         {/* Logo and Company Nam e */}
         {/* <div className="flex justify-center mb-8">
           {/* <img
