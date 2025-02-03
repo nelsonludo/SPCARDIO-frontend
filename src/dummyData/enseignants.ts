@@ -8,7 +8,7 @@ const predefinedEnseignants: EnseignantsType[] = [
     grade: "Maitre de Conférences Agrégé",
     departement: "Département de Médecine Interne et Spécialités",
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
-    universite: "Université de Yaoundé 2",
+    universite: "Université de Yaoundé 1",
     pays: "Cameroun",
   },
   {
@@ -18,7 +18,7 @@ const predefinedEnseignants: EnseignantsType[] = [
     grade: "Professeur",
     departement: "Départment de Pédiatrie",
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
-    universite: "Université de Yaoundé 2",
+    universite: "Université de Yaoundé 1",
     pays: "Cameroun",
   },
   {
@@ -28,7 +28,7 @@ const predefinedEnseignants: EnseignantsType[] = [
     grade: "Maitre de Conférences",
     departement: "Département de Physiologie Humaine",
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
-    universite: "Université de Yaoundé 2",
+    universite: "Université de Yaoundé 1",
     pays: "Cameroun",
   },
   {
@@ -38,7 +38,7 @@ const predefinedEnseignants: EnseignantsType[] = [
     grade: "Assistant",
     departement: "Département de Médecine Interne et Spécialités",
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
-    universite: "Université de Yaoundé 2",
+    universite: "Université de Yaoundé 1",
     pays: "Cameroun",
   },
   {
@@ -48,7 +48,7 @@ const predefinedEnseignants: EnseignantsType[] = [
     grade: "Maitre de Conférences Agrégé",
     departement: "Département de Médecine Interne et Spécialités",
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
-    universite: "Université de Yaoundé 2",
+    universite: "Université de Yaoundé 1",
     pays: "Cameroun",
   },
   {
@@ -58,7 +58,7 @@ const predefinedEnseignants: EnseignantsType[] = [
     grade: "Professeur en Imagerie Cardiaque",
     departement: "Département de Chirurgie",
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
-    universite: "Université de Yaoundé 2",
+    universite: "Université de Yaoundé 1",
     pays: "Cameroun",
   },
   {
@@ -68,7 +68,7 @@ const predefinedEnseignants: EnseignantsType[] = [
     grade: "Maitre de Conférences",
     departement: "Département de Médecine Interne et Spécialités",
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
-    universite: "Université de Yaoundé 2",
+    universite: "Université de Yaoundé 1",
     pays: "Cameroun",
   },
   {
@@ -78,7 +78,7 @@ const predefinedEnseignants: EnseignantsType[] = [
     grade: "Professeur",
     departement: "Département de Médecine Interne et Spécialités",
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
-    universite: "Université de Yaoundé 2",
+    universite: "Université de Yaoundé 1",
     pays: "Cameroun",
   },
   {
@@ -88,7 +88,7 @@ const predefinedEnseignants: EnseignantsType[] = [
     grade: "Maitre de Conférences Agrégé",
     departement: "Département de Médecine Interne et Spécialités",
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
-    universite: "Université de Yaoundé 2",
+    universite: "Université de Yaoundé 1",
     pays: "Cameroun",
   },
   {
@@ -98,7 +98,7 @@ const predefinedEnseignants: EnseignantsType[] = [
     grade: "Chargé de cours",
     departement: "",
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
-    universite: "Université de Yaoundé 2",
+    universite: "Université de Yaoundé 1",
     pays: "Cameroun",
   },
   {
@@ -108,7 +108,7 @@ const predefinedEnseignants: EnseignantsType[] = [
     grade: "Chargé de cours",
     departement: "Département de Médecine Interne et Spécialités",
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
-    universite: "Université de Yaoundé 2",
+    universite: "Université de Yaoundé 1",
     pays: "Cameroun",
   },
   {
@@ -118,7 +118,7 @@ const predefinedEnseignants: EnseignantsType[] = [
     grade: "Maitre de Conférences",
     departement: "Département de Médecine Interne et Spécialités",
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
-    universite: "Université de Yaoundé 2",
+    universite: "Université de Yaoundé 1",
     pays: "Cameroun",
   },
   {
@@ -128,7 +128,7 @@ const predefinedEnseignants: EnseignantsType[] = [
     grade: "Chargé de cours",
     departement: "Département de Médecine Interne et Spécialités",
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
-    universite: "Université de Yaoundé 2",
+    universite: "Université de Yaoundé 1",
     pays: "Cameroun",
   },
   {
@@ -138,7 +138,7 @@ const predefinedEnseignants: EnseignantsType[] = [
     grade: "Maitre Assistant",
     departement: "Département de Médecine Interne et Spécialités",
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
-    universite: "Université de Yaoundé 2",
+    universite: "Université de Yaoundé 1",
     pays: "Cameroun",
   },
 ];

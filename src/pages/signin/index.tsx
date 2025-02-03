@@ -132,7 +132,7 @@ const LoginSignupTab: React.FC = () => {
         <div className="mt-5 pt-2 mb-16 text-2xl ml-3  font-bold">
           Bienvenue Sur SPCARDIO.
           <div className="text-sm font-light">
-            Content de vous Voir!! Connectez ou Inscrivez vous
+            Entrez une address email et un mot de passse de votre choix pour vous connecter
           </div>
         </div>
         {/* Tabs
@@ -154,6 +154,7 @@ const LoginSignupTab: React.FC = () => {
 
         {/* Form */}
         <div className="space-y-6 -mt-10">
+          <span></span>
           {/* {activeTab === 0 && ( */}
           <form
             onSubmit={handleLoginSubmit(onLoginSubmit)}
