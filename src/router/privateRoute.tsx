@@ -1,7 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuthStore } from "../stores/authStore";
 import { UserRole } from "../types/auth";
-import AdminLayout from "../pages/admin";
+// import AdminLayout from "../pages/admin";
 
 type PrivateRouteProps = {
   requiredRole: UserRole;
@@ -19,14 +19,14 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ requiredRole }) => {
   }
 
   // Choose layout based on role
-  let Layout;
-  switch (user.role) {
-    case "admin":
-      Layout = AdminLayout;
-      break;
-    default:
-      return <Navigate to="/" />;
-  }
+  // let Layout;
+  // switch (user.role) {
+  //   case "admin":
+  //     Layout = AdminLayout;
+  //     break;
+  //   default:
+  //     return <Navigate to="/" />;
+  // }
 
   return (
     <Outlet />

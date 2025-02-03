@@ -1,9 +1,12 @@
-import React from "react";
+import { Link } from "react-router-dom";
 
-type Props = {};
-
-const NotFound = (props: Props) => {
-  return <div>NotFound</div>;
+const NotFound = () => {
+  return (
+    <div>
+      <>Page NON-Exitante</>
+      <Link to={"/"}>retour à l'acceuil</Link>
+    </div>
+  );
 };
 
 export default NotFound;

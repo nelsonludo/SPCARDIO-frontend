@@ -32,28 +32,28 @@ const NAVIGATION: Navigation = [
   //       segment: "historique",
   //       title: "Historique du cycle de formation",
   //       icon: <FaUserGraduate />,
-    
+
   //       // content: <EnseignantsContent />,
   //     },
   //     {
   //       segment: "responsables",
   //       title: "responsables",
   //       icon: <FaUserGraduate />,
-    
+
   //       // content: <EnseignantsContent />,
   //     },
   //     {
   //       segment: "conditionDentree",
   //       title: "Conditions d’entrée",
   //       icon: <FaUserGraduate />,
-    
+
   //       // content: <EnseignantsContent />,
   //     },
   //     {
   //       segment: "contacts",
   //       title: "Contacts",
   //       icon: <FaUserGraduate />,
-    
+
   //       // content: <EnseignantsContent />,
   //     },
   //   ]
@@ -241,33 +241,33 @@ type I3SBrandType = {
 const I3SBrand: I3SBrandType = {
   title: "SPCARDIO.",
   homeUrl: "/home",
-  logo:<img
-        src="/images/uniyaoundI.png"
-        alt={""}
-        className=" "
-      />
+  logo: (
+    <img src="/images/uniYaounde1Logo.png" alt={""} className="rounded-full " />
+  ),
 };
 
 const demoTheme = createTheme({
   cssVariables: {
     colorSchemeSelector: "data-toolpad-color-scheme",
   },
-  colorSchemes: {  light: {
-    palette: {
-      background: {
-        default: '#eefff4',
-        paper: '#c7ebd3',
+  colorSchemes: {
+    light: {
+      palette: {
+        background: {
+          default: "#eefff4",
+          paper: "#c7ebd3",
+        },
+      },
+    },
+    dark: {
+      palette: {
+        background: {
+          default: "#2A4364",
+          paper: "#112E4D",
+        },
       },
     },
   },
-  dark: {
-    palette: {
-      background: {
-        default: '#2A4364',
-        paper: '#112E4D',
-      },
-    },
-  },},
   breakpoints: {
     values: {
       xs: 0,
@@ -290,29 +290,29 @@ function DemoPageContent({ pathname }: { pathname: string }) {
       title = "Liste des Enseignants";
       break;
     case "espaceCollaboratif":
-      content = <EspaceCollaboratifContent />;
+      // content = <EspaceCollaboratifContent />;
 
       title = "Espace Collaboratif";
 
       break;
     case "stageCliniquesSuivi":
-      content = <StageCliniquesSuiviContent />;
+      // content = <StageCliniquesSuiviContent />;
 
       title = "Suive De Stage Cliniques";
 
       break;
     case "stageCliniquesProgrammation":
-      content = <StageCliniquesProgrammationContent />;
+      // content = <StageCliniquesProgrammationContent />;
 
       title = "Programmation De Stage Cliniques";
       break;
     case "travauxDirigesSuivi":
-      content = <TravauxDirigesSuiviContent />;
+      // content = <TravauxDirigesSuiviContent />;
 
       title = "Suivi De Travaux Dirigés";
       break;
     case "travauxDirigesProgrammation":
-      content = <TravauxDirigesProgrammationContent />;
+      // content = <TravauxDirigesProgrammationContent />;
       title = "Programmation De Travaux Dirigés";
 
       break;
@@ -354,12 +354,12 @@ function DemoPageContent({ pathname }: { pathname: string }) {
       break;
 
     case "listeDeMemoires":
-      content = <ListeDeMemoiresContent />;
+      // content = <ListeDeMemoiresContent />;
 
       title = "Liste De Mémoires";
       break;
     case "listeDeTheses":
-      content = <ListeDeThesesContent />;
+      // content = <ListeDeThesesContent />;
 
       title = "Liste De Thèses";
       break;
@@ -379,7 +379,9 @@ function DemoPageContent({ pathname }: { pathname: string }) {
         textAlign: "center",
       }}
     >
-      <span className="text-2xl text-blue-700 font-bold">{title.toUpperCase()}</span>
+      <span className="text-2xl text-blue-700 font-bold">
+        {title.toUpperCase()}
+      </span>
       {content}
     </Box>
   );
