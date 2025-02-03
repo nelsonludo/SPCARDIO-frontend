@@ -1,9 +1,10 @@
-import ActorsList from "../../../components/actorsList";
-import { ActorsType, NiveauEtudiants } from "../../../types/enums/actors-types";
-import {
-  predefinedEtudiantsNiveau1,
-  predefinedEtudiantsNiveau4,
-} from "../../../dummyData/etudiants";
+// import ActorsList from "../../../components/actorsList";
+// import { ActorsType, NiveauEtudiants } from "../../../types/enums/actors-types";
+import { NiveauEtudiants } from "../../../types/enums/actors-types";
+// import {
+//   predefinedEtudiantsNiveau1,
+//   predefinedEtudiantsNiveau4,
+// } from "../../../dummyData/etudiants";
 
 import React from "react";
 // import CoursProgrammationTable from "../../../components/coursProgrammationTable";
