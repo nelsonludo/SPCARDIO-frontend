@@ -25,12 +25,11 @@ interface Course {
 
 type CoursTheoriquesContentPropsType = {
   coursesData: { [week: string]: Course[] };
-  title: string;
 };
 
 const CoursProgrammationTable: React.FC<CoursTheoriquesContentPropsType> = ({
   coursesData,
-  title,
+  
 }) => {
   const weeks = Object.keys(coursesData);
   const [selectedWeek, setSelectedWeek] = useState<string>(weeks[0] || "");
@@ -46,9 +45,6 @@ const CoursProgrammationTable: React.FC<CoursTheoriquesContentPropsType> = ({
 
   return (
     <Box className="p-6">
-      <Typography variant="h4" className="mb-4 font-semibold">
-        {title}
-      </Typography>
 
       {/* Ensure selectedWeek is a valid key before rendering Tabs */}
       {weeks.length > 0 && (
@@ -65,9 +61,10 @@ const CoursProgrammationTable: React.FC<CoursTheoriquesContentPropsType> = ({
       {/* Course Table */}
       <TableContainer component={Paper} className="mt-4">
         <Table>
-          <TableHead className="bg-gray-100">
+          <TableHead className="bg-[#c7ebd3]">
             <TableRow>
-              <TableCell>Code (U.E) & Intitulé</TableCell>
+              <TableCell>Code (U.E)</TableCell>
+              <TableCell>Intitulé</TableCell>
               <TableCell>Date</TableCell>
               <TableCell>Horaires</TableCell>
               <TableCell>Résident</TableCell>
@@ -75,7 +72,7 @@ const CoursProgrammationTable: React.FC<CoursTheoriquesContentPropsType> = ({
               <TableCell>Observations</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
+          <TableBody className="bg-white">
             {coursesData[selectedWeek]?.map((course, index) => (
               <TableRow key={index}>
                 <TableCell>

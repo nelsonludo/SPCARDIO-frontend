@@ -18,7 +18,7 @@ const Services = () => {
       <div className=" flex flex-col items-center justify-between">
         <div>
           <h1 className=" text-4xl font-semibold text-center lg:text-center">
-            Nos Services
+          Conditions d’entrée
           </h1>
           <p className=" mt-2 text-center lg:text-center">
             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus,

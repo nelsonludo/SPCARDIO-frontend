@@ -31,9 +31,9 @@ const BasicModal: React.FC<BasicModalPropsType<EnseignantsType>> = ({
 
   return (
     <div>
-      <Button variant="contained" color="primary" onClick={handleOpen}>
+      <button className="bg-blue-600 rounded-2xl text-white font-bold p-3 shadow-sm" onClick={handleOpen}>
         Voir Fiche
-      </Button>
+      </button>
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
           <img

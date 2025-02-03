@@ -33,13 +33,13 @@ const ActorsList: React.FC<ActorsListPropsType> = ({ type, actor }) => {
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Rechercher un enseignant"
-          className="w-full rounded-2xl border border-gray-300 px-4 py-2 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500"
+          placeholder={`Rechercher un ${type === ActorsType.ETUDIANT? "etudiant" : type === ActorsType.ENSEIGNANT ? "enseignant" : "laureat"}`}
+          className="w-full bg-white rounded-2xl px-4 py-2 shadow-sm focus:outline-none focus:ring-0 "
         />
       </div>
 
       {/* Liste des enseignants */}
-      <div className="bg-white shadow-md rounded-lg">
+      <div className="bg-white shadow-md rounded-2xl">
         {filteredEnseignants.length > 0 ? (
           <ul>
             {filteredEnseignants.map((enseignant: EnseignantsType) => (
@@ -47,7 +47,7 @@ const ActorsList: React.FC<ActorsListPropsType> = ({ type, actor }) => {
                 key={enseignant.id}
                 className="flex items-center justify-between p-4 border-b border-gray-200 last:border-none hover:bg-gray-50"
               >
-                <div className="grid grid-cols-[0.5fr_1fr_3fr_2fr]  w-full">
+                <div className="grid grid-cols-[0.5fr_3fr_2fr_2fr]  w-full justify-items-start">
                   {/* Photo de l'enseignant */}
                   <img
                     src={enseignant.photo || "/images/user.png"}
@@ -56,11 +56,11 @@ const ActorsList: React.FC<ActorsListPropsType> = ({ type, actor }) => {
                   />
                   <div className="m-4">
                     {/* Informations de l'enseignant */}
-                    <div className="text-sm font-medium text-gray-900">
+                    <div className="text-sm font-semibold text-gray-600">
                       {enseignant.nom}
                     </div>
                   </div>
-                  <div className="m-4 text-sm text-gray-500">
+                  <div className="m-4 text-sm text-gray-500 font-medium">
                     {enseignant.grade || enseignant.email}
                   </div>
                   {enseignant.grade ? (

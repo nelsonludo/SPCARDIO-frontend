@@ -90,7 +90,7 @@ const Doctors = () => {
       <div className=" flex flex-col items-center justify-between mb-10 lg:mb-0">
         <div>
           <h1 className=" text-4xl font-semibold text-center lg:text-center">
-            Nos Enseignants
+            Responsables
           </h1>
           <p className=" mt-2 text-center lg:text-center">
             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus,

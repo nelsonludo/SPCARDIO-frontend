@@ -12,7 +12,7 @@ const Blogs = () => {
       <div className=" flex flex-col items-center  justify-between">
         <div>
           <h1 className=" text-4xl font-semibold text-center lg:text-center">
-            Postes Recents
+            Contacts
           </h1>
           <p className="mt-2 text-center lg:text-right">
             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus,

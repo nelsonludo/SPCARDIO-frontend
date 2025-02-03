@@ -40,7 +40,7 @@ const Navbar = () => {
               duration={500}
               className="hover:text-hoverColor transition-all cursor-pointer"
             >
-              À propos de nous
+              Historique du cycle de formation
             </Link>
             <Link
               to="services"
@@ -49,7 +49,7 @@ const Navbar = () => {
               duration={500}
               className="hover:text-hoverColor transition-all cursor-pointer"
             >
-              Nos Services
+              Conditions d'entrée
             </Link>
             <Link
               to="doctors"
@@ -58,7 +58,8 @@ const Navbar = () => {
               duration={500}
               className="hover:text-hoverColor transition-all cursor-pointer"
             >
-              Nos Enseignants
+              
+              Responsables
             </Link>
             <Link
               to="blogs"
@@ -67,13 +68,13 @@ const Navbar = () => {
               duration={500}
               className="hover:text-hoverColor transition-all cursor-pointer"
             >
-              Blogs
+              Contacts
             </Link>
           </nav>
           <div className="hidden lg:flex">
             <RouterLink
               to="/signin"
-              className="bg-sky-500 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-sky-700 transition"
+              className="bg-[#05b3aa] text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-sky-700 transition"
             >
               Login
             </RouterLink>

@@ -23,6 +23,43 @@ const NAVIGATION: Navigation = [
     // content: <DashboardContent />,
   },
 
+  // {
+  //   segment: "organisation",
+  //   title: "Organisation",
+  //   icon: <FaUserGraduate />,
+  //   children: [
+  //     {
+  //       segment: "historique",
+  //       title: "Historique du cycle de formation",
+  //       icon: <FaUserGraduate />,
+    
+  //       // content: <EnseignantsContent />,
+  //     },
+  //     {
+  //       segment: "responsables",
+  //       title: "responsables",
+  //       icon: <FaUserGraduate />,
+    
+  //       // content: <EnseignantsContent />,
+  //     },
+  //     {
+  //       segment: "conditionDentree",
+  //       title: "Conditions d’entrée",
+  //       icon: <FaUserGraduate />,
+    
+  //       // content: <EnseignantsContent />,
+  //     },
+  //     {
+  //       segment: "contacts",
+  //       title: "Contacts",
+  //       icon: <FaUserGraduate />,
+    
+  //       // content: <EnseignantsContent />,
+  //     },
+  //   ]
+
+  //   // content: <EnseignantsContent />,
+  // },
   {
     segment: "enseignants",
     title: "Enseignants",
@@ -65,7 +102,7 @@ const NAVIGATION: Navigation = [
   },
   {
     segment: "programmesDeCoursTheoriques",
-    title: "Programmes De Cours Theoriques",
+    title: "Programmes De Cours",
     icon: <DashboardIcon />,
     children: [
       {
@@ -202,15 +239,35 @@ type I3SBrandType = {
   homeUrl?: string;
 };
 const I3SBrand: I3SBrandType = {
-  title: "I3S",
+  title: "SPCARDIO.",
   homeUrl: "/home",
+  logo:<img
+        src="/images/uniyaoundI.png"
+        alt={""}
+        className=" "
+      />
 };
 
 const demoTheme = createTheme({
   cssVariables: {
     colorSchemeSelector: "data-toolpad-color-scheme",
   },
-  colorSchemes: { light: true, dark: true },
+  colorSchemes: {  light: {
+    palette: {
+      background: {
+        default: '#eefff4',
+        paper: '#c7ebd3',
+      },
+    },
+  },
+  dark: {
+    palette: {
+      background: {
+        default: '#2A4364',
+        paper: '#112E4D',
+      },
+    },
+  },},
   breakpoints: {
     values: {
       xs: 0,
@@ -322,7 +379,7 @@ function DemoPageContent({ pathname }: { pathname: string }) {
         textAlign: "center",
       }}
     >
-      {title}
+      <span className="text-2xl text-blue-700 font-bold">{title.toUpperCase()}</span>
       {content}
     </Box>
   );

@@ -47,35 +47,9 @@ const DashBoardContent: React.FC = () => {
 
   return (
     <div className="flex">
-      {/* Sidebar */}
-      <div className="w-64 bg-gray-800 text-white min-h-screen p-6">
-        <h1 className="text-2xl font-semibold mb-6">Dashboard</h1>
-        <ul>
-          <li className="mb-4">
-            <a href="#" className="hover:text-gray-300">
-              Home
-            </a>
-          </li>
-          <li className="mb-4">
-            <a href="#" className="hover:text-gray-300">
-              Analytics
-            </a>
-          </li>
-          <li className="mb-4">
-            <a href="#" className="hover:text-gray-300">
-              Users
-            </a>
-          </li>
-          <li className="mb-4">
-            <a href="#" className="hover:text-gray-300">
-              Settings
-            </a>
-          </li>
-        </ul>
-      </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-8 bg-gray-100">
+      <div className="flex-1 p-8 bg-white rounded-2xl">
         <div className="grid grid-cols-3 gap-6 mb-6">
           {/* Card 1 */}
           <Card className="bg-white shadow-lg">
