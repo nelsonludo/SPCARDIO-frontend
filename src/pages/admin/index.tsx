@@ -14,6 +14,7 @@ import EtudiantsContent from "./contents/EtudiantsContent";
 import { FaSchool, FaUserGraduate, FaUserNurse } from "react-icons/fa";
 import { NiveauEtudiants } from "../../types/enums/actors-types";
 import CoursTheoriquesContent from "./contents/CoursTheoriqueContent";
+import { Link } from "react-router-dom";
 
 const NAVIGATION: Navigation = [
   {
@@ -240,9 +241,14 @@ type I3SBrandType = {
 };
 const I3SBrand: I3SBrandType = {
   title: "SPCARDIO.",
-  homeUrl: "/home",
   logo: (
-    <img src="/images/uniYaounde1Logo.png" alt={""} className="rounded-full " />
+    <Link to={"/home"}>
+      <img
+        src="/images/uniYaounde1Logo.png"
+        alt={""}
+        className="rounded-full "
+      />
+    </Link>
   ),
 };
 
