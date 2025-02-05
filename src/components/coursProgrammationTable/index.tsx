@@ -28,8 +28,17 @@ const CoursProgrammationTable: React.FC<CoursTheoriquesContentPropsType> = ({
   const weeks = Object.keys(coursesData);
   const [selectedWeek, setSelectedWeek] = useState<string>(weeks[0] || "");
 
-  const unitesEnseignements:string[] = coursesData[selectedWeek].map((course) => course.uniteEnseignement
+  const unitesEnseignements:string[] = coursesData[selectedWeek].filter((unite) => {
+    if(!second.includes(course?.uniteEnseignement)) return course?.uniteEnseignement;
+  }
    )
+   const second:string[] = [];
+
+  unitesEnseignements.forEach(unite => {
+    if(!second.includes(unite)) second.push(unite);
+   });
+
+   
 
   useEffect(() => {
     if (weeks.length > 0) {
@@ -38,8 +47,7 @@ const CoursProgrammationTable: React.FC<CoursTheoriquesContentPropsType> = ({
         weeks.includes(prevWeek) ? prevWeek : weeks[0]
       );
     }
-
-    console.log(unitesEnseignements)
+    console.log(second)
   }, [coursesData]);
 
   
