@@ -15,6 +15,10 @@ import { FaSchool, FaUserGraduate, FaUserNurse } from "react-icons/fa";
 import { NiveauEtudiants } from "../../types/enums/actors-types";
 import CoursTheoriquesContent from "./contents/CoursTheoriqueContent";
 import { Link } from "react-router-dom";
+import DiscussionForum from "./contents/EspaceCollaboratifContent";
+import ListesMemoiresContent from "./contents/ListesDeMemoiresContent";
+import ListesThesesContent from "./contents/ListesDeThesesContent";
+import RapportsAdministratifContent from "./contents/RapportAdministratifContent";
 
 const NAVIGATION: Navigation = [
   {
@@ -295,8 +299,8 @@ function DemoPageContent({ pathname }: { pathname: string }) {
 
       title = "Liste des Enseignants";
       break;
-    case "espaceCollaboratif":
-      // content = <EspaceCollaboratifContent />;
+    case "/espaceCollaboratif":
+      content = <DiscussionForum />;
 
       title = "Espace Collaboratif";
 
@@ -359,15 +363,19 @@ function DemoPageContent({ pathname }: { pathname: string }) {
       title = "Liste des etudiants du Niveau 4";
       break;
 
-    case "listeDeMemoires":
-      // content = <ListeDeMemoiresContent />;
+    case "/documentation/listeDeMemoires":
+      content = <ListesMemoiresContent />;
 
       title = "Liste De Mémoires";
       break;
-    case "listeDeTheses":
-      // content = <ListeDeThesesContent />;
+    case "/documentation/listeDeTheses":
+      content = <ListesThesesContent />;
 
       title = "Liste De Thèses";
+      break;
+    case "/documentation/rapportsAdministratifsFinancier":
+      content = <RapportsAdministratifContent />;
+      title = "Rapports Administratif et Financiers";
       break;
 
     default:
