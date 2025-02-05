@@ -1,9 +1,9 @@
-export interface Course {
-  code: string;
-  title: string;
+export interface Enseignement {
+  uniteEnseignement: string;
+  intitule: string;
   date: string;
-  time: string;
-  resident: string;
-  instructors: string[];
-  observation?: string;
+  horaires: string;
+  residents: string[];
+  enseignants: string[];
+  observation: string;
 }

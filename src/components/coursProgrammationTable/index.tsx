@@ -13,18 +13,12 @@ import {
   Typography,
 } from "@mui/material";
 
-interface Course {
-  code: string;
-  title: string;
-  date: string;
-  time: string;
-  resident: string;
-  instructors: string[];
-  observation?: string;
-}
+import { EnseignementType } from "../../dummyData/enseignements";
+
+
 
 type CoursTheoriquesContentPropsType = {
-  coursesData: { [week: string]: Course[] };
+  coursesData: EnseignementType;
 };
 
 const CoursProgrammationTable: React.FC<CoursTheoriquesContentPropsType> = ({
@@ -34,6 +28,9 @@ const CoursProgrammationTable: React.FC<CoursTheoriquesContentPropsType> = ({
   const weeks = Object.keys(coursesData);
   const [selectedWeek, setSelectedWeek] = useState<string>(weeks[0] || "");
 
+  const unitesEnseignements:string[] = coursesData[selectedWeek].map((course) => course.uniteEnseignement
+   )
+
   useEffect(() => {
     if (weeks.length > 0) {
       // Ensure selectedWeek is a valid key
@@ -41,7 +38,12 @@ const CoursProgrammationTable: React.FC<CoursTheoriquesContentPropsType> = ({
         weeks.includes(prevWeek) ? prevWeek : weeks[0]
       );
     }
+
+    console.log(unitesEnseignements)
   }, [coursesData]);
+
+  
+
 
   return (
     <Box className="p-6">
@@ -67,24 +69,24 @@ const CoursProgrammationTable: React.FC<CoursTheoriquesContentPropsType> = ({
               <TableCell>Intitulé</TableCell>
               <TableCell>Date</TableCell>
               <TableCell>Horaires</TableCell>
-              <TableCell>Résident</TableCell>
+              <TableCell>Résidents</TableCell>
               <TableCell>Enseignants</TableCell>
               <TableCell>Observations</TableCell>
             </TableRow>
           </TableHead>
           <TableBody className="bg-white">
-            {coursesData[selectedWeek]?.map((course, index) => (
+            {coursesData[selectedWeek]?.map((course, index:number) => (
               <TableRow key={index}>
                 <TableCell>
-                  <Typography fontWeight="bold">{course.code}</Typography>
+                  <Typography fontWeight="bold">{course.uniteEnseignement}</Typography>
                   <Typography variant="body2" color="textSecondary">
-                    {course.title}
+                    {course.intitule}
                   </Typography>
                 </TableCell>
                 <TableCell>{course.date}</TableCell>
-                <TableCell>{course.time}</TableCell>
-                <TableCell>{course.resident || "N/A"}</TableCell>
-                <TableCell>{course.instructors.join(", ")}</TableCell>
+                <TableCell>{course.horaires}</TableCell>
+                <TableCell>{course.residents || "N/A"}</TableCell>
+                <TableCell>{course.enseignants.join(", ")}</TableCell>
                 <TableCell>{course.observation || "N/A"}</TableCell>
               </TableRow>
             )) || (
