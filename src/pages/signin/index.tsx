@@ -4,10 +4,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 // import { FcGoogle } from "react-icons/fc";
 import { FaEnvelope, FaLock } from "react-icons/fa";
-import { useAuthStore } from "../../stores/authStore";
 import { useNavigate } from "react-router-dom";
-import { User } from "../../types/auth";
+// import { User } from "../../types/auth";
 import { Link } from "react-router-dom";
+import { useSignin } from "../../api/AuthApi";
 
 // Zod schemas for form validation
 const loginSchema = z.object({
@@ -32,7 +32,8 @@ type LoginFormData = z.infer<typeof loginSchema>;
 
 const LoginSignupTab: React.FC = () => {
   // const [activeTab, setActiveTab] = useState(0);
-  const { login } = useAuthStore();
+  const { signIn } = useSignin();
+
   const navigate = useNavigate();
 
   const {
@@ -51,71 +52,20 @@ const LoginSignupTab: React.FC = () => {
   //   resolver: zodResolver(signupSchema),
   // });
 
-  const onLoginSubmit = (data: LoginFormData) => {
+  const onLoginSubmit = async (data: LoginFormData) => {
     console.log("Login Data:", data);
 
-    // Mock user data
-    const user: User = {
-      id: "1",
-      name: "John Doe",
-      email: data.email,
-      role: "admin",
-    };
+    await signIn(data, "/");
+    // // Mock user data
+    // const user: User = {
+    //   id: "1",
+    //   name: "John Doe",
+    //   email: data.email,
+    //   role: "admin",
+    // };
 
-    login(user);
     navigate("/admin");
-
-    // Navigate to the appropriate section based on the user role
-    //using mock data for now
-    // switch (user.role) {
-    //   case "jeuneInnovateur":
-    //     navigate("/jeuneInnovateur/tableauDeBord");
-    //     break;
-    //   case "visiteur":
-    //     navigate("/visiteur/tableauDeBord");
-    //     break;
-    //   case "investisseur":
-    //     navigate("/investisseur/tableauDeBord");
-    //     break;
-    //   case "flowAdministration":
-    //     navigate("/flowAdministration/tableauDeBord");
-    //     break;
-    //   case "mentor":
-    //     navigate("/mentors/tableauDeBord");
-    //     break;
-    //   default:
-    //     navigate("/"); // Redirect to a safe default route
-    // }
   };
-
-  // const onSignupSubmit = (data: SignupFormData) => {
-  //   console.log("Signup Data:", data);
-
-  //   // Mock user data
-  //   const user: User = {
-  //     id: "1",
-  //     name: data.username,
-  //     email: data.email,
-  //     role: "admin",
-  //   };
-
-  //   login(user);
-
-  //   // Navigate to the appropriate section based on the user role
-  //   //using mock data for now
-  //   switch (user.role) {
-  //     case "admin":
-  //       navigate("/admin");
-  //       break;
-  //     default:
-  //       navigate("/"); // Redirect to a safe default route
-  //   }
-  // };
-
-  // const tabs = [
-  //   { title: "Se connecter", content: "login" },
-  //   // { title: "S'inscrire", content: "signup" },
-  // ];
 
   return (
     <div className="flex items-center justify-center h-screen p-6 bg-emerald-200">
@@ -132,7 +82,8 @@ const LoginSignupTab: React.FC = () => {
         <div className="mt-5 pt-2 mb-16 text-2xl ml-3  font-bold">
           Bienvenue Sur SPCARDIO.
           <div className="text-sm font-light">
-            Entrez une address email et un mot de passse de votre choix pour vous connecter
+            Entrez une address email et un mot de passse de votre choix pour
+            vous connecter
           </div>
         </div>
         {/* Tabs

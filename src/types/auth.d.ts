@@ -11,6 +11,6 @@ export type UserRole = "admin";
 export type AuthState = {
   user: User | null;
   isAuthenticated: boolean;
-  login: (user: User) => void;
+  login: (user: User | null) => void;
   logout: () => void;
 };
