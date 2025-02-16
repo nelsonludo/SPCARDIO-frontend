@@ -17,54 +17,44 @@ import { TokenHelper } from "../utils/tokensHelper";
 import { useAuthStore } from "../stores/authStore";
 import { failedToast } from "../utils/toasts";
 
-const API_URL = "/api/auth/v1";
-
 export const useSignin = () => {
   const [loading, setLoading] = useState(false);
 
   const { axios } = useAxios();
   const navigate = useNavigate();
-  const { login } = useAuthStore();
+  const { login } = useAuthStore(); //Zustand login function
 
   const signIn = async (userFormData: LoginFormType, urlParam: string) => {
     try {
       setLoading(true);
-      const { data } = await axios.post<any>(`${API_URL}/signin`, {
+      const { data } = await axios.post<any>(`/auth/local`, {
         ...userFormData,
       });
 
-      // if (
-      //   data.code === SUCCESS_CODE.SUCCESS &&
-      //   data.data.accessToken &&
-      //   data.data.refreshToken
-      // ) {
-      const tokenHelper = new TokenHelper();
-      tokenHelper.setTokens(data.data.accessToken, data.data.refreshToken);
-      const userState = { ...userFormData, ...data.data };
-      userState.refreshToken = undefined;
-      userState.accessToken = undefined;
-      login(userState);
-      navigate(urlParam);
-      // } else {
-      //   throw new Error();
-      // }
+      // Ensure tokens exist before proceeding
+      if (!data.data?.jwt) {
+        throw new Error("Missing tokens in the API response");
+      }
+
+      if (data?.data?.jwt) {
+        const tokenHelper = new TokenHelper();
+        tokenHelper.setToken(data.data.jwt); // ✅ Store JWT
+
+        // Update Zustand store with user data (excluding tokens)
+        const userState = { ...userFormData, ...data.data };
+        delete userState.jwt;
+
+        login(userState);
+        navigate(urlParam);
+      } else {
+        throw new Error("Login failed: Invalid response from server");
+      }
     } catch (err) {
       const error = err as AxiosError<any>;
       // const code = error.response?.data.code;
 
       console.log(error);
-
-      // switch (code) {
-      //   case CODES.UNABLE_TO_LOGIN:
-      //     failedToast("Unable to login");
-      //     break;
-      //   case CODES.UNEXPECTED_ERROR:
-      //     failedToast("Unexpected error occured");
-      //     break;
-      //   default:
-      //     failedToast("Something went wrong");
-      //     break;
-      // }
+      failedToast(error?.response?.data || error.message);
     } finally {
       setLoading(false);
     }
@@ -143,17 +133,17 @@ export const useSignin = () => {
 
 export const useRefreshToken = () => {
   const axios = axiosMain.create({
-    baseURL: "http://localhost:3000/",
+    baseURL: "http://localhost:1337/",
   });
 
   const tokenHelper = new TokenHelper();
-  const { refreshToken: token } = tokenHelper.getTokens();
+  const token = tokenHelper.getToken(); // ✅ Fetch stored JWT
   const { login } = useAuthStore();
 
   const refreshToken = async () => {
     try {
       const { data } = await axios.post<any>(
-        `${API_URL}/token`,
+        `/api/auth/refresh`, // ✅ Adjust endpoint if needed
         {},
         {
           headers: {
@@ -162,27 +152,23 @@ export const useRefreshToken = () => {
         }
       );
 
-      // if (
-      //   data.code === SUCCESS_CODE.SUCCESS &&
-      //   data.data.accessToken &&
-      //   data.data.refreshToken
-      // ) {
-      const tokenHelper = new TokenHelper();
-      tokenHelper.setTokens(data.data.accessToken, data.data.refreshToken);
-      const userState = { ...data.data };
-      userState.refreshToken = undefined;
-      userState.accessToken = undefined;
-      login(userState);
+      if (data?.data?.jwt) {
+        const tokenHelper = new TokenHelper();
+        tokenHelper.setToken(data.data.jwt); // ✅ Store new JWT
+        const userState = { ...data.data };
+        delete userState.jwt;
 
-      return data;
-      // } else {
-      //   throw new Error();
-      // }
+        login(userState);
+        return data;
+      } else {
+        throw new Error("Token refresh failed: Invalid response from server");
+      }
     } catch (err) {
       const error = err as AxiosError<any>;
       console.log(error);
 
       failedToast("Your session has expired, login to continue");
+      tokenHelper.deleteToken(); // ✅ Remove old JWT
 
       setTimeout(() => {
         login(null);

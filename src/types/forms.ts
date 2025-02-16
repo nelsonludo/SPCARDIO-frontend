@@ -8,7 +8,7 @@ export type CreateAccountFormType = {
 };
 
 export type LoginFormType = {
-  email: string;
+  identifier: string;
   password: string;
 };
 

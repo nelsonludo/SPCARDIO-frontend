@@ -3,8 +3,6 @@ import axiosMain, {
   AxiosRequestConfig,
   AxiosResponse,
 } from "axios";
-// import { ErrorResponseType } from "../types/response/error-response-type";
-// import { CODES, SUCCESS_CODE } from "../types/enums/error-codes";
 import { useRefreshToken } from "../api/AuthApi";
 import { TokenHelper } from "../utils/tokensHelper";
 
@@ -16,52 +14,60 @@ const useAxios = () => {
   const { refreshToken } = useRefreshToken();
 
   const axios = axiosMain.create({
-    baseURL: "http://localhost:3000/",
+    baseURL: "http://localhost:1337/api",
+    headers: {
+      "Content-Type": "application/json", // Explicitly set Content-Type
+    },
   });
 
+  // 🔹 Attach JWT token to requests
   axios.interceptors.request.use(
     (config) => {
       const tokenHelper = new TokenHelper();
-      const { accessToken } = tokenHelper.getTokens();
 
-      if (!config.headers["Authorization"]) {
-        config.headers["Authorization"] = `Bearer ${accessToken}`;
+      const jwt = tokenHelper.getToken();
+
+      // Skip adding Authorization header for login requests
+      if (config.url === "/auth/local") {
+        return config; // Don't modify the request, just return it
       }
+
+      if (jwt && !config.headers["Authorization"]) {
+        config.headers["Authorization"] = `Bearer ${jwt}`;
+      }
+
       return config;
     },
     (error) => Promise.reject(error)
   );
 
+  // 🔹 Handle expired tokens and refresh
   axios.interceptors.response.use(
-    function (response: AxiosResponse): AxiosResponse {
-      return response;
-    },
-    async function (error: AxiosError<any>): Promise<never> {
-      const code = error.response?.data.code;
+    (response: AxiosResponse) => response, // ✅ Return response normally
+    async (error: AxiosError<any>) => {
       const originalRequest = error.config as CustomAxiosRequestConfig;
 
-      // WAIT UNTIL YOU REFRESH THE TOKEN
-      const response = await refreshToken();
+      if (error.response?.status === 401 && !originalRequest._retry) {
+        originalRequest._retry = true;
 
-      if (!originalRequest.headers) {
-        originalRequest.headers = {}; // Ensure headers object exists
-      }
+        const response = await refreshToken();
 
-      originalRequest.headers.Authorization = `Bearer ${response?.data.accessToken}`;
+        if (response?.data?.jwt) {
+          const tokenHelper = new TokenHelper();
 
-      // THE TOKEN HAS EXPIRED
-      if (code === CODES.ACCESS_TOKEN_EXPIRED && !originalRequest._retry) {
-        // RETRY THE REQUEST BUT DON'T RETURN AN ERROR, AS SUCH THE CATCH BLOCKS WILL NOT BE EXECUTED.
-        // BUT THE ERROR WILL BE DISPLAYED ON THE CONSOLE (IN THE LINE WHERE THE REQUEST IS SENT NOT IN THE CATCH BLOCK) AND ON THE NETWORK SECTION, BUT IT WON'T TRIGGER ACTIONS ON THE CATCH BLOCK
-        if (response?.code === SUCCESS_CODE.SUCCESS) {
-          return axios(originalRequest);
+          tokenHelper.setToken(response.data.jwt); // 🔄 Update token
+          originalRequest.headers = {
+            ...originalRequest.headers,
+            Authorization: `Bearer ${response.data.jwt}`,
+          };
+          return axios(originalRequest); // 🔄 Retry the failed request
         }
       }
 
-      // IF THE ERROR THAT WE GET IS NOT A ACCESS_TOKEN_EXPIRED, JUST RETURN THE ERROR AND ALLOW THE CATCH BLOCKS TO EXECUTE
       return Promise.reject(error);
     }
   );
+
   return { axios };
 };
 

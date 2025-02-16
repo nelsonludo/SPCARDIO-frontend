@@ -2,30 +2,18 @@ import React from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-// import { FcGoogle } from "react-icons/fc";
+
 import { FaEnvelope, FaLock } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
-// import { User } from "../../types/auth";
 import { Link } from "react-router-dom";
 import { useSignin } from "../../api/AuthApi";
 
 // Zod schemas for form validation
 const loginSchema = z.object({
-  email: z.string().email("Email invalide"),
+  identifier: z.string().email("Email invalide"),
   password: z
     .string()
     .min(6, "Le mot de passe doit comporter au moins 6 caractères"),
 });
-
-// const signupSchema = z.object({
-//   username: z
-//     .string()
-//     .min(3, "Le nom d'utilisateur doit comporter au moins 3 caractères"),
-//   email: z.string().email("Email invalide"),
-//   password: z
-//     .string()
-//     .min(6, "Le mot de passe doit comporter au moins 6 caractères"),
-// });
 
 type LoginFormData = z.infer<typeof loginSchema>;
 // type SignupFormData = z.infer<typeof signupSchema>;
@@ -33,8 +21,6 @@ type LoginFormData = z.infer<typeof loginSchema>;
 const LoginSignupTab: React.FC = () => {
   // const [activeTab, setActiveTab] = useState(0);
   const { signIn } = useSignin();
-
-  const navigate = useNavigate();
 
   const {
     register: loginRegister,
@@ -44,27 +30,8 @@ const LoginSignupTab: React.FC = () => {
     resolver: zodResolver(loginSchema),
   });
 
-  // const {
-  //   register: signupRegister,
-  //   handleSubmit: handleSignupSubmit,
-  //   formState: { errors: signupErrors },
-  // } = useForm<SignupFormData>({
-  //   resolver: zodResolver(signupSchema),
-  // });
-
   const onLoginSubmit = async (data: LoginFormData) => {
-    console.log("Login Data:", data);
-
-    await signIn(data, "/");
-    // // Mock user data
-    // const user: User = {
-    //   id: "1",
-    //   name: "John Doe",
-    //   email: data.email,
-    //   role: "admin",
-    // };
-
-    navigate("/admin");
+    await signIn(data, "/admin");
   };
 
   return (
@@ -125,11 +92,11 @@ const LoginSignupTab: React.FC = () => {
                   id="email"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
                   placeholder="Email"
-                  {...loginRegister("email")}
+                  {...loginRegister("identifier")}
                 />
-                {loginErrors.email && (
+                {loginErrors.identifier && (
                   <p className="text-red-500 text-xs mt-1">
-                    {loginErrors.email.message}
+                    {loginErrors.identifier.message}
                   </p>
                 )}
               </div>
