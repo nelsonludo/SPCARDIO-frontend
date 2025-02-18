@@ -51,9 +51,10 @@ export const useSignin = () => {
       }
     } catch (err) {
       const error = err as AxiosError<any>;
-      // const code = error.response?.data.code;
-
-      console.log(error);
+      console.log(
+        "Full error response:",
+        error.response?.data || error.message
+      );
       failedToast(error?.response?.data || error.message);
     } finally {
       setLoading(false);
