@@ -4,35 +4,21 @@ import { UserRole } from "../types/auth";
 // import AdminLayout from "../pages/admin";
 
 type PrivateRouteProps = {
-  requiredRole: UserRole;
+  requiredRoles: UserRole[];
 };
 
-const PrivateRoute: React.FC<PrivateRouteProps> = ({ requiredRole }) => {
+const PrivateRoute: React.FC<PrivateRouteProps> = ({ requiredRoles }) => {
   const user = useAuthStore((state) => state.user);
 
   if (!user) {
     return <Navigate to="/signin" />;
   }
 
-  if (user.role !== requiredRole) {
+  if (!requiredRoles.includes(user.role)) {
     return <Navigate to="/" />;
   }
 
-  // Choose layout based on role
-  // let Layout;
-  // switch (user.role) {
-  //   case "admin":
-  //     Layout = AdminLayout;
-  //     break;
-  //   default:
-  //     return <Navigate to="/" />;
-  // }
-
-  return (
-    <Outlet />
-    // <Layout>
-    // </Layout>
-  );
+  return <Outlet />;
 };
 
 export default PrivateRoute;

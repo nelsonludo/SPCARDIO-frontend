@@ -10,3 +10,10 @@ export enum NiveauEtudiants {
   NiVEAU3 = "NIVEAU 3",
   NiVEAU4 = "NIVEAU 4",
 }
+
+export enum UserRoles {
+  ADMIN = "Admin",
+  ETUDIANT = "Etudiant",
+  ENSEIGNANT = "Enseignant",
+  LAUREAT = "Laureat",
+}

@@ -19,6 +19,9 @@ import DiscussionForum from "./contents/EspaceCollaboratifContent";
 import ListesMemoiresContent from "./contents/ListesDeMemoiresContent";
 import ListesThesesContent from "./contents/ListesDeThesesContent";
 import RapportsAdministratifContent from "./contents/RapportAdministratifContent";
+import { useMemo } from "react";
+import { useAuthStore } from "../../stores/authStore";
+import { useLogout } from "../../api/AuthApi";
 
 const NAVIGATION: Navigation = [
   {
@@ -27,44 +30,6 @@ const NAVIGATION: Navigation = [
     icon: <DashboardIcon />,
     // content: <DashboardContent />,
   },
-
-  // {
-  //   segment: "organisation",
-  //   title: "Organisation",
-  //   icon: <FaUserGraduate />,
-  //   children: [
-  //     {
-  //       segment: "historique",
-  //       title: "Historique du cycle de formation",
-  //       icon: <FaUserGraduate />,
-
-  //       // content: <EnseignantsContent />,
-  //     },
-  //     {
-  //       segment: "responsables",
-  //       title: "responsables",
-  //       icon: <FaUserGraduate />,
-
-  //       // content: <EnseignantsContent />,
-  //     },
-  //     {
-  //       segment: "conditionDentree",
-  //       title: "Conditions d’entrée",
-  //       icon: <FaUserGraduate />,
-
-  //       // content: <EnseignantsContent />,
-  //     },
-  //     {
-  //       segment: "contacts",
-  //       title: "Contacts",
-  //       icon: <FaUserGraduate />,
-
-  //       // content: <EnseignantsContent />,
-  //     },
-  //   ]
-
-  //   // content: <EnseignantsContent />,
-  // },
   {
     segment: "enseignants",
     title: "Enseignants",
@@ -402,11 +367,23 @@ function DemoPageContent({ pathname }: { pathname: string }) {
 }
 
 export default function TableauDeBord() {
+  const { user } = useAuthStore();
+  const { logOutUser } = useLogout();
+
+  const authentication = useMemo(() => {
+    return {
+      signOut: () => {
+        logOutUser();
+      },
+    };
+  }, []);
   const router = useDemoRouter("/dashboard");
 
   return (
     // preview-start
     <AppProvider
+      session={user ? { user } : null}
+      authentication={authentication}
       navigation={NAVIGATION}
       router={router}
       theme={demoTheme}

@@ -32,16 +32,16 @@ export const useSignin = () => {
       });
 
       // Ensure tokens exist before proceeding
-      if (!data.data?.jwt) {
+      if (!data?.jwt) {
         throw new Error("Missing tokens in the API response");
       }
 
-      if (data?.data?.jwt) {
+      if (data?.jwt) {
         const tokenHelper = new TokenHelper();
-        tokenHelper.setToken(data.data.jwt); // ✅ Store JWT
+        tokenHelper.setToken(data.jwt); // ✅ Store JWT
 
         // Update Zustand store with user data (excluding tokens)
-        const userState = { ...userFormData, ...data.data };
+        const userState = { ...userFormData, ...data };
         delete userState.jwt;
 
         login(userState);
@@ -64,49 +64,19 @@ export const useSignin = () => {
   return { loading, signIn };
 };
 
-// export const useLogout = () => {
-//   const [loading, setLoading] = useState(false);
+export const useLogout = () => {
+  const navigate = useNavigate();
+  const { logout } = useAuthStore();
 
-//   const dispatch = useDispatch();
-//   const navigate = useNavigate();
-//   const { axios } = useAxios();
+  const logOutUser = () => {
+    const tokenHelper = new TokenHelper();
+    tokenHelper.deleteToken();
+    logout();
+    navigate("/");
+  };
 
-//   const logout = async () => {
-//     try {
-//       dispatch(setLoadingUser(true));
-//       const { data } = await axios.post<SimpleSuccessResponseType>(
-//         `${API_URL}/logout`
-//       );
-
-//       console.log("data", data);
-
-//       if (data.code === SUCCESS_CODE.SUCCESS) {
-//         const tokenHelper = new TokenHelper();
-//         tokenHelper.deleteTokens();
-//         dispatch(setUser(null));
-//         navigate("/signin");
-//       }
-//     } catch (err) {
-//       const error = err as AxiosError<ErrorResponseType>;
-//       console.log(error);
-
-//       const code = error.response?.data.code;
-//       switch (code) {
-//         case CODES.UNEXPECTED_ERROR:
-//           failedToast("Unable to logout");
-//           break;
-//         default:
-//           failedToast("Something went wrong");
-//           break;
-//       }
-//     } finally {
-//       dispatch(setLoadingUser(false));
-//       setLoading(false);
-//     }
-//   };
-
-//   return { loading, logout };
-// };
+  return { logOutUser };
+};
 
 // export const useGetProfile = () => {
 //   const dispatch = useDispatch();
@@ -153,10 +123,10 @@ export const useRefreshToken = () => {
         }
       );
 
-      if (data?.data?.jwt) {
+      if (data?.jwt) {
         const tokenHelper = new TokenHelper();
-        tokenHelper.setToken(data.data.jwt); // ✅ Store new JWT
-        const userState = { ...data.data };
+        tokenHelper.setToken(data.jwt); // ✅ Store new JWT
+        const userState = { ...data };
         delete userState.jwt;
 
         login(userState);
