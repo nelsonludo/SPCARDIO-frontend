@@ -21,10 +21,8 @@ export const useSignin = () => {
   const [loading, setLoading] = useState(false);
 
   const { axios } = useAxios();
-  const navigate = useNavigate();
-  const { login } = useAuthStore(); //Zustand login function
 
-  const signIn = async (userFormData: LoginFormType, urlParam: string) => {
+  const signIn = async (userFormData: LoginFormType) => {
     try {
       setLoading(true);
       const { data } = await axios.post<any>(`/auth/local`, {
@@ -39,13 +37,6 @@ export const useSignin = () => {
       if (data?.jwt) {
         const tokenHelper = new TokenHelper();
         tokenHelper.setToken(data.jwt); // ✅ Store JWT
-
-        // Update Zustand store with user data (excluding tokens)
-        const userState = { ...userFormData, ...data };
-        delete userState.jwt;
-
-        login(userState);
-        navigate(urlParam);
       } else {
         throw new Error("Login failed: Invalid response from server");
       }
@@ -66,41 +57,57 @@ export const useSignin = () => {
 
 export const useLogout = () => {
   const navigate = useNavigate();
-  const { logout } = useAuthStore();
+  const { unsetUser } = useAuthStore();
 
   const logOutUser = () => {
     const tokenHelper = new TokenHelper();
     tokenHelper.deleteToken();
-    logout();
+    unsetUser();
     navigate("/");
   };
 
   return { logOutUser };
 };
 
-// export const useGetProfile = () => {
-//   const dispatch = useDispatch();
-//   const { axios } = useAxios();
+export const useGetProfile = () => {
+  const [loading, setLoading] = useState(false);
+  const { axios } = useAxios();
+  const { setUser } = useAuthStore();
 
-//   const getProfile = async () => {
-//     dispatch(setLoadingUser(true));
-//     try {
-//       const { data } = await axios.get<SingleItemResponseType<User>>(
-//         `${API_URL}/profile`
-//       );
-//       if (data.code === SUCCESS_CODE.SUCCESS) {
-//         dispatch(setUser(data.data));
-//       }
-//     } catch (err) {
-//       const error = err as AxiosError<ErrorResponseType>;
-//       console.log(error);
-//     } finally {
-//       dispatch(setLoadingUser(false));
-//     }
-//   };
+  const getProfile = async () => {
+    setLoading(true);
 
-//   return { getProfile };
-// };
+    try {
+      const { data } = await axios.get<any>(`users/me?populate=role`);
+
+      if (data?.id) {
+        // Update Zustand store with user data (excluding tokens)
+        const userState = { ...data };
+        delete userState.jwt;
+
+        setUser({
+          id: userState.id,
+          name: userState.username,
+          email: userState.email,
+          role: userState.role.name,
+        });
+      } else {
+        throw new Error("Login failed: Invalid response from server");
+      }
+    } catch (err) {
+      const error = err as AxiosError<any>;
+      console.log(
+        "Full error response:",
+        error.response?.data || error.message
+      );
+      failedToast(error?.response?.data || error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { loading, getProfile };
+};
 
 export const useRefreshToken = () => {
   const axios = axiosMain.create({
@@ -109,7 +116,7 @@ export const useRefreshToken = () => {
 
   const tokenHelper = new TokenHelper();
   const token = tokenHelper.getToken(); // ✅ Fetch stored JWT
-  const { login } = useAuthStore();
+  const { setUser } = useAuthStore();
 
   const refreshToken = async () => {
     try {
@@ -129,7 +136,7 @@ export const useRefreshToken = () => {
         const userState = { ...data };
         delete userState.jwt;
 
-        login(userState);
+        setUser(userState);
         return data;
       } else {
         throw new Error("Token refresh failed: Invalid response from server");
@@ -142,7 +149,7 @@ export const useRefreshToken = () => {
       tokenHelper.deleteToken(); // ✅ Remove old JWT
 
       setTimeout(() => {
-        login(null);
+        setUser(null);
       }, 4000);
     }
   };

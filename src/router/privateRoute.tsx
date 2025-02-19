@@ -8,7 +8,7 @@ type PrivateRouteProps = {
 };
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ requiredRoles }) => {
-  const user = useAuthStore((state) => state.user);
+  const { user } = useAuthStore();
 
   if (!user) {
     return <Navigate to="/signin" />;

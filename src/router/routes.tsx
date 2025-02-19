@@ -5,20 +5,19 @@ import Home from "../pages/home";
 // import PrivateRoute from "./privateRoute";
 import TableauDeBord from "../pages/admin";
 import { useAuthStore } from "../stores/authStore";
-import { useRefreshToken } from "../api/AuthApi";
+// import { useRefreshToken } from "../api/AuthApi";
 import { useEffect } from "react";
 import PrivateRoute from "./privateRoute";
 import { UserRoles } from "../types/enums/actors-types";
 
 const AppRoutes: React.FC = () => {
   const { user } = useAuthStore();
-  const { refreshToken } = useRefreshToken();
+  // const { refreshToken } = useRefreshToken();
 
   useEffect(() => {
-    console.log("user changed");
-    if (!user) {
-      refreshToken(); // Try to refresh token on reload
-    }
+    // if (!user) {
+    //   refreshToken(); // Try to refresh token on reload
+    // }
   }, [user]);
 
   return (

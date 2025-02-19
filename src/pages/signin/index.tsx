@@ -4,8 +4,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { FaEnvelope, FaLock } from "react-icons/fa";
-import { Link } from "react-router-dom";
-import { useSignin } from "../../api/AuthApi";
+import { Link, useNavigate } from "react-router-dom";
+import { useGetProfile, useSignin } from "../../api/AuthApi";
 
 // Zod schemas for form validation
 const loginSchema = z.object({
@@ -21,6 +21,8 @@ type LoginFormData = z.infer<typeof loginSchema>;
 const LoginSignupTab: React.FC = () => {
   // const [activeTab, setActiveTab] = useState(0);
   const { signIn } = useSignin();
+  const { getProfile } = useGetProfile();
+  const navigate = useNavigate();
 
   const {
     register: loginRegister,
@@ -31,7 +33,10 @@ const LoginSignupTab: React.FC = () => {
   });
 
   const onLoginSubmit = async (data: LoginFormData) => {
-    await signIn(data, "/admin");
+    await signIn(data);
+    await getProfile();
+
+    navigate("/admin");
   };
 
   return (
