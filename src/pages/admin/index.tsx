@@ -19,9 +19,9 @@ import DiscussionForum from "./contents/EspaceCollaboratifContent";
 import ListesMemoiresContent from "./contents/ListesDeMemoiresContent";
 import ListesThesesContent from "./contents/ListesDeThesesContent";
 import RapportsAdministratifContent from "./contents/RapportAdministratifContent";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useAuthStore } from "../../stores/authStore";
-import { useGetProfile, useLogout } from "../../api/AuthApi";
+import { useLogout } from "../../api/AuthApi";
 
 const NAVIGATION: Navigation = [
   {
