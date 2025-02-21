@@ -17,7 +17,7 @@ export const useGetEnseignants = () => {
       if (data) {
         setEnseignants(data);
       } else {
-        throw new Error("Login failed: Invalid response from server");
+        throw new Error("something went wrong");
       }
     } catch (err) {
       const error = err as AxiosError<any>;
