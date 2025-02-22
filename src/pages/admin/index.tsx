@@ -372,6 +372,7 @@ export default function TableauDeBord() {
 
   const authentication = useMemo(() => {
     return {
+      signIn: () => {},
       signOut: () => {
         logOutUser();
       },
