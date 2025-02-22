@@ -12,7 +12,7 @@ export const useGetLaureats = () => {
   const getLaureats = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.post<any>(`/laureats`);
+      const { data } = await axios.get<any>(`/laureats/`);
 
       if (data) {
         setLaureats(data);

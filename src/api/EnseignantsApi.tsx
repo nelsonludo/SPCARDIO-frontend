@@ -12,7 +12,7 @@ export const useGetEnseignants = () => {
   const getEnseignants = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.post<any>(`/enseignants`);
+      const { data } = await axios.get<any>(`/enseignants/`);
 
       if (data) {
         setEnseignants(data);
