@@ -3,29 +3,34 @@ import { ActorsType } from "../../types/enums/actors-types";
 import { EnseignantsType } from "../../types/entities/enseignants";
 import BasicModal from "../simpleModal";
 import { useMediaQuery, Theme } from "@mui/material";
+import { EtudiantType } from "../../types/entities/etudiants";
 
 type ActorsListPropsType = {
   type: ActorsType;
-  actor: EnseignantsType[];
+  actor: (EtudiantType | EnseignantsType)[] | null;
 };
 
 const ActorsList: React.FC<ActorsListPropsType> = ({ type, actor }) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedEnseignant, setSelectedEnseignant] = useState<any>(null);
+  const [selectedActor, setSelectedActor] = useState<
+    EtudiantType | EnseignantsType | null
+  >(null);
 
-  // Filtrer les acteurs selon la recherche
-  const filteredEnseignants = actor.filter((enseignant) => {
-    const query = searchQuery.toLowerCase();
-    if (type === ActorsType.ENSEIGNANT)
-      return enseignant.nom.toLowerCase().includes(query);
-
-    if (type === ActorsType.ETUDIANT) {
-      return (
-        enseignant.nom.toLowerCase().includes(query) ||
-        enseignant.email?.toLowerCase().includes(query)
-      );
-    }
-  });
+  // Filter actors based on search query
+  const filteredActors = Array.isArray(actor)
+    ? actor.filter((actor) => {
+        const query = searchQuery.toLowerCase();
+        if (type === ActorsType.ENSEIGNANT) {
+          return (actor as EnseignantsType).nom.toLowerCase().includes(query);
+        } else if (type === ActorsType.ETUDIANT) {
+          return (
+            (actor as EtudiantType).nom.toLowerCase().includes(query) ||
+            (actor as EtudiantType).email?.toLowerCase().includes(query)
+          );
+        }
+        return false;
+      })
+    : [];
 
   // Detect small screens
   const isSmallScreen = useMediaQuery((theme: Theme) =>
@@ -42,55 +47,59 @@ const ActorsList: React.FC<ActorsListPropsType> = ({ type, actor }) => {
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder={`Rechercher un ${
             type === ActorsType.ETUDIANT
-              ? "etudiant"
+              ? "étudiant"
               : type === ActorsType.ENSEIGNANT
                 ? "enseignant"
-                : "laureat"
+                : "lauréat"
           }`}
-          className="w-full bg-white rounded-2xl px-4 py-2 shadow-sm focus:outline-none focus:ring-0 "
+          className="w-full bg-white rounded-2xl px-4 py-2 shadow-sm focus:outline-none focus:ring-0"
         />
       </div>
 
       {/* List of actors */}
-      <div className=" shadow-md rounded-2xl p-2">
-        {filteredEnseignants.length > 0 ? (
-          <div className={isSmallScreen ? "grid grid-cols-1 gap-4 " : ""}>
-            {filteredEnseignants.map((enseignant: EnseignantsType) => (
+      <div className="shadow-md rounded-2xl p-2">
+        {filteredActors.length > 0 ? (
+          <div className={isSmallScreen ? "grid grid-cols-1 gap-4" : ""}>
+            {filteredActors.map((actor) => (
               <div
-                key={enseignant.id}
-                className={`${
+                key={actor.id}
+                className={
                   isSmallScreen
-                    ? "bg-white shadow-lg rounded-2xl p-4 "
+                    ? "bg-white shadow-lg rounded-2xl p-4"
                     : "flex items-center justify-between p-4 border-b border-gray-200 last:border-none hover:bg-gray-50"
-                }`}
+                }
               >
                 {isSmallScreen ? (
                   // Mobile card layout
                   <div>
-                    <div className="flex items-center ">
+                    <div className="flex items-center">
                       <img
-                        src={enseignant.photo || "/images/user.png"}
-                        alt={enseignant.nom}
+                        src={
+                          ("photo" in actor && actor.photo) ||
+                          "/images/user.png"
+                        }
+                        alt={actor.nom}
                         className="h-16 w-16 rounded-full object-cover mr-4"
                       />
                       <div className="flex flex-col items-start">
                         <div className="text-lg font-semibold text-gray-700">
-                          {enseignant.nom}
+                          {actor.nom}
                         </div>
                         <div className="text-sm text-gray-500">
-                          {enseignant.grade || enseignant.email}
+                          {"grade" in actor ? actor.grade : actor.email}
                         </div>
-                        {enseignant.grade ? (
+                        {"grade" in actor ? (
                           <div className="mt-2 text-sm text-gray-400">
                             <button
-                              onClick={() => setSelectedEnseignant(enseignant)}
+                              onClick={() => setSelectedActor(actor)}
+                              className="text-blue-500 hover:text-blue-700"
                             >
-                              <BasicModal info={selectedEnseignant} />
+                              Voir plus
                             </button>
                           </div>
                         ) : (
                           <div className="mt-2 text-sm text-gray-500">
-                            {enseignant.numero}
+                            {"numero" in actor && actor.numero}
                           </div>
                         )}
                       </div>
@@ -101,32 +110,32 @@ const ActorsList: React.FC<ActorsListPropsType> = ({ type, actor }) => {
                   <div className="grid grid-cols-[0.5fr_3fr_2fr_2fr] w-full justify-items-start">
                     {/* Photo */}
                     <img
-                      src={enseignant.photo || "/images/user.png"}
-                      alt={enseignant.nom}
+                      src={
+                        ("photo" in actor && actor.photo) || "/images/user.png"
+                      }
+                      alt={actor.nom}
                       className="h-12 w-12 rounded-full object-cover"
                     />
                     {/* Info */}
                     <div className="m-4">
                       <div className="text-sm font-semibold text-gray-600">
-                        {enseignant.nom}
+                        {actor.nom}
                       </div>
                     </div>
                     {/* Grade or Email */}
                     <div className="m-4 text-sm text-gray-500 font-medium">
-                      {enseignant.grade || enseignant.email}
+                      {"grade" in actor ? actor.grade : actor.email}
                     </div>
                     {/* Grade specific button */}
-                    {enseignant.grade ? (
+                    {"grade" in actor ? (
                       <div className="m-4 text-sm text-gray-400 justify-self-end">
-                        <button
-                          onClick={() => setSelectedEnseignant(enseignant)}
-                        >
-                          <BasicModal info={selectedEnseignant} />
-                        </button>
+                        <BasicModal
+                          info={"grade" in actor ? selectedActor : null}
+                        />
                       </div>
                     ) : (
                       <div className="m-4 text-sm text-gray-500">
-                        {enseignant.numero}
+                        {"numero" in actor && actor.numero}
                       </div>
                     )}
                   </div>

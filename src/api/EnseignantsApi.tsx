@@ -12,10 +12,12 @@ export const useGetEnseignants = () => {
   const getEnseignants = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get<any>(`/enseignants/`);
+      const { data } = await axios.get<any>(
+        `/enseignants/?pagination[pageSize]=100`
+      );
 
       if (data) {
-        setEnseignants(data);
+        setEnseignants(data.data);
       } else {
         throw new Error("something went wrong");
       }

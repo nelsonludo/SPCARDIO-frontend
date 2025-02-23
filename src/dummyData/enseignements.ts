@@ -1,5 +1,4 @@
-import { Enseignement } from "../types/entities/courses";
-
+import { Enseignement } from "../types/entities/enseignements";
 
 export type EnseignementType = { [week: string]: Enseignement[] };
 
@@ -75,7 +74,7 @@ export const Niveau2coursesData: EnseignementType = {
   ],
 };
 
-export const Niveau3coursesData: { [week: string]: Enseignement[] } = {
+export const Niveau3coursesData: EnseignementType = {
   "16-19 Dec 2024": [
     {
       uniteEnseignement: "SCAR 313",

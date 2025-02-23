@@ -12,10 +12,12 @@ export const useGetEtudiants = () => {
   const getEtudiants = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get<any>(`/etudiants/`);
+      const { data } = await axios.get<any>(
+        `/etudiants/?pagination[pageSize]=100`
+      );
 
       if (data) {
-        setEtudiants(data);
+        setEtudiants(data.data);
       } else {
         throw new Error("something went wrong");
       }

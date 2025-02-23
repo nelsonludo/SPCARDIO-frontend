@@ -13,12 +13,11 @@ const EnseignantsContent: React.FC = ({}) => {
     getEnseignants();
   }, []);
 
-  useEffect(() => {
-    if (enseignants) console.log(enseignants);
-  }, [enseignants]);
-
   return (
-    <ActorsList type={ActorsType.ENSEIGNANT} actor={predefinedEnseignants} />
+    <ActorsList
+      type={ActorsType.ENSEIGNANT}
+      actor={enseignants || predefinedEnseignants}
+    />
   );
 };
 

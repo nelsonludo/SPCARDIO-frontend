@@ -19,7 +19,7 @@ const style = {
 };
 
 type BasicModalPropsType<T> = {
-  info: T;
+  info: T | null;
 };
 
 const BasicModal: React.FC<BasicModalPropsType<EnseignantsType>> = ({
@@ -31,7 +31,10 @@ const BasicModal: React.FC<BasicModalPropsType<EnseignantsType>> = ({
 
   return (
     <div>
-      <button className="bg-blue-600 rounded-2xl text-white font-bold p-3 shadow-sm" onClick={handleOpen}>
+      <button
+        className="bg-blue-600 rounded-2xl text-white font-bold p-3 shadow-sm"
+        onClick={handleOpen}
+      >
         Voir Fiche
       </button>
       <Modal open={open} onClose={handleClose}>

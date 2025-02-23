@@ -19,22 +19,24 @@ import {
 import { EnseignementType } from "../../dummyData/enseignements";
 
 type CoursTheoriquesContentPropsType = {
-  coursesData: EnseignementType;
+  coursesData: EnseignementType | null;
 };
 
 // Group courses by U.E and date
 const groupCourses = (courses: any[]) => {
   const grouped: Record<string, Record<string, any[]>> = {};
 
-  courses.forEach((course) => {
-    if (!grouped[course.uniteEnseignement]) {
-      grouped[course.uniteEnseignement] = {};
-    }
-    if (!grouped[course.uniteEnseignement][course.date]) {
-      grouped[course.uniteEnseignement][course.date] = [];
-    }
-    grouped[course.uniteEnseignement][course.date].push(course);
-  });
+  if (Array.isArray(courses)) {
+    courses.forEach((course) => {
+      if (!grouped[course.uniteEnseignement]) {
+        grouped[course.uniteEnseignement] = {};
+      }
+      if (!grouped[course.uniteEnseignement][course.date]) {
+        grouped[course.uniteEnseignement][course.date] = [];
+      }
+      grouped[course.uniteEnseignement][course.date].push(course);
+    });
+  }
 
   return grouped;
 };
@@ -42,6 +44,15 @@ const groupCourses = (courses: any[]) => {
 const CoursProgrammationTable: React.FC<CoursTheoriquesContentPropsType> = ({
   coursesData,
 }) => {
+  // Handle null case
+  if (!coursesData) {
+    return (
+      <Box sx={{ p: { xs: 2, md: 6 }, textAlign: "center" }}>
+        <Typography variant="h6">Aucune donnée disponible</Typography>
+      </Box>
+    );
+  }
+
   const weeks = Object.keys(coursesData);
   const [selectedWeek, setSelectedWeek] = useState<string>(weeks[0] || "");
 

@@ -1,20 +1,9 @@
-// import ActorsList from "../../../components/actorsList";
-// import { ActorsType, NiveauEtudiants } from "../../../types/enums/actors-types";
+import React, { useEffect } from "react";
 import { NiveauEtudiants } from "../../../types/enums/actors-types";
-// import {
-//   predefinedEtudiantsNiveau1,
-//   predefinedEtudiantsNiveau4,
-// } from "../../../dummyData/etudiants";
-
-import React from "react";
-// import CoursProgrammationTable from "../../../components/coursProgrammationTable";
-// import {
-//   Niveau2coursesData,
-//   Niveau3coursesData,
-// } from "../../../dummyData/courses";
 import ProgrammesGrid from "../../../components/coursProgrammationTable/ProgrammesGrid";
 import CoursProgrammationTable from "../../../components/coursProgrammationTable";
-import { Niveau2coursesData, Niveau3coursesData } from "../../../dummyData/enseignements";
+import { useGetEnseignements } from "../../../api/EnseignementsApi";
+import { useEnseignementsStore } from "../../../stores/enseignementsStore";
 
 type CoursTheoriquesContentPropsType = {
   niveau: NiveauEtudiants;
@@ -23,50 +12,26 @@ type CoursTheoriquesContentPropsType = {
 const CoursTheoriquesContent: React.FC<CoursTheoriquesContentPropsType> = ({
   niveau,
 }) => {
-  if (niveau === NiveauEtudiants.NiVEAU1)
-    return (
-      // <ActorsList
-      //   type={ActorsType.ETUDIANT}
-      //   actor={predefinedEtudiantsNiveau1}
-      // />
-      <ProgrammesGrid images={[]} />
-    );
-  if (niveau === NiveauEtudiants.NiVEAU2)
-    return (
-      <CoursProgrammationTable
-        coursesData={Niveau2coursesData}
+  const { getEnseignements } = useGetEnseignements();
+  const { enseignements } = useEnseignementsStore();
 
-      />
-      // <ProgrammesGrid
-      //   images={[
-      //     "/images/programmationNiveau2Page1.png",
-      //     "/images/programmationNiveau2Page2.png",
-      //     "/images/programmationNiveau2Page3.png",
-      //   ]}
-      // />
-    );
-  if (niveau === NiveauEtudiants.NiVEAU3)
-    return (
-      <CoursProgrammationTable
-        coursesData={Niveau3coursesData}
+  useEffect(() => {
+    getEnseignements();
+    console.log(enseignements);
+  }, []);
 
-      />
-      // <ProgrammesGrid
-      //   images={[
-      //     "/images/programmationNiveau3Page1.png",
-      //     "/images/programmationNiveau3Page2.png",
-      //     "/images/programmationNiveau3Page3.png",
-      //   ]}
-      // />
-    );
-  if (niveau === NiveauEtudiants.NiVEAU4)
-    return (
-      // <ActorsList
-      //   type={ActorsType.ETUDIANT}
-      //   actor={predefinedEtudiantsNiveau4}
-      // />
-      <ProgrammesGrid images={[]} />
-    );
+  useEffect(() => {
+    console.log(enseignements);
+  }, [enseignements]);
+
+  if (niveau === NiveauEtudiants.NiVEAU1) return <ProgrammesGrid images={[]} />;
+
+  if (niveau === NiveauEtudiants.NiVEAU2 || niveau === NiveauEtudiants.NiVEAU3)
+    return <CoursProgrammationTable coursesData={enseignements} />;
+
+  if (niveau === NiveauEtudiants.NiVEAU4) return <ProgrammesGrid images={[]} />;
+
+  return null;
 };
 
 export default CoursTheoriquesContent;
