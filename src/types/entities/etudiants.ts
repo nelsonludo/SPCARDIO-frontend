@@ -1,7 +1,7 @@
 export type EtudiantType = {
   id: number;
   nom: string;
-  photoUrl?: string;
+  profilePhoto?: string;
   niveau: string;
   anneeEntree: string;
   email: string;

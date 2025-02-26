@@ -16,12 +16,7 @@ const CoursTheoriquesContent: React.FC<CoursTheoriquesContentPropsType> = ({
 
   useEffect(() => {
     getEnseignements();
-    console.log(enseignements);
   }, []);
-
-  useEffect(() => {
-    console.log(enseignements);
-  }, [enseignements]);
 
   //converts the filtered array back into an object
   const enseignementsNiveau2 = Object.fromEntries(

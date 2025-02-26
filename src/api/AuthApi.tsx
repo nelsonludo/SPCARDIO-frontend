@@ -90,6 +90,7 @@ export const useGetProfile = () => {
           name: userState.username,
           email: userState.email,
           role: userState.role.name,
+          image: userState.iamge,
         });
       } else {
         throw new Error("Login failed: Invalid response from server");

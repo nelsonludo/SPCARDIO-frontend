@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ActorsType } from "../../types/enums/actors-types";
 import { EnseignantsType } from "../../types/entities/enseignants";
 import BasicModal from "../simpleModal";
-import { useMediaQuery, Theme } from "@mui/material";
+import { useMediaQuery, Theme, Box, Typography } from "@mui/material";
 import { EtudiantType } from "../../types/entities/etudiants";
 
 type ActorsListPropsType = {
@@ -36,6 +36,14 @@ const ActorsList: React.FC<ActorsListPropsType> = ({ type, actor }) => {
   const isSmallScreen = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down("md")
   );
+
+  if (actor?.length === 0) {
+    return (
+      <Box sx={{ p: { xs: 2, md: 6 }, textAlign: "center" }}>
+        <Typography variant="h6">Aucune donnée disponible</Typography>
+      </Box>
+    );
+  }
 
   return (
     <div className="container mx-auto p-4">
@@ -75,7 +83,7 @@ const ActorsList: React.FC<ActorsListPropsType> = ({ type, actor }) => {
                     <div className="flex items-center">
                       <img
                         src={
-                          ("photo" in actor && actor.photo) ||
+                          ("profilePhoto" in actor && actor.profilePhoto) ||
                           "/images/user.png"
                         }
                         alt={actor.nom}
@@ -111,7 +119,8 @@ const ActorsList: React.FC<ActorsListPropsType> = ({ type, actor }) => {
                     {/* Photo */}
                     <img
                       src={
-                        ("photo" in actor && actor.photo) || "/images/user.png"
+                        ("profilePhoto" in actor && actor.profilePhoto) ||
+                        "/images/user.png"
                       }
                       alt={actor.nom}
                       className="h-12 w-12 rounded-full object-cover"

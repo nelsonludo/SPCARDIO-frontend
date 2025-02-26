@@ -1,6 +1,6 @@
 export type EnseignantsType = {
   id: number;
-  photo?: string;
+  profilePhoto?: string;
   nom: string;
   grade?: string;
   pays?: string;

@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useGetEnseignants } from "../../../api/EnseignantsApi";
 import ActorsList from "../../../components/actorsList";
-import predefinedEnseignants from "../../../dummyData/enseignants";
 import { ActorsType } from "../../../types/enums/actors-types";
 import { useEnseignantsStore } from "../../../stores/enseignantsStore";
 
@@ -13,12 +12,7 @@ const EnseignantsContent: React.FC = ({}) => {
     getEnseignants();
   }, []);
 
-  return (
-    <ActorsList
-      type={ActorsType.ENSEIGNANT}
-      actor={enseignants || predefinedEnseignants}
-    />
-  );
+  return <ActorsList type={ActorsType.ENSEIGNANT} actor={enseignants || []} />;
 };
 
 export default EnseignantsContent;
