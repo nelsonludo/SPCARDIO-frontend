@@ -1,10 +1,8 @@
 import React, { useEffect } from "react";
 import { NiveauEtudiants } from "../../../types/enums/actors-types";
-import ProgrammesGrid from "../../../components/coursProgrammationTable/ProgrammesGrid";
 import CoursProgrammationTable from "../../../components/coursProgrammationTable";
 import { useGetEnseignements } from "../../../api/EnseignementsApi";
 import { useEnseignementsStore } from "../../../stores/enseignementsStore";
-import { EnseignementWeeklyType } from "../../../types/enseignements";
 
 type CoursTheoriquesContentPropsType = {
   niveau: NiveauEtudiants;
