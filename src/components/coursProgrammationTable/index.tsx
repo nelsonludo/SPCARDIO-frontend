@@ -16,10 +16,10 @@ import {
   useMediaQuery,
   Theme,
 } from "@mui/material";
-import { EnseignementType } from "../../dummyData/enseignements";
+import { EnseignementWeeklyType } from "../../types/enseignements";
 
 type CoursTheoriquesContentPropsType = {
-  coursesData: EnseignementType | null;
+  coursesData: EnseignementWeeklyType | null;
 };
 
 // Group courses by U.E and date
@@ -45,7 +45,7 @@ const CoursProgrammationTable: React.FC<CoursTheoriquesContentPropsType> = ({
   coursesData,
 }) => {
   // Handle null case
-  if (!coursesData) {
+  if (!coursesData || Object.keys(coursesData).length === 0) {
     return (
       <Box sx={{ p: { xs: 2, md: 6 }, textAlign: "center" }}>
         <Typography variant="h6">Aucune donnée disponible</Typography>
@@ -64,7 +64,9 @@ const CoursProgrammationTable: React.FC<CoursTheoriquesContentPropsType> = ({
     }
   }, [coursesData]);
 
-  const groupedCourses = groupCourses(coursesData[selectedWeek] || []);
+  const groupedCourses = groupCourses(
+    coursesData[selectedWeek]?.enseignements || []
+  );
 
   // Detect small screens
   const isSmallScreen = useMediaQuery((theme: Theme) =>

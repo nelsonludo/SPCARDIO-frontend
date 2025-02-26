@@ -14,7 +14,7 @@ const useAxios = () => {
   const { refreshToken } = useRefreshToken();
 
   const axios = axiosMain.create({
-    baseURL: "http://localhost:1337/api",
+    baseURL: "https://spb.crest.cm/api",
     headers: {
       "Content-Type": "application/json", // Explicitly set Content-Type
     },

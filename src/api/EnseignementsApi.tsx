@@ -14,14 +14,17 @@ export const useGetEnseignements = () => {
     try {
       setLoading(true);
       const { data } = await axios.get<any>(
-        `http://localhost:1337/api/weekly-enseignements?populate[enseignements][populate][0]=residents&populate[enseignements][populate][1]=enseignants`
+        `/weekly-enseignements?populate[enseignements][populate][0]=residents&populate[enseignements][populate][1]=enseignants`
       );
-
-      console.log(data.data);
 
       if (data && data.data) {
         const transformedData = data.data.reduce(
-          (acc: { [week: string]: Enseignement[] }, item: any) => {
+          (
+            acc: {
+              [week: string]: { niveau: string; enseignements: Enseignement[] };
+            },
+            item: any
+          ) => {
             const week = item.week; // Access week directly
 
             // Check if enseignements data exists
@@ -46,7 +49,7 @@ export const useGetEnseignements = () => {
               })
             );
 
-            acc[week] = enseignements;
+            acc[week] = { niveau: item.niveau, enseignements: enseignements };
             return acc;
           },
           {}

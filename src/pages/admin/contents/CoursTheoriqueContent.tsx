@@ -4,6 +4,7 @@ import ProgrammesGrid from "../../../components/coursProgrammationTable/Programm
 import CoursProgrammationTable from "../../../components/coursProgrammationTable";
 import { useGetEnseignements } from "../../../api/EnseignementsApi";
 import { useEnseignementsStore } from "../../../stores/enseignementsStore";
+import { EnseignementWeeklyType } from "../../../types/enseignements";
 
 type CoursTheoriquesContentPropsType = {
   niveau: NiveauEtudiants;
@@ -24,12 +25,39 @@ const CoursTheoriquesContent: React.FC<CoursTheoriquesContentPropsType> = ({
     console.log(enseignements);
   }, [enseignements]);
 
-  if (niveau === NiveauEtudiants.NiVEAU1) return <ProgrammesGrid images={[]} />;
+  //converts the filtered array back into an object
+  const enseignementsNiveau2 = Object.fromEntries(
+    //convert the enseignements into an array if enseignements is defined
+    Object.entries(enseignements || {}).filter(
+      //filter the array to only include the pairs where data.niveau === 2
+      ([, data]) => data.niveau === "2"
+    )
+  );
 
-  if (niveau === NiveauEtudiants.NiVEAU2 || niveau === NiveauEtudiants.NiVEAU3)
-    return <CoursProgrammationTable coursesData={enseignements} />;
+  const enseignementsNiveau3 = Object.fromEntries(
+    Object.entries(enseignements || {}).filter(
+      ([, data]) => data.niveau === "3"
+    )
+  );
+  const enseignementsNiveau1 = Object.fromEntries(
+    Object.entries(enseignements || {}).filter(
+      ([, data]) => data.niveau === "1"
+    )
+  );
+  const enseignementsNiveau4 = Object.fromEntries(
+    Object.entries(enseignements || {}).filter(
+      ([, data]) => data.niveau === "4"
+    )
+  );
 
-  if (niveau === NiveauEtudiants.NiVEAU4) return <ProgrammesGrid images={[]} />;
+  if (niveau === NiveauEtudiants.NiVEAU1)
+    return <CoursProgrammationTable coursesData={enseignementsNiveau1} />;
+  if (niveau === NiveauEtudiants.NiVEAU2)
+    return <CoursProgrammationTable coursesData={enseignementsNiveau2} />;
+  if (niveau === NiveauEtudiants.NiVEAU3)
+    return <CoursProgrammationTable coursesData={enseignementsNiveau3} />;
+  if (niveau === NiveauEtudiants.NiVEAU4)
+    return <CoursProgrammationTable coursesData={enseignementsNiveau4} />;
 
   return null;
 };
