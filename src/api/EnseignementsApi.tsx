@@ -3,57 +3,101 @@ import { AxiosError } from "axios";
 import useAxios from "../hooks/useAxios";
 import { failedToast } from "../utils/toasts";
 import { useEnseignementsStore } from "../stores/enseignementsStore";
-import { Enseignement } from "../types/entities/enseignements";
+import { EnseignementWeeklyType } from "../types/enseignements";
+import { ActivitePedagogique } from "../types/entities/activitePedagogique";
 
 export const useGetEnseignements = () => {
   const [loading, setLoading] = useState(false);
   const { axios } = useAxios();
   const { setEnseignements } = useEnseignementsStore();
 
+  function restructureAPData(
+    aps: ActivitePedagogique[]
+  ): EnseignementWeeklyType {
+    const restructured: EnseignementWeeklyType = {};
+
+    aps.forEach((ap) => {
+      const week = ap.horaires; // Assuming horaires represents the week
+      if (!restructured[week]) {
+        restructured[week] = {
+          niveau: "Programme 1", // You might need to fetch this from somewhere based on the ap.code or other related data
+          enseignements: [],
+        };
+      }
+      restructured[week].enseignements.push(ap);
+    });
+
+    return restructured;
+  }
+
   const getEnseignements = async () => {
+    function restructureAPData(
+      aps: ActivitePedagogique[]
+    ): EnseignementWeeklyType {
+      const restructured: EnseignementWeeklyType = {};
+
+      aps.forEach((ap) => {
+        // Get the formatted week range (e.g., "26-30 Nov 2024")
+        const week = getWeekRange(ap.date);
+        const niveau =
+          ap.unite_d_enseignement?.programme?.title || "Unknown Program";
+
+        if (!restructured[week]) {
+          restructured[week] = {
+            niveau,
+            enseignements: [],
+          };
+        }
+
+        restructured[week].enseignements.push(ap);
+      });
+
+      return restructured;
+    }
+
+    /**
+     * Get the formatted week range as "DD-DD MMM YYYY" (e.g., "26-30 Nov 2024")
+     */
+    function getWeekRange(dateStr: string): string {
+      const date = new Date(dateStr);
+      const year = date.getFullYear();
+
+      // Get the Monday and Friday of the given date's week
+      const { monday, friday } = getMondayAndFriday(date);
+
+      // Format days and month
+      const dayStart = monday.getDate();
+      const dayEnd = friday.getDate();
+      const month = monday.toLocaleString("en-US", { month: "short" });
+
+      return `${dayStart}-${dayEnd} ${month} ${year}`;
+    }
+
+    /**
+     * Get the Monday and Friday of the week for a given date
+     */
+    function getMondayAndFriday(date: Date): { monday: Date; friday: Date } {
+      const dayOfWeek = date.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+      const monday = new Date(date);
+      const friday = new Date(date);
+
+      // Adjust to Monday (if the date is already Monday, no change)
+      monday.setDate(date.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+
+      // Adjust to Friday
+      friday.setDate(monday.getDate() + 4);
+
+      return { monday, friday };
+    }
+
     try {
       setLoading(true);
       const { data } = await axios.get<any>(
-        `/weekly-enseignements?populate[enseignements][populate][0]=residents&populate[enseignements][populate][1]=enseignants`
+        `/activite-pedagogiques?populate[unite_d_enseignement][populate]=programme&populate=type_d_activite_pedagogique`
       );
 
       if (data && data.data) {
-        const transformedData = data.data.reduce(
-          (
-            acc: {
-              [week: string]: { niveau: string; enseignements: Enseignement[] };
-            },
-            item: any
-          ) => {
-            const week = item.week; // Access week directly
-
-            // Check if enseignements data exists
-            if (!item.enseignements) {
-              console.warn("No enseignements data for week:", week);
-              return acc; // Skip this item
-            }
-
-            const enseignements = item.enseignements.map(
-              (enseignement: any) => ({
-                uniteEnseignement: enseignement.uniteEnseignement,
-                intitule: enseignement.intitule,
-                date: enseignement.date,
-                horaires: enseignement.horaires,
-                residents: enseignement.residents.map(
-                  (resident: any) => resident.name
-                ),
-                enseignants: enseignement.enseignants.map(
-                  (enseignant: any) => enseignant.name
-                ),
-                observation: enseignement.observation,
-              })
-            );
-
-            acc[week] = { niveau: item.niveau, enseignements: enseignements };
-            return acc;
-          },
-          {}
-        );
+        const transformedData = restructureAPData(data.data);
 
         setEnseignements(transformedData);
       } else {

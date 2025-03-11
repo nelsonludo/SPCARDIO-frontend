@@ -1,6 +1,4 @@
-import { Enseignement } from "../types/entities/enseignements";
-
-export type EnseignementType = { [week: string]: Enseignement[] };
+export type EnseignementType = { [week: string]: any[] };
 
 export const Niveau2coursesData: EnseignementType = {
   "26-30 Nov 2024": [
