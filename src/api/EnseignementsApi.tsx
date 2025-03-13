@@ -5,30 +5,12 @@ import { failedToast } from "../utils/toasts";
 import { useEnseignementsStore } from "../stores/enseignementsStore";
 import { EnseignementWeeklyType } from "../types/enseignements";
 import { ActivitePedagogique } from "../types/entities/activitePedagogique";
+import { EnseignantsType } from "../types/entities/enseignants";
 
 export const useGetEnseignements = () => {
   const [loading, setLoading] = useState(false);
   const { axios } = useAxios();
   const { setEnseignements } = useEnseignementsStore();
-
-  function restructureAPData(
-    aps: ActivitePedagogique[]
-  ): EnseignementWeeklyType {
-    const restructured: EnseignementWeeklyType = {};
-
-    aps.forEach((ap) => {
-      const week = ap.horaires; // Assuming horaires represents the week
-      if (!restructured[week]) {
-        restructured[week] = {
-          niveau: "Programme 1", // You might need to fetch this from somewhere based on the ap.code or other related data
-          enseignements: [],
-        };
-      }
-      restructured[week].enseignements.push(ap);
-    });
-
-    return restructured;
-  }
 
   const getEnseignements = async () => {
     function restructureAPData(
@@ -40,7 +22,8 @@ export const useGetEnseignements = () => {
         // Get the formatted week range (e.g., "26-30 Nov 2024")
         const week = getWeekRange(ap.date);
         const niveau =
-          ap.unite_d_enseignement?.programme?.title || "Unknown Program";
+          ap.unite_d_enseignement?.programme?.title?.toUpperCase() ||
+          "Unknown Program";
 
         if (!restructured[week]) {
           restructured[week] = {
@@ -93,11 +76,29 @@ export const useGetEnseignements = () => {
     try {
       setLoading(true);
       const { data } = await axios.get<any>(
-        `/activite-pedagogiques?populate[unite_d_enseignement][populate]=programme&populate=type_d_activite_pedagogique`
+        `/activite-pedagogiques?populate[unite_d_enseignement][populate]=programme&populate=type_d_activite_pedagogique&populate[residents][populate]=enseignants&populate[enseignants][populate]=enseignants`
       );
 
       if (data && data.data) {
-        const transformedData = restructureAPData(data.data);
+        const transformedData = restructureAPData(
+          data.data.map((ap: ActivitePedagogique) => {
+            return {
+              ...ap,
+              residents: ap.residents.flatMap((resident) =>
+                resident.enseignants.map(
+                  (enseignant: EnseignantsType) => enseignant.nom
+                )
+              ),
+              enseignants: ap.enseignants.flatMap((enseignant) =>
+                enseignant.enseignants.map(
+                  (enseignant: EnseignantsType) => enseignant.nom
+                )
+              ),
+            };
+          })
+        );
+
+        console.log(transformedData);
 
         setEnseignements(transformedData);
       } else {
@@ -109,11 +110,71 @@ export const useGetEnseignements = () => {
         "Full error response:",
         error.response?.data || error.message
       );
-      failedToast(error?.response?.data || error.message);
+      failedToast(error?.response?.data?.error?.message || error.message);
     } finally {
       setLoading(false);
     }
   };
 
   return { loading, getEnseignements };
+};
+
+export const useGetAPTypes = () => {
+  const [loading, setLoading] = useState(false);
+  const { axios } = useAxios();
+  const { setAPTypes } = useEnseignementsStore();
+
+  const getAPTypes = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get<any>(`/type-d-activite-pedagogiques`);
+
+      if (data && data.data) {
+        setAPTypes(data.data);
+      } else {
+        throw new Error("No data found in the response");
+      }
+    } catch (err) {
+      const error = err as AxiosError<any>;
+      console.log(
+        "Full error response:",
+        error.response?.data || error.message
+      );
+      failedToast(error?.response?.data?.error?.message || error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { loading, getAPTypes };
+};
+
+export const useGetProgrammes = () => {
+  const [loading, setLoading] = useState(false);
+  const { axios } = useAxios();
+  const { setProgrammes } = useEnseignementsStore();
+
+  const getProgrammes = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get<any>(`/programmes`);
+
+      if (data && data.data) {
+        setProgrammes(data.data);
+      } else {
+        throw new Error("No data found in the response");
+      }
+    } catch (err) {
+      const error = err as AxiosError<any>;
+      console.log(
+        "Full error response:",
+        error.response?.data || error.message
+      );
+      failedToast(error?.response?.data?.error?.message || error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { loading, getProgrammes };
 };

@@ -12,9 +12,6 @@ type ActorsListPropsType = {
 
 const ActorsList: React.FC<ActorsListPropsType> = ({ type, actor }) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedActor, setSelectedActor] = useState<
-    EtudiantType | EnseignantsType | null
-  >(null);
 
   // Filter actors based on search query
   const filteredActors = Array.isArray(actor)
@@ -98,12 +95,9 @@ const ActorsList: React.FC<ActorsListPropsType> = ({ type, actor }) => {
                         </div>
                         {"grade" in actor ? (
                           <div className="mt-2 text-sm text-gray-400">
-                            <button
-                              onClick={() => setSelectedActor(actor)}
-                              className="text-blue-500 hover:text-blue-700"
-                            >
-                              Voir plus
-                            </button>
+                            <BasicModal
+                              info={"grade" in actor ? actor : null}
+                            />
                           </div>
                         ) : (
                           <div className="mt-2 text-sm text-gray-500">
@@ -138,9 +132,7 @@ const ActorsList: React.FC<ActorsListPropsType> = ({ type, actor }) => {
                     {/* Grade specific button */}
                     {"grade" in actor ? (
                       <div className="m-4 text-sm text-gray-400 justify-self-end">
-                        <BasicModal
-                          info={"grade" in actor ? selectedActor : null}
-                        />
+                        <BasicModal info={"grade" in actor ? actor : null} />
                       </div>
                     ) : (
                       <div className="m-4 text-sm text-gray-500">

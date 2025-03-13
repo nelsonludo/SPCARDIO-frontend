@@ -19,356 +19,458 @@ import DiscussionForum from "./contents/EspaceCollaboratifContent";
 import ListesMemoiresContent from "./contents/ListesDeMemoiresContent";
 import ListesThesesContent from "./contents/ListesDeThesesContent";
 import RapportsAdministratifContent from "./contents/RapportAdministratifContent";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useAuthStore } from "../../stores/authStore";
 import { useLogout } from "../../api/AuthApi";
 
-const NAVIGATION: Navigation = [
-  {
-    segment: "dashboard",
-    title: "Tableau de bord",
-    icon: <DashboardIcon />,
-    // content: <DashboardContent />,
-  },
-  {
-    segment: "enseignants",
-    title: "Enseignants",
-    icon: <FaUserGraduate />,
-
-    // content: <EnseignantsContent />,
-  },
-  {
-    segment: "etudiants",
-    title: "Etudiants",
-    icon: <FaUserNurse />,
-    children: [
-      {
-        segment: "niveau1",
-        title: "Niveau 1",
-        icon: <FaSchool />,
-      },
-      {
-        segment: "niveau2",
-        title: "Niveau 2",
-        icon: <FaSchool />,
-      },
-      {
-        segment: "niveau3",
-        title: "Niveau 3",
-        icon: <FaSchool />,
-      },
-      {
-        segment: "niveau4",
-        title: "Niveau 4",
-        icon: <FaSchool />,
-      },
-    ],
-  },
-  {
-    segment: "laureats",
-    title: "Laureats",
-    icon: <FaUserGraduate />,
-    // content: <LaureatsContent />,
-  },
-  {
-    segment: "programmesDeCoursTheoriques",
-    title: "Programmes De Cours",
-    icon: <DashboardIcon />,
-    children: [
-      {
-        segment: "coursTheoriques",
-        title: "Cours Theoriques",
-        icon: <DashboardIcon />,
-        children: [
-          {
-            segment: "niveau1",
-            title: "Niveau 1",
-            icon: <FaSchool />,
-          },
-          {
-            segment: "niveau2",
-            title: "Niveau 2",
-            icon: <FaSchool />,
-          },
-          {
-            segment: "niveau3",
-            title: "Niveau 3",
-            icon: <FaSchool />,
-          },
-          {
-            segment: "niveau4",
-            title: "Niveau 4",
-            icon: <FaSchool />,
-          },
-        ],
-      },
-      {
-        segment: "seminaire",
-        title: "Seminaires",
-        icon: <DashboardIcon />,
-        children: [
-          {
-            segment: "niveau1",
-            title: "Niveau 1",
-            icon: <FaSchool />,
-          },
-          {
-            segment: "niveau2",
-            title: "Niveau 2",
-            icon: <FaSchool />,
-          },
-          {
-            segment: "niveau3",
-            title: "Niveau 3",
-            icon: <FaSchool />,
-          },
-          {
-            segment: "niveau4",
-            title: "Niveau 4",
-            icon: <FaSchool />,
-          },
-        ],
-        // content: <FicheDeCoursContent />,
-      },
-    ],
-  },
-  {
-    segment: "travauxDiriges",
-    title: "Travaux Dirigés",
-    icon: <DashboardIcon />,
-    children: [
-      {
-        segment: "travauxDirigesProgrammation",
-        title: "Programmation",
-        icon: <DashboardIcon />,
-        // content: <TravauxDirigesProgrammationContent />,
-      },
-      {
-        segment: "travauxDirigesSuivi",
-        title: "Suivi",
-        icon: <DashboardIcon />,
-        // content: <TravauxDirigesSuiviContent />,
-      },
-    ],
-  },
-  {
-    segment: "stageCliniques",
-    title: "Stage Cliniques",
-    icon: <DashboardIcon />,
-    children: [
-      {
-        segment: "stageCliniquesProgrammation",
-        title: "Programmation",
-        icon: <DashboardIcon />,
-        // content: <StageCliniquesProgrammationContent />,
-      },
-      {
-        segment: "stageCliniquesSuivi",
-        title: "Suivi",
-        icon: <DashboardIcon />,
-        // content: <StageCliniquesSuiviContent />,
-      },
-    ],
-  },
-  {
-    segment: "espaceCollaboratif",
-    title: "Espace Collaboratif",
-    icon: <DashboardIcon />,
-    // content: <EspaceCollaboratifContent />,
-  },
-  {
-    segment: "documentation",
-    title: "Documentation",
-    icon: <DashboardIcon />,
-    children: [
-      {
-        segment: "listeDeTheses",
-        title: "Liste De Thèses",
-        icon: <DashboardIcon />,
-        // content: <ListeDeThesesContent />,
-      },
-      {
-        segment: "listeDeMemoires",
-        title: "Liste De Mémoires",
-        icon: <DashboardIcon />,
-        // content: <ListeDeMemoiresContent />,
-      },
-      {
-        segment: "rapportsAdministratifsFinancier",
-        title: "Rapports Administratifs et Financier",
-        icon: <DashboardIcon />,
-        // content: <rapportsAdministratifsFinancierThesesContent />,
-      },
-    ],
-  },
-];
-
-type I3SBrandType = {
-  title?: string;
-  logo?: React.ReactNode;
-  homeUrl?: string;
-};
-const I3SBrand: I3SBrandType = {
-  title: "SPCARDIO.",
-  logo: (
-    <Link to={"/home"}>
-      <img
-        src="/images/uniYaounde1Logo.png"
-        alt={""}
-        className="rounded-full "
-      />
-    </Link>
-  ),
-};
-
-const demoTheme = createTheme({
-  cssVariables: {
-    colorSchemeSelector: "data-toolpad-color-scheme",
-  },
-  colorSchemes: {
-    light: {
-      palette: {
-        background: {
-          default: "#eefff4",
-          paper: "#c7ebd3",
-        },
-      },
-    },
-    dark: {
-      palette: {
-        background: {
-          default: "#2A4364",
-          paper: "#112E4D",
-        },
-      },
-    },
-  },
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 600,
-      md: 600,
-      lg: 1200,
-      xl: 1536,
-    },
-  },
-});
-
-function DemoPageContent({ pathname }: { pathname: string }) {
-  var content: React.ReactNode;
-  var title: string;
-
-  switch (pathname) {
-    case "/enseignants":
-      content = <EnseignantsContent />;
-
-      title = "Liste des Enseignants";
-      break;
-    case "/espaceCollaboratif":
-      content = <DiscussionForum />;
-
-      title = "Espace Collaboratif";
-
-      break;
-    case "stageCliniquesSuivi":
-      // content = <StageCliniquesSuiviContent />;
-
-      title = "Suive De Stage Cliniques";
-
-      break;
-    case "stageCliniquesProgrammation":
-      // content = <StageCliniquesProgrammationContent />;
-
-      title = "Programmation De Stage Cliniques";
-      break;
-    case "travauxDirigesSuivi":
-      // content = <TravauxDirigesSuiviContent />;
-
-      title = "Suivi De Travaux Dirigés";
-      break;
-    case "travauxDirigesProgrammation":
-      // content = <TravauxDirigesProgrammationContent />;
-      title = "Programmation De Travaux Dirigés";
-
-      break;
-    case "/programmesDeCoursTheoriques/coursTheoriques/niveau2":
-      content = <CoursTheoriquesContent niveau={NiveauEtudiants.NiVEAU2} />;
-      title = "Programme de cours niveau 2";
-      break;
-    case "/programmesDeCoursTheoriques/coursTheoriques/niveau3":
-      content = <CoursTheoriquesContent niveau={NiveauEtudiants.NiVEAU3} />;
-      title = "Programme de cours niveau 3";
-      break;
-    case "/programmesDeCoursTheoriques/coursTheoriques/niveau1":
-      content = <CoursTheoriquesContent niveau={NiveauEtudiants.NiVEAU1} />;
-      title = "Programme de cours niveau 1";
-      break;
-    case "/programmesDeCoursTheoriques/coursTheoriques/niveau4":
-      content = <CoursTheoriquesContent niveau={NiveauEtudiants.NiVEAU4} />;
-      title = "Programme de cours niveau 4";
-      break;
-    case "/laureats":
-      content = <LaureatsContent />;
-      title = "Liste des Laureats";
-      break;
-    case "/etudiants/niveau1":
-      content = <EtudiantsContent niveau={NiveauEtudiants.NiVEAU1} />;
-      title = "Liste des etudiants du Niveau 1";
-      break;
-    case "/etudiants/niveau2":
-      content = <EtudiantsContent niveau={NiveauEtudiants.NiVEAU2} />;
-      title = "Liste des etudiants du Niveau 2";
-      break;
-    case "/etudiants/niveau3":
-      content = <EtudiantsContent niveau={NiveauEtudiants.NiVEAU3} />;
-      title = "Liste des etudiants du Niveau 3";
-      break;
-    case "/etudiants/niveau4":
-      content = <EtudiantsContent niveau={NiveauEtudiants.NiVEAU4} />;
-      title = "Liste des etudiants du Niveau 4";
-      break;
-
-    case "/documentation/listeDeMemoires":
-      content = <ListesMemoiresContent />;
-
-      title = "Liste De Mémoires";
-      break;
-    case "/documentation/listeDeTheses":
-      content = <ListesThesesContent />;
-
-      title = "Liste De Thèses";
-      break;
-    case "/documentation/rapportsAdministratifsFinancier":
-      content = <RapportsAdministratifContent />;
-      title = "Rapports Administratif et Financiers";
-      break;
-
-    default:
-      content = <DashboardContent />;
-      title = "Tableau de bord";
-  }
-
-  return (
-    <Box
-      sx={{
-        py: 4,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        textAlign: "center",
-      }}
-    >
-      <span className="text-2xl text-blue-700 font-bold">
-        {title.toUpperCase()}
-      </span>
-      {content}
-    </Box>
-  );
-}
+import { useEnseignementsStore } from "../../stores/enseignementsStore";
+import { useGetAPTypes, useGetProgrammes } from "../../api/EnseignementsApi";
 
 export default function TableauDeBord() {
   const { user } = useAuthStore();
   const { logOutUser } = useLogout();
+  const { getAPTypes } = useGetAPTypes();
+  const { getProgrammes } = useGetProgrammes();
+
+  useEffect(() => {
+    getAPTypes();
+    getProgrammes();
+  }, []);
+
+  const { programmes, APTypes } = useEnseignementsStore();
+
+  // const fetchedAPTypes = APTypes?.map((APType) => {
+  //   const APTypeChild = {
+  //     segment: APType?.code,
+  //     title: APType?.titre,
+  //     icon: <DashboardIcon />,
+  //     children: programmes?.map((programme) => {
+  //       const programmeChild = {
+  //         segment: programme?.id,
+  //         title: programme?.title,
+  //         icon: <FaSchool />,
+  //       };
+  //       return programmeChild;
+  //     }),
+  //   };
+  //   return APTypeChild;
+  // })
+
+  // const fetchedProgrammes = programmes?.map((programme) => {
+  //   const programmeChild = {
+  //     segment: programme?.id,
+  //     title: programme?.title,
+  //     icon: <FaSchool />,
+  //   };
+  //   return programmeChild;
+  // })
+
+  const NAVIGATION: Navigation = [
+    {
+      segment: "dashboard",
+      title: "Tableau de bord",
+      icon: <DashboardIcon />,
+      // content: <DashboardContent />,
+    },
+    {
+      segment: "enseignants",
+      title: "Enseignants",
+      icon: <FaUserGraduate />,
+
+      // content: <EnseignantsContent />,
+    },
+    {
+      segment: "etudiants",
+      title: "Etudiants",
+      icon: <FaUserNurse />,
+      children: [
+        {
+          segment: "niveau1",
+          title: "Niveau 1",
+          icon: <FaSchool />,
+        },
+        {
+          segment: "niveau2",
+          title: "Niveau 2",
+          icon: <FaSchool />,
+        },
+        {
+          segment: "niveau3",
+          title: "Niveau 3",
+          icon: <FaSchool />,
+        },
+        {
+          segment: "niveau4",
+          title: "Niveau 4",
+          icon: <FaSchool />,
+        },
+      ],
+    },
+    {
+      segment: "laureats",
+      title: "Laureats",
+      icon: <FaUserGraduate />,
+      // content: <LaureatsContent />,
+    },
+    {
+      segment: "programmesDeCoursTheoriques",
+      title: "Programmes",
+      icon: <DashboardIcon />,
+      children: APTypes?.map((APType) => {
+        const APTypeChild = {
+          segment: APType?.code,
+          title: APType?.titre,
+          icon: <DashboardIcon />,
+          children: programmes?.map((programme) => {
+            const programmeChild = {
+              segment: programme?.title.split(" ").join("").toLowerCase(),
+              title: programme?.title,
+              icon: <FaSchool />,
+            };
+            return programmeChild;
+          }),
+        };
+        return APTypeChild;
+      }),
+    },
+    {
+      segment: "travauxDiriges",
+      title: "Travaux Dirigés",
+      icon: <DashboardIcon />,
+      children: [
+        {
+          segment: "travauxDirigesProgrammation",
+          title: "Programmation",
+          icon: <DashboardIcon />,
+          // content: <TravauxDirigesProgrammationContent />,
+        },
+        {
+          segment: "travauxDirigesSuivi",
+          title: "Suivi",
+          icon: <DashboardIcon />,
+          // content: <TravauxDirigesSuiviContent />,
+        },
+      ],
+    },
+    {
+      segment: "stageCliniques",
+      title: "Stage Cliniques",
+      icon: <DashboardIcon />,
+      children: [
+        {
+          segment: "stageCliniquesProgrammation",
+          title: "Programmation",
+          icon: <DashboardIcon />,
+          // content: <StageCliniquesProgrammationContent />,
+        },
+        {
+          segment: "stageCliniquesSuivi",
+          title: "Suivi",
+          icon: <DashboardIcon />,
+          // content: <StageCliniquesSuiviContent />,
+        },
+      ],
+    },
+    {
+      segment: "espaceCollaboratif",
+      title: "Espace Collaboratif",
+      icon: <DashboardIcon />,
+      // content: <EspaceCollaboratifContent />,
+    },
+    {
+      segment: "documentation",
+      title: "Documentation",
+      icon: <DashboardIcon />,
+      children: [
+        {
+          segment: "listeDeTheses",
+          title: "Liste De Thèses",
+          icon: <DashboardIcon />,
+          // content: <ListeDeThesesContent />,
+        },
+        {
+          segment: "listeDeMemoires",
+          title: "Liste De Mémoires",
+          icon: <DashboardIcon />,
+          // content: <ListeDeMemoiresContent />,
+        },
+        {
+          segment: "rapportsAdministratifsFinancier",
+          title: "Rapports Administratifs et Financier",
+          icon: <DashboardIcon />,
+          // content: <rapportsAdministratifsFinancierThesesContent />,
+        },
+      ],
+    },
+  ];
+
+  type I3SBrandType = {
+    title?: string;
+    logo?: React.ReactNode;
+    homeUrl?: string;
+  };
+  const I3SBrand: I3SBrandType = {
+    title: "SPCARDIO.",
+    logo: (
+      <Link to={"/home"}>
+        <img
+          src="/images/uniYaounde1Logo.png"
+          alt={""}
+          className="rounded-full "
+        />
+      </Link>
+    ),
+  };
+
+  const demoTheme = createTheme({
+    cssVariables: {
+      colorSchemeSelector: "data-toolpad-color-scheme",
+    },
+    colorSchemes: {
+      light: {
+        palette: {
+          background: {
+            default: "#eefff4",
+            paper: "#c7ebd3",
+          },
+        },
+      },
+      dark: {
+        palette: {
+          background: {
+            default: "#2A4364",
+            paper: "#112E4D",
+          },
+        },
+      },
+    },
+    breakpoints: {
+      values: {
+        xs: 0,
+        sm: 600,
+        md: 600,
+        lg: 1200,
+        xl: 1536,
+      },
+    },
+  });
+
+  // function DemoPageContent({ pathname }: { pathname: string }) {
+  //   var content: React.ReactNode;
+  //   var title: string;
+
+  //   switch (pathname) {
+  //     case "/enseignants":
+  //       content = <EnseignantsContent />;
+
+  //       title = "Liste des Enseignants";
+  //       break;
+  //     case "/espaceCollaboratif":
+  //       content = <DiscussionForum />;
+
+  //       title = "Espace Collaboratif";
+
+  //       break;
+  //     case "stageCliniquesSuivi":
+  //       // content = <StageCliniquesSuiviContent />;
+
+  //       title = "Suive De Stage Cliniques";
+
+  //       break;
+  //     case "stageCliniquesProgrammation":
+  //       // content = <StageCliniquesProgrammationContent />;
+
+  //       title = "Programmation De Stage Cliniques";
+  //       break;
+  //     case "travauxDirigesSuivi":
+  //       // content = <TravauxDirigesSuiviContent />;
+
+  //       title = "Suivi De Travaux Dirigés";
+  //       break;
+  //     case "travauxDirigesProgrammation":
+  //       // content = <TravauxDirigesProgrammationContent />;
+  //       title = "Programmation De Travaux Dirigés";
+
+  //       break;
+  //     case "/programmesDeCoursTheoriques/coursTheoriques/niveau2":
+  //       content = <CoursTheoriquesContent niveau={NiveauEtudiants.NiVEAU2} />;
+  //       title = "Programme de cours niveau 2";
+  //       break;
+  //     case "/programmesDeCoursTheoriques/coursTheoriques/niveau3":
+  //       content = <CoursTheoriquesContent niveau={NiveauEtudiants.NiVEAU3} />;
+  //       title = "Programme de cours niveau 3";
+  //       break;
+  //     case "/programmesDeCoursTheoriques/coursTheoriques/niveau1":
+  //       content = <CoursTheoriquesContent niveau={NiveauEtudiants.NiVEAU1} />;
+  //       title = "Programme de cours niveau 1";
+  //       break;
+  //     case "/programmesDeCoursTheoriques/coursTheoriques/niveau4":
+  //       content = <CoursTheoriquesContent niveau={NiveauEtudiants.NiVEAU4} />;
+  //       title = "Programme de cours niveau 4";
+  //       break;
+  //     case "/laureats":
+  //       content = <LaureatsContent />;
+  //       title = "Liste des Laureats";
+  //       break;
+  //     case "/etudiants/niveau1":
+  //       content = <EtudiantsContent niveau={NiveauEtudiants.NiVEAU1} />;
+  //       title = "Liste des etudiants du Niveau 1";
+  //       break;
+  //     case "/etudiants/niveau2":
+  //       content = <EtudiantsContent niveau={NiveauEtudiants.NiVEAU2} />;
+  //       title = "Liste des etudiants du Niveau 2";
+  //       break;
+  //     case "/etudiants/niveau3":
+  //       content = <EtudiantsContent niveau={NiveauEtudiants.NiVEAU3} />;
+  //       title = "Liste des etudiants du Niveau 3";
+  //       break;
+  //     case "/etudiants/niveau4":
+  //       content = <EtudiantsContent niveau={NiveauEtudiants.NiVEAU4} />;
+  //       title = "Liste des etudiants du Niveau 4";
+  //       break;
+
+  //     case "/documentation/listeDeMemoires":
+  //       content = <ListesMemoiresContent />;
+
+  //       title = "Liste De Mémoires";
+  //       break;
+  //     case "/documentation/listeDeTheses":
+  //       content = <ListesThesesContent />;
+
+  //       title = "Liste De Thèses";
+  //       break;
+  //     case "/documentation/rapportsAdministratifsFinancier":
+  //       content = <RapportsAdministratifContent />;
+  //       title = "Rapports Administratif et Financiers";
+  //       break;
+
+  //     default:
+  //       content = <DashboardContent />;
+  //       title = "Tableau de bord";
+  //   }
+
+  //   return (
+  //     <Box
+  //       sx={{
+  //         py: 4,
+  //         display: "flex",
+  //         flexDirection: "column",
+  //         alignItems: "center",
+  //         textAlign: "center",
+  //       }}
+  //     >
+  //       <span className="text-2xl text-blue-700 font-bold">
+  //         {title.toUpperCase()}
+  //       </span>
+  //       {content}
+  //     </Box>
+  //   );
+  // }
+
+  function DemoPageContent({ pathname }: { pathname: string }) {
+    let content: React.ReactNode;
+    let title: string;
+
+    // Extract path segments dynamically
+    const pathSegments = pathname.split("/").filter(Boolean); // Remove empty segments
+
+    const apTypeSegment = pathSegments[1]; // Dynamic APType (e.g., "coursTheoriques")
+    const niveauSegment =
+      pathSegments[2]?.toLowerCase() || pathSegments[1]?.toLowerCase(); // Dynamic Niveau (e.g., "niveau1")
+
+    // Static pages mapping
+    const pageMap: Record<string, { content: React.ReactNode; title: string }> =
+      {
+        enseignants: {
+          content: <EnseignantsContent />,
+          title: "Liste des Enseignants",
+        },
+        espaceCollaboratif: {
+          content: <DiscussionForum />,
+          title: "Espace Collaboratif",
+        },
+        stageCliniquesSuivi: {
+          content: null,
+          title: "Suivi De Stage Cliniques",
+        },
+        stageCliniquesProgrammation: {
+          content: null,
+          title: "Programmation De Stage Cliniques",
+        },
+        travauxDirigesSuivi: {
+          content: null,
+          title: "Suivi De Travaux Dirigés",
+        },
+        travauxDirigesProgrammation: {
+          content: null,
+          title: "Programmation De Travaux Dirigés",
+        },
+        laureats: { content: <LaureatsContent />, title: "Liste des Laureats" },
+        "documentation/listeDeMemoires": {
+          content: <ListesMemoiresContent />,
+          title: "Liste De Mémoires",
+        },
+        "documentation/listeDeTheses": {
+          content: <ListesThesesContent />,
+          title: "Liste De Thèses",
+        },
+        "documentation/rapportsAdministratifsFinancier": {
+          content: <RapportsAdministratifContent />,
+          title: "Rapports Administratif et Financiers",
+        },
+      };
+
+    // Dynamic APType and Niveau mapping
+    const niveauMap: Record<string, NiveauEtudiants> = {
+      niveau1: NiveauEtudiants.NiVEAU1,
+      niveau2: NiveauEtudiants.NiVEAU2,
+      niveau3: NiveauEtudiants.NiVEAU3,
+      niveau4: NiveauEtudiants.NiVEAU4,
+    };
+
+    // Check if the pathname follows the pattern "/programmesDeCoursTheoriques/:APType/:niveau"
+    if (
+      pathSegments[0] === "programmesDeCoursTheoriques" &&
+      apTypeSegment &&
+      niveauSegment in niveauMap
+    ) {
+      content = <CoursTheoriquesContent niveau={niveauMap[niveauSegment]} />;
+      title = `Programme de ${apTypeSegment.replace(/([A-Z])/g, " $1").trim()} ${niveauSegment.replace("niveau", "Niveau ")}`;
+    }
+
+    // Handle student levels dynamically
+    else if (pathSegments[0] === "etudiants" && niveauSegment in niveauMap) {
+      content = <EtudiantsContent niveau={niveauMap[niveauSegment]} />;
+      title = `Liste des étudiants du ${niveauSegment.replace("niveau", "Niveau ")}`;
+    }
+    // Handle predefined static paths
+    else if (pageMap[pathSegments[0]]) {
+      content = pageMap[pathSegments[0]].content;
+      title = pageMap[pathSegments[0]].title;
+    }
+    // Default case
+    else {
+      content = <DashboardContent />;
+      title = "Tableau de bord";
+    }
+
+    return (
+      <Box
+        sx={{
+          py: 4,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          textAlign: "center",
+        }}
+      >
+        <span className="text-2xl text-blue-700 font-bold">
+          {title.toUpperCase()}
+        </span>
+        {content}
+      </Box>
+    );
+  }
 
   const authentication = useMemo(() => {
     return {

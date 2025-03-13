@@ -40,7 +40,7 @@ const BasicModal: React.FC<BasicModalPropsType<EnseignantsType>> = ({
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
           <img
-            src={info?.photo || "/images/user.png"}
+            src={info?.profilePhoto || "/images/user.png"}
             alt={info?.nom}
             style={{
               width: 100,
@@ -54,7 +54,7 @@ const BasicModal: React.FC<BasicModalPropsType<EnseignantsType>> = ({
             {info?.nom}
           </Typography>
           <Typography variant="subtitle1" color="text.secondary">
-            {info?.grade}
+            {info?.universite}
           </Typography>
           <Box mt={2}>
             <Typography variant="body1">

@@ -27,7 +27,7 @@ export const useGetEtudiants = () => {
         "Full error response:",
         error.response?.data || error.message
       );
-      failedToast(error?.response?.data || error.message);
+      failedToast(error?.response?.data?.error?.message || error.message);
     } finally {
       setLoading(false);
     }

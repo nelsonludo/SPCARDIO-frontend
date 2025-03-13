@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FaEnvelope, FaLock } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useGetProfile, useSignin } from "../../api/AuthApi";
+import { TokenHelper } from "../../utils/tokensHelper";
 
 // Zod schemas for form validation
 const loginSchema = z.object({
@@ -34,7 +35,10 @@ const LoginSignupTab: React.FC = () => {
 
   const onLoginSubmit = async (data: LoginFormData) => {
     await signIn(data);
-    await getProfile();
+    const tokenHelper = new TokenHelper();
+    const token = tokenHelper.getToken(); // ✅ get JWT
+    //temporary solution: only send the getProfile if token contains an actual token and not "null.undefined" which is a string of size 14
+    if (token.length > 14) await getProfile();
 
     navigate("/admin");
   };

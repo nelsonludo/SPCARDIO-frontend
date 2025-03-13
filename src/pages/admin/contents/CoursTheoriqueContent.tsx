@@ -15,7 +15,7 @@ const CoursTheoriquesContent: React.FC<CoursTheoriquesContentPropsType> = ({
   const { enseignements } = useEnseignementsStore();
 
   useEffect(() => {
-    getEnseignements();
+    if (!enseignements) getEnseignements();
   }, []);
 
   //converts the filtered array back into an object
@@ -23,28 +23,30 @@ const CoursTheoriquesContent: React.FC<CoursTheoriquesContentPropsType> = ({
     //convert the enseignements into an array if enseignements is defined
     Object.entries(enseignements || {}).filter(
       //filter the array to only include the pairs where data.niveau === 2
-      ([, data]) => data.niveau === "2"
+      ([, data]) => data.niveau === NiveauEtudiants.NiVEAU2
     )
   );
 
   const enseignementsNiveau3 = Object.fromEntries(
     Object.entries(enseignements || {}).filter(
-      ([, data]) => data.niveau === "3"
+      ([, data]) => data.niveau === NiveauEtudiants.NiVEAU3
     )
   );
   const enseignementsNiveau1 = Object.fromEntries(
     Object.entries(enseignements || {}).filter(
-      ([, data]) => data.niveau === "1"
-    )
-  );
-  const enseignementsNiveau4 = Object.fromEntries(
-    Object.entries(enseignements || {}).filter(
-      ([, data]) => data.niveau === "4"
+      ([, data]) => data.niveau === NiveauEtudiants.NiVEAU1
     )
   );
 
-  if (niveau === NiveauEtudiants.NiVEAU1)
+  const enseignementsNiveau4 = Object.fromEntries(
+    Object.entries(enseignements || {}).filter(
+      ([, data]) => data.niveau === NiveauEtudiants.NiVEAU4
+    )
+  );
+
+  if (niveau === NiveauEtudiants.NiVEAU1) {
     return <CoursProgrammationTable coursesData={enseignementsNiveau1} />;
+  }
   if (niveau === NiveauEtudiants.NiVEAU2)
     return <CoursProgrammationTable coursesData={enseignementsNiveau2} />;
   if (niveau === NiveauEtudiants.NiVEAU3)

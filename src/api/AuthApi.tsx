@@ -46,7 +46,7 @@ export const useSignin = () => {
         "Full error response:",
         error.response?.data || error.message
       );
-      failedToast(error?.response?.data || error.message);
+      failedToast(error?.response?.data?.error?.message || error.message);
     } finally {
       setLoading(false);
     }
@@ -101,7 +101,7 @@ export const useGetProfile = () => {
         "Full error response:",
         error.response?.data || error.message
       );
-      failedToast(error?.response?.data || error.message);
+      failedToast(error?.response?.data?.error?.message || error.message);
     } finally {
       setLoading(false);
     }
