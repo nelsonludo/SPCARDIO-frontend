@@ -25,6 +25,7 @@ import { useLogout } from "../../api/AuthApi";
 
 import { useEnseignementsStore } from "../../stores/enseignementsStore";
 import { useGetAPTypes, useGetProgrammes } from "../../api/EnseignementsApi";
+import SuiviContent from "./contents/suiviContent";
 
 export default function TableauDeBord() {
   const { user } = useAuthStore();
@@ -113,7 +114,7 @@ export default function TableauDeBord() {
       // content: <LaureatsContent />,
     },
     {
-      segment: "programmesDeCoursTheoriques",
+      segment: "programmesActivitesPedagogiques",
       title: "Programmes",
       icon: <DashboardIcon />,
       children: APTypes?.map((APType) => {
@@ -134,43 +135,20 @@ export default function TableauDeBord() {
       }),
     },
     {
-      segment: "travauxDiriges",
-      title: "Travaux Dirigés",
+      segment: "suiviActivitesPedagogiques",
+      title: "Suivi",
       icon: <DashboardIcon />,
-      children: [
-        {
-          segment: "travauxDirigesProgrammation",
-          title: "Programmation",
-          icon: <DashboardIcon />,
-          // content: <TravauxDirigesProgrammationContent />,
-        },
-        {
-          segment: "travauxDirigesSuivi",
-          title: "Suivi",
-          icon: <DashboardIcon />,
-          // content: <TravauxDirigesSuiviContent />,
-        },
-      ],
+      children: programmes?.map((programme) => {
+        const programmeChild = {
+          segment: programme?.title.split(" ").join("").toLowerCase(),
+          title: programme?.title,
+          icon: <FaSchool />,
+        };
+        return programmeChild;
+      }),
+      // content: <StageCliniquesSuiviContent />,
     },
-    {
-      segment: "stageCliniques",
-      title: "Stage Cliniques",
-      icon: <DashboardIcon />,
-      children: [
-        {
-          segment: "stageCliniquesProgrammation",
-          title: "Programmation",
-          icon: <DashboardIcon />,
-          // content: <StageCliniquesProgrammationContent />,
-        },
-        {
-          segment: "stageCliniquesSuivi",
-          title: "Suivi",
-          icon: <DashboardIcon />,
-          // content: <StageCliniquesSuiviContent />,
-        },
-      ],
-    },
+
     {
       segment: "espaceCollaboratif",
       title: "Espace Collaboratif",
@@ -389,22 +367,6 @@ export default function TableauDeBord() {
           content: <DiscussionForum />,
           title: "Espace Collaboratif",
         },
-        stageCliniquesSuivi: {
-          content: null,
-          title: "Suivi De Stage Cliniques",
-        },
-        stageCliniquesProgrammation: {
-          content: null,
-          title: "Programmation De Stage Cliniques",
-        },
-        travauxDirigesSuivi: {
-          content: null,
-          title: "Suivi De Travaux Dirigés",
-        },
-        travauxDirigesProgrammation: {
-          content: null,
-          title: "Programmation De Travaux Dirigés",
-        },
         laureats: { content: <LaureatsContent />, title: "Liste des Laureats" },
         "documentation/listeDeMemoires": {
           content: <ListesMemoiresContent />,
@@ -428,13 +390,27 @@ export default function TableauDeBord() {
       niveau4: NiveauEtudiants.NiVEAU4,
     };
 
-    // Check if the pathname follows the pattern "/programmesDeCoursTheoriques/:APType/:niveau"
+    // Check if the pathname follows the pattern "/suivi/:niveau"
     if (
-      pathSegments[0] === "programmesDeCoursTheoriques" &&
+      pathSegments[0] === "suiviActivitesPedagogiques" &&
+      niveauSegment in niveauMap
+    ) {
+      content = <SuiviContent niveau={niveauMap[niveauSegment]} />;
+      title = `Suivi de ${niveauSegment.replace("niveau", "Niveau ")}`;
+    }
+
+    // Check if the pathname follows the pattern "/programmesActivitesPedagogiques/:APType/:niveau"
+    else if (
+      pathSegments[0] === "programmesActivitesPedagogiques" &&
       apTypeSegment &&
       niveauSegment in niveauMap
     ) {
-      content = <CoursTheoriquesContent niveau={niveauMap[niveauSegment]} />;
+      content = (
+        <CoursTheoriquesContent
+          niveau={niveauMap[niveauSegment]}
+          apType={apTypeSegment}
+        />
+      );
       title = `Programme de ${apTypeSegment.replace(/([A-Z])/g, " $1").trim()} ${niveauSegment.replace("niveau", "Niveau ")}`;
     }
 
@@ -467,6 +443,7 @@ export default function TableauDeBord() {
         <span className="text-2xl text-blue-700 font-bold">
           {title.toUpperCase()}
         </span>
+        {pathname}
         {content}
       </Box>
     );

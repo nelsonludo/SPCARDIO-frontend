@@ -4,21 +4,16 @@ import CoursProgrammationTable from "../../../components/coursProgrammationTable
 import { useGetEnseignements } from "../../../api/EnseignementsApi";
 import { useEnseignementsStore } from "../../../stores/enseignementsStore";
 
-type CoursTheoriquesContentPropsType = {
+type SuiviContentPropsType = {
   niveau: NiveauEtudiants;
-  apType: string;
 };
 
-const CoursTheoriquesContent: React.FC<CoursTheoriquesContentPropsType> = ({
-  niveau,
-  apType,
-}) => {
+const SuiviContent: React.FC<SuiviContentPropsType> = ({ niveau }) => {
   const { getEnseignements } = useGetEnseignements();
   const { enseignements } = useEnseignementsStore();
 
   useEffect(() => {
     if (!enseignements) getEnseignements();
-    console.log(apType);
   }, []);
 
   //converts the filtered array back into an object
@@ -60,4 +55,4 @@ const CoursTheoriquesContent: React.FC<CoursTheoriquesContentPropsType> = ({
   return null;
 };
 
-export default CoursTheoriquesContent;
+export default SuiviContent;
