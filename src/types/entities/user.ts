@@ -1,5 +1,7 @@
 // import { Creator } from "./creator";
 
+import { UserRole } from "../auth";
+
 export enum UserType {
   Admin = "Admin",
   Client = "Client",
@@ -10,11 +12,6 @@ export type User = {
   id: string;
   name: string;
   email: string;
-  type: UserType;
-  createdAt: Date;
-  updatedAt: Date;
-  isDeleted?: boolean;
-  // creator?: Creator;
-  accessToken?: string;
-  refreshToken?: string;
+  role: UserRole;
+  image?: string;
 };

@@ -4,7 +4,7 @@ const predefinedEnseignants: EnseignantsType[] = [
   {
     id: 1,
     nom: "Pr BOOMHI Jérôme",
-    photo: "/images/enseignants/BOOMBHI.JPG",
+    profilePhoto: "/images/enseignants/BOOMBHI.JPG",
     grade: "Maitre de Conférences Agrégé",
     departement: "Département de Médecine Interne et Spécialités",
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
@@ -14,7 +14,7 @@ const predefinedEnseignants: EnseignantsType[] = [
   {
     id: 2,
     nom: "Pr CHELO David",
-    photo: "/images/enseignants/CHELO.JPG",
+    profilePhoto: "/images/enseignants/CHELO.JPG",
     grade: "Professeur",
     departement: "Départment de Pédiatrie",
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
@@ -24,7 +24,7 @@ const predefinedEnseignants: EnseignantsType[] = [
   {
     id: 3,
     nom: "Pr DZUDIE TAMDKA Anastase",
-    photo: "/images/enseignants/DZUDIE.JPG",
+    profilePhoto: "/images/enseignants/DZUDIE.JPG",
     grade: "Maitre de Conférences",
     departement: "Département de Physiologie Humaine",
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
@@ -34,7 +34,7 @@ const predefinedEnseignants: EnseignantsType[] = [
   {
     id: 4,
     nom: "Dr EBENE MANON Guillaume",
-    photo: "/images/enseignants/EBENE_MANON.JPG",
+    profilePhoto: "/images/enseignants/EBENE_MANON.JPG",
     grade: "Assistant",
     departement: "Département de Médecine Interne et Spécialités",
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
@@ -44,7 +44,7 @@ const predefinedEnseignants: EnseignantsType[] = [
   {
     id: 5,
     nom: "Pr HAMADAOU BA",
-    photo: "/images/enseignants/HAMADOU_BA.JPG",
+    profilePhoto: "/images/enseignants/HAMADOU_BA.JPG",
     grade: "Maitre de Conférences Agrégé",
     departement: "Département de Médecine Interne et Spécialités",
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
@@ -54,7 +54,7 @@ const predefinedEnseignants: EnseignantsType[] = [
   {
     id: 6,
     nom: "Dr FOKOU",
-    photo: "",
+    profilePhoto: "",
     grade: "Professeur en Imagerie Cardiaque",
     departement: "Département de Chirurgie",
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
@@ -64,7 +64,7 @@ const predefinedEnseignants: EnseignantsType[] = [
   {
     id: 7,
     nom: "Pr KUATE née MFEUKEU KWA Liliane Claudine",
-    photo: "/images/enseignants/KUATE.JPG",
+    profilePhoto: "/images/enseignants/KUATE.JPG",
     grade: "Maitre de Conférences",
     departement: "Département de Médecine Interne et Spécialités",
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
@@ -74,7 +74,7 @@ const predefinedEnseignants: EnseignantsType[] = [
   {
     id: 8,
     nom: "Pr MENANGA Alain Patrick",
-    photo: "/images/enseignants/MENANGA.JPG",
+    profilePhoto: "/images/enseignants/MENANGA.JPG",
     grade: "Professeur",
     departement: "Département de Médecine Interne et Spécialités",
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
@@ -84,7 +84,7 @@ const predefinedEnseignants: EnseignantsType[] = [
   {
     id: 9,
     nom: "Pr NGANOU Chris Nadège",
-    photo: "/images/enseignants/NGANOU.JPG",
+    profilePhoto: "/images/enseignants/NGANOU.JPG",
     grade: "Maitre de Conférences Agrégé",
     departement: "Département de Médecine Interne et Spécialités",
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
@@ -94,7 +94,7 @@ const predefinedEnseignants: EnseignantsType[] = [
   {
     id: 10,
     nom: "Dr NGONGANG OUANKOU Christian",
-    photo: "/images/enseignants/NGONGANG_OUANKOU.JPG",
+    profilePhoto: "/images/enseignants/NGONGANG_OUANKOU.JPG",
     grade: "Chargé de cours",
     departement: "",
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
@@ -104,7 +104,7 @@ const predefinedEnseignants: EnseignantsType[] = [
   {
     id: 11,
     nom: "Dr NDOBO épouse KOE Valérie Danielle",
-    photo: "",
+    profilePhoto: "",
     grade: "Chargé de cours",
     departement: "Département de Médecine Interne et Spécialités",
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
@@ -114,7 +114,7 @@ const predefinedEnseignants: EnseignantsType[] = [
   {
     id: 12,
     nom: "Pr NDONGO AMOUGOU Sylvie Laurette ",
-    photo: "",
+    profilePhoto: "",
     grade: "Maitre de Conférences",
     departement: "Département de Médecine Interne et Spécialités",
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
@@ -124,7 +124,7 @@ const predefinedEnseignants: EnseignantsType[] = [
   {
     id: 13,
     nom: "Dr MINTOM MEDJO Pierre Didier",
-    photo: "",
+    profilePhoto: "",
     grade: "Chargé de cours",
     departement: "Département de Médecine Interne et Spécialités",
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
@@ -134,7 +134,7 @@ const predefinedEnseignants: EnseignantsType[] = [
   {
     id: 14,
     nom: "Dr OWONO NGABEDE Amalia Ariane",
-    photo: "",
+    profilePhoto: "",
     grade: "Maitre Assistant",
     departement: "Département de Médecine Interne et Spécialités",
     faculte: "Faculté de Médecine et des Sciences Biomédicales",

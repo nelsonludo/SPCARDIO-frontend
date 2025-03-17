@@ -279,11 +279,7 @@ const Sidebar: React.FC = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <img
-                src={`${
-                  user?.profilePictureUrl
-                    ? user.profilePictureUrl
-                    : "/images/user.png"
-                }`}
+                src={`${user?.image ? user.image : "/images/user.png"}`}
                 alt="Profile"
                 className="h-10 w-10 rounded-full"
               />

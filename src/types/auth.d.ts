@@ -1,12 +1,5 @@
+import { User } from "./entities/user";
 import { UserRoles } from "./enums/actors-types";
-
-export type User = {
-  id: string;
-  name: string;
-  email: string;
-  role: UserRole;
-  image?: string;
-};
 
 export type UserRole =
   | UserRoles.ADMIN
