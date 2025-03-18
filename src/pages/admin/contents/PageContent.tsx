@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import { NiveauEtudiants } from "../../../types/enums/actors-types";
-import CoursTheoriquesContent from "./CoursTheoriqueContent";
+// import CoursTheoriquesContent from "./CoursTheoriqueContent";
 import DashboardContent from "./DashboardContent";
 import EnseignantsContent from "./EnseignantsContent";
 import EtudiantsContent from "./EtudiantsContent";
@@ -44,19 +44,19 @@ function PageContent({ pathname }: { pathname: string }) {
 
       break;
     case "/programmesDeCoursTheoriques/coursTheoriques/niveau2":
-      content = <CoursTheoriquesContent niveau={NiveauEtudiants.NiVEAU2} />;
+      // content = <CoursTheoriquesContent niveau={NiveauEtudiants.NiVEAU2} />;
       title = "Programme de cours niveau 2";
       break;
     case "/programmesDeCoursTheoriques/coursTheoriques/niveau3":
-      content = <CoursTheoriquesContent niveau={NiveauEtudiants.NiVEAU3} />;
+      // content = <CoursTheoriquesContent niveau={NiveauEtudiants.NiVEAU3} />;
       title = "Programme de cours niveau 3";
       break;
     case "/programmesDeCoursTheoriques/coursTheoriques/niveau1":
-      content = <CoursTheoriquesContent niveau={NiveauEtudiants.NiVEAU1} />;
+      // content = <CoursTheoriquesContent niveau={NiveauEtudiants.NiVEAU1} />;
       title = "Programme de cours niveau 1";
       break;
     case "/programmesDeCoursTheoriques/coursTheoriques/niveau4":
-      content = <CoursTheoriquesContent niveau={NiveauEtudiants.NiVEAU4} />;
+      // content = <CoursTheoriquesContent niveau={NiveauEtudiants.NiVEAU4} />;
       title = "Programme de cours niveau 4";
       break;
     case "/laureats":
