@@ -64,22 +64,13 @@ const SuiviContent: React.FC<SuiviContentPropsType> = ({ niveau }) => {
           filteredAPs?.map((AP) => (
             <div
               key={AP.id}
-              className="m-5 p-4 bg-gray-100 rounded-lg shadow-md"
+              className="m-5 p-4 bg-gray-100 rounded-lg shadow-md flex flex-col items-start"
             >
-              <h2 className="text-xl font-semibold">{AP.intitule}</h2>
-              <ul className="list-disc pl-5">
-                {AP.type_d_activite_pedagogique?.code && (
-                  <li
-                    className="text-gray-700 flex 
-                  justify-center align-center"
-                  >
-                    <span className="my-3 flex items-center">
-                      {AP.type_d_activite_pedagogique.titre}
-                      {AP.fini && <FaCheck className="text-green-500 mx-3" />}
-                    </span>
-                  </li>
-                )}
-              </ul>
+              <span className="my-3 flex items-center justify-center">
+                <h2 className="text-xl font-semibold">{AP.intitule}</h2>
+                {AP.fini && <FaCheck className="text-green-500 mx-3" />}
+              </span>
+              <span>{AP.type_d_activite_pedagogique?.titre}</span>
             </div>
           ))
         )}

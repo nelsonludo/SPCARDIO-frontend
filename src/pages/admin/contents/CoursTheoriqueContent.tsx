@@ -30,19 +30,34 @@ const CoursTheoriquesContent: React.FC<CoursTheoriquesContentPropsType> = ({
 
   if (!APOfCurrentAPType || APOfCurrentAPType?.length > 0) {
     filteredEnseignements = Object.fromEntries(
-      Object.entries(enseignements || {})?.map(
-        //filter the array to only include the pairs where data.niveau === 2
-        ([key, data]) => [
-          key,
-          {
-            niveau: data?.niveau,
-            enseignements: data?.enseignements?.filter(
-              (enseignement) =>
-                enseignement?.type_d_activite_pedagogique?.code === apType
-            ),
-          },
-        ]
-      )
+      Object.entries(enseignements || {})
+        .map(([key, data]) => {
+          const filteredEnseignementsArray = data?.enseignements?.filter(
+            (enseignement) =>
+              enseignement?.type_d_activite_pedagogique?.code === apType
+          );
+
+          // Only include the entry if filteredEnseignementsArray is not empty
+          if (
+            filteredEnseignementsArray &&
+            filteredEnseignementsArray.length > 0
+          ) {
+            return [
+              key,
+              {
+                niveau: data.niveau,
+                enseignements: filteredEnseignementsArray,
+              },
+            ];
+          }
+          return undefined; // Return undefined instead of null
+        })
+        .filter(
+          (
+            entry
+          ): entry is [string, { niveau: string; enseignements: any[] }] =>
+            !!entry
+        ) // Type guard to filter out undefined
     );
   }
 
