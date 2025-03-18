@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -18,6 +18,15 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { useEnseignementsStore } from "../../../stores/enseignementsStore";
+import { useEnseignantsStore } from "../../../stores/enseignantsStore";
+import { useEtudiantsStore } from "../../../stores/etudiantsStore";
+import { useGetEnseignants } from "../../../api/EnseignantsApi";
+import { useGetEtudiants } from "../../../api/EtudiantsApi";
+import {
+  useGetAPTypes,
+  useGetEnseignements,
+} from "../../../api/EnseignementsApi";
 
 // Register Chart.js components
 ChartJS.register(
@@ -31,27 +40,58 @@ ChartJS.register(
 );
 
 const DashBoardContent: React.FC = () => {
+  const { APTypes, activitesPedagogiques } = useEnseignementsStore();
+  const { enseignants } = useEnseignantsStore();
+  const { etudiants } = useEtudiantsStore();
+  const { getEnseignants } = useGetEnseignants();
+  const { getEnseignements } = useGetEnseignements();
+  const { getEtudiants } = useGetEtudiants();
+  const { getAPTypes } = useGetAPTypes();
+
+  useEffect(() => {
+    if (!APTypes) getAPTypes();
+    if (!enseignants) getEnseignants();
+    if (!etudiants) getEtudiants();
+    if (!activitesPedagogiques) getEnseignements();
+  }, []);
+
+  // Data for progress bars
+  const progressDataPerAPType = APTypes?.map((APType) => {
+    const totalActivities = (activitesPedagogiques ?? []).filter(
+      (AP) => AP.type_d_activite_pedagogique?.code === APType.code
+    ).length;
+
+    const completedActivities = (activitesPedagogiques ?? []).filter(
+      (AP) => AP.type_d_activite_pedagogique?.code === APType.code && AP.fini
+    ).length;
+
+    const progress =
+      totalActivities === 0
+        ? 0
+        : Math.floor((completedActivities / totalActivities) * 100);
+
+    return { label: APType.titre, value: progress };
+  });
+
+  const tauxComplete = Math.floor(
+    ((activitesPedagogiques ?? []).filter((AP) => AP.fini).length /
+      (activitesPedagogiques ?? []).length) *
+      100
+  );
+
   // Data for the line chart
   const chartData = {
-    labels: ["2019", "2020", "2021", "2022", "2023", "2024", "2025"],
+    labels: APTypes?.map((APType) => APType.titre) || [],
     datasets: [
       {
-        label: "Repartition des etudiants",
-        data: [65, 59, 80, 81, 56, 55, 40],
+        label: "pourcentage de progression",
+        data: progressDataPerAPType?.map((progress) => progress.value) || [],
         borderColor: "rgba(75, 192, 192, 1)",
         backgroundColor: "rgba(75, 192, 192, 0.2)",
-        fill: true,
+        fill: false,
       },
     ],
   };
-
-  // Data for progress bars
-  const progressData = [
-    { label: "Cours Theorique", value: 70 },
-    { label: "Seminaires", value: 85 },
-    { label: "Stages", value: 50 },
-  ];
-
   // Detect small screens
   const isSmallScreen = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down("md")
@@ -71,7 +111,7 @@ const DashBoardContent: React.FC = () => {
                 Nombre D'etudiants
               </Typography>
               <Typography variant="h4" className="font-semibold">
-                200
+                {etudiants?.length}
               </Typography>
             </CardContent>
           </Card>
@@ -83,7 +123,7 @@ const DashBoardContent: React.FC = () => {
                 Nombre d'enseignants
               </Typography>
               <Typography variant="h4" className="font-semibold">
-                1,250
+                {enseignants?.length}
               </Typography>
             </CardContent>
           </Card>
@@ -95,7 +135,7 @@ const DashBoardContent: React.FC = () => {
                 Taux completé
               </Typography>
               <Typography variant="h4" className="font-semibold">
-                12.5%
+                {tauxComplete}%
               </Typography>
             </CardContent>
           </Card>
@@ -104,14 +144,14 @@ const DashBoardContent: React.FC = () => {
         {/* Line Chart */}
         <div className="bg-white shadow-lg p-6 mb-6">
           <Typography variant="h6" className="mb-4">
-            Inscriptions par années
+            Represantation graphique de la progression
           </Typography>
           <Line data={chartData} />
         </div>
 
         {/* Progress Bars */}
         <div className="grid grid-cols-2 gap-6 mb-6">
-          {progressData.map((progress, index) => (
+          {progressDataPerAPType?.map((progress, index) => (
             <div key={index} className="bg-white shadow-lg p-6">
               <Typography variant="h6" className="mb-2">
                 {progress.label}
