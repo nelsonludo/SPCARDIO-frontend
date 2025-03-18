@@ -1,58 +1,91 @@
-import React, { useEffect } from "react";
-import { NiveauEtudiants } from "../../../types/enums/actors-types";
-import CoursProgrammationTable from "../../../components/coursProgrammationTable";
-import { useGetEnseignements } from "../../../api/EnseignementsApi";
+import React, { useEffect, useState } from "react";
 import { useEnseignementsStore } from "../../../stores/enseignementsStore";
+import { useGetEnseignements } from "../../../api/EnseignementsApi";
+import { FaCheck } from "react-icons/fa";
 
-type SuiviContentPropsType = {
-  niveau: NiveauEtudiants;
-};
+interface SuiviContentPropsType {
+  niveau: string;
+}
 
 const SuiviContent: React.FC<SuiviContentPropsType> = ({ niveau }) => {
+  const { activitesPedagogiques, APTypes } = useEnseignementsStore();
   const { getEnseignements } = useGetEnseignements();
-  const { enseignements } = useEnseignementsStore();
+
+  const [selectedAPType, setSelectedAPType] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!enseignements) getEnseignements();
+    if (!activitesPedagogiques) getEnseignements();
+    console.log(activitesPedagogiques);
   }, []);
 
-  //converts the filtered array back into an object
-  const enseignementsNiveau2 = Object.fromEntries(
-    //convert the enseignements into an array if enseignements is defined
-    Object.entries(enseignements || {}).filter(
-      //filter the array to only include the pairs where data.niveau === 2
-      ([, data]) => data.niveau === NiveauEtudiants.NiVEAU2
-    )
-  );
+  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedAPType(event.target.value);
+  };
 
-  const enseignementsNiveau3 = Object.fromEntries(
-    Object.entries(enseignements || {}).filter(
-      ([, data]) => data.niveau === NiveauEtudiants.NiVEAU3
-    )
-  );
-  const enseignementsNiveau1 = Object.fromEntries(
-    Object.entries(enseignements || {}).filter(
-      ([, data]) => data.niveau === NiveauEtudiants.NiVEAU1
-    )
-  );
+  const filteredAPs = selectedAPType
+    ? activitesPedagogiques?.filter(
+        (AP) =>
+          AP.type_d_activite_pedagogique?.code === selectedAPType &&
+          AP.unite_d_enseignement?.programme?.title.toUpperCase() === niveau
+      )
+    : activitesPedagogiques?.filter(
+        (AP) =>
+          AP.unite_d_enseignement?.programme?.title.toUpperCase() === niveau
+      );
 
-  const enseignementsNiveau4 = Object.fromEntries(
-    Object.entries(enseignements || {}).filter(
-      ([, data]) => data.niveau === NiveauEtudiants.NiVEAU4
-    )
+  return (
+    <div className="flex justify-start w-full flex-col p-5">
+      {/* Dropdown to select APType */}
+      <div className="mb-4">
+        <label htmlFor="APTypeSelect" className="font-semibold text-lg">
+          Selectionez un type d'activité:
+        </label>
+        <select
+          id="APTypeSelect"
+          onChange={handleSelectChange}
+          className="mt-2 p-2 border border-gray-300 rounded-md w-full md:w-1/2"
+        >
+          <option value="">Type </option>
+          {APTypes?.map((APType) => (
+            <option key={APType.id} value={APType.code}>
+              {APType.titre}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Display filtered activities */}
+      <div>
+        {filteredAPs?.length === 0 ? (
+          <p className="text-gray-500">
+            aucun activité trouvé pour le type selectionné
+          </p>
+        ) : (
+          filteredAPs?.map((AP) => (
+            <div
+              key={AP.id}
+              className="m-5 p-4 bg-gray-100 rounded-lg shadow-md"
+            >
+              <h2 className="text-xl font-semibold">{AP.intitule}</h2>
+              <ul className="list-disc pl-5">
+                {AP.type_d_activite_pedagogique?.code && (
+                  <li
+                    className="text-gray-700 flex 
+                  justify-center align-center"
+                  >
+                    <span className="my-3 flex items-center">
+                      {AP.type_d_activite_pedagogique.titre}
+                      {AP.fini && <FaCheck className="text-green-500 mx-3" />}
+                    </span>
+                  </li>
+                )}
+              </ul>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
   );
-
-  if (niveau === NiveauEtudiants.NiVEAU1) {
-    return <CoursProgrammationTable coursesData={enseignementsNiveau1} />;
-  }
-  if (niveau === NiveauEtudiants.NiVEAU2)
-    return <CoursProgrammationTable coursesData={enseignementsNiveau2} />;
-  if (niveau === NiveauEtudiants.NiVEAU3)
-    return <CoursProgrammationTable coursesData={enseignementsNiveau3} />;
-  if (niveau === NiveauEtudiants.NiVEAU4)
-    return <CoursProgrammationTable coursesData={enseignementsNiveau4} />;
-
-  return null;
 };
 
 export default SuiviContent;

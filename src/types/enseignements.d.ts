@@ -13,6 +13,8 @@ export type EnseignementsState = {
   enseignements: EnseignementWeeklyType | null;
   programmes: ProgrammeType[] | null;
   APTypes: Type_d_activite_pedagogiqueType[] | null;
+  activitesPedagogiques: ActivitePedagogique[] | null;
+  setActivitesPedagogiques: (activitesPedagogiques) => void;
   setProgrammes: (programmes) => void;
   setAPTypes: (APTypes) => void;
   setEnseignements: (enseignements) => void;

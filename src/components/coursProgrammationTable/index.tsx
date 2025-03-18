@@ -49,6 +49,7 @@ const CoursProgrammationTable: React.FC<CoursTheoriquesContentPropsType> = ({
   coursesData,
 }) => {
   const { loading, getEnseignements } = useGetEnseignements();
+
   // Handle null case
   if (!coursesData || Object.keys(coursesData)?.length === 0) {
     return (
@@ -145,8 +146,7 @@ const CoursProgrammationTable: React.FC<CoursTheoriquesContentPropsType> = ({
                               {course.enseignants?.join(", ")}
                             </Typography>
                             <Typography>
-                              <strong>Observations:</strong>{" "}
-                              {course.observation || "—"}
+                              <strong>Lieu:</strong> {course.lieu || "—"}
                             </Typography>
                           </CardContent>
                         </Card>
@@ -181,7 +181,7 @@ const CoursProgrammationTable: React.FC<CoursTheoriquesContentPropsType> = ({
                       <strong>Enseignants</strong>
                     </TableCell>
                     <TableCell>
-                      <strong>Observations</strong>
+                      <strong>Lieu</strong>
                     </TableCell>
                   </TableRow>
                 </TableHead>
@@ -212,7 +212,7 @@ const CoursProgrammationTable: React.FC<CoursTheoriquesContentPropsType> = ({
                           <TableCell>
                             {course.enseignants?.join(", ")}
                           </TableCell>
-                          <TableCell>{course.observation || "—"}</TableCell>
+                          <TableCell>{course.lieu || "—"}</TableCell>
                         </TableRow>
                       ))
                     )

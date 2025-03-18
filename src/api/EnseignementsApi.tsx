@@ -10,7 +10,8 @@ import { EnseignantsType } from "../types/entities/enseignants";
 export const useGetEnseignements = () => {
   const [loading, setLoading] = useState(false);
   const { axios } = useAxios();
-  const { setEnseignements } = useEnseignementsStore();
+  const { setEnseignements, setActivitesPedagogiques } =
+    useEnseignementsStore();
 
   const getEnseignements = async () => {
     function restructureAPData(
@@ -99,7 +100,7 @@ export const useGetEnseignements = () => {
         );
 
         console.log(transformedData);
-
+        setActivitesPedagogiques(data.data);
         setEnseignements(transformedData);
       } else {
         throw new Error("No data found in the response");

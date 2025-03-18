@@ -3,6 +3,7 @@ import { NiveauEtudiants } from "../../../types/enums/actors-types";
 import CoursProgrammationTable from "../../../components/coursProgrammationTable";
 import { useGetEnseignements } from "../../../api/EnseignementsApi";
 import { useEnseignementsStore } from "../../../stores/enseignementsStore";
+import { EnseignementWeeklyType } from "../../../types/enseignements";
 
 type CoursTheoriquesContentPropsType = {
   niveau: NiveauEtudiants;
@@ -14,36 +15,60 @@ const CoursTheoriquesContent: React.FC<CoursTheoriquesContentPropsType> = ({
   apType,
 }) => {
   const { getEnseignements } = useGetEnseignements();
-  const { enseignements } = useEnseignementsStore();
+  const { enseignements, activitesPedagogiques } = useEnseignementsStore();
 
   useEffect(() => {
     if (!enseignements) getEnseignements();
-    console.log(apType);
+    console.log(filteredEnseignements);
   }, []);
+
+  const APOfCurrentAPType = activitesPedagogiques?.filter(
+    (AP) => AP.type_d_activite_pedagogique?.code === apType
+  );
+
+  let filteredEnseignements: EnseignementWeeklyType | null = null;
+
+  if (!APOfCurrentAPType || APOfCurrentAPType?.length > 0) {
+    filteredEnseignements = Object.fromEntries(
+      Object.entries(enseignements || {})?.map(
+        //filter the array to only include the pairs where data.niveau === 2
+        ([key, data]) => [
+          key,
+          {
+            niveau: data?.niveau,
+            enseignements: data?.enseignements?.filter(
+              (enseignement) =>
+                enseignement?.type_d_activite_pedagogique?.code === apType
+            ),
+          },
+        ]
+      )
+    );
+  }
 
   //converts the filtered array back into an object
   const enseignementsNiveau2 = Object.fromEntries(
     //convert the enseignements into an array if enseignements is defined
-    Object.entries(enseignements || {}).filter(
+    Object.entries(filteredEnseignements || {}).filter(
       //filter the array to only include the pairs where data.niveau === 2
-      ([, data]) => data.niveau === NiveauEtudiants.NiVEAU2
+      ([, data]) => data?.niveau === NiveauEtudiants.NiVEAU2
     )
   );
 
   const enseignementsNiveau3 = Object.fromEntries(
-    Object.entries(enseignements || {}).filter(
-      ([, data]) => data.niveau === NiveauEtudiants.NiVEAU3
+    Object.entries(filteredEnseignements || {}).filter(
+      ([, data]) => data?.niveau === NiveauEtudiants.NiVEAU3
     )
   );
   const enseignementsNiveau1 = Object.fromEntries(
-    Object.entries(enseignements || {}).filter(
-      ([, data]) => data.niveau === NiveauEtudiants.NiVEAU1
+    Object.entries(filteredEnseignements || {}).filter(
+      ([, data]) => data?.niveau === NiveauEtudiants.NiVEAU1
     )
   );
 
   const enseignementsNiveau4 = Object.fromEntries(
-    Object.entries(enseignements || {}).filter(
-      ([, data]) => data.niveau === NiveauEtudiants.NiVEAU4
+    Object.entries(filteredEnseignements || {}).filter(
+      ([, data]) => data?.niveau === NiveauEtudiants.NiVEAU4
     )
   );
 

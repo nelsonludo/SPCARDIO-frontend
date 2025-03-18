@@ -443,7 +443,6 @@ export default function TableauDeBord() {
         <span className="text-2xl text-blue-700 font-bold">
           {title.toUpperCase()}
         </span>
-        {pathname}
         {content}
       </Box>
     );
