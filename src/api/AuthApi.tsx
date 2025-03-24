@@ -112,7 +112,7 @@ export const useGetProfile = () => {
 
 export const useRefreshToken = () => {
   const axios = axiosMain.create({
-    baseURL: "http://localhost:1337/",
+    baseURL: "https://spb.crest.cm",
   });
 
   const tokenHelper = new TokenHelper();
