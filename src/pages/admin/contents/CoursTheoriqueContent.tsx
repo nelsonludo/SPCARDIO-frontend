@@ -19,7 +19,6 @@ const CoursTheoriquesContent: React.FC<CoursTheoriquesContentPropsType> = ({
 
   useEffect(() => {
     if (!enseignements) getEnseignements();
-    console.log(filteredEnseignements);
   }, []);
 
   const APOfCurrentAPType = activitesPedagogiques?.filter(

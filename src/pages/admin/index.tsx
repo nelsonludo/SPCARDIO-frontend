@@ -26,6 +26,7 @@ import { useLogout } from "../../api/AuthApi";
 import { useEnseignementsStore } from "../../stores/enseignementsStore";
 import { useGetAPTypes, useGetProgrammes } from "../../api/EnseignementsApi";
 import SuiviContent from "./contents/suiviContent";
+import ProgrammesContent from "./contents/ProgrammesContent";
 
 export default function TableauDeBord() {
   const { user } = useAuthStore();
@@ -40,82 +41,43 @@ export default function TableauDeBord() {
 
   const { programmes, APTypes } = useEnseignementsStore();
 
-  // const fetchedAPTypes = APTypes?.map((APType) => {
-  //   const APTypeChild = {
-  //     segment: APType?.code,
-  //     title: APType?.titre,
-  //     icon: <DashboardIcon />,
-  //     children: programmes?.map((programme) => {
-  //       const programmeChild = {
-  //         segment: programme?.id,
-  //         title: programme?.title,
-  //         icon: <FaSchool />,
-  //       };
-  //       return programmeChild;
-  //     }),
-  //   };
-  //   return APTypeChild;
-  // })
-
-  // const fetchedProgrammes = programmes?.map((programme) => {
-  //   const programmeChild = {
-  //     segment: programme?.id,
-  //     title: programme?.title,
-  //     icon: <FaSchool />,
-  //   };
-  //   return programmeChild;
-  // })
-
   const NAVIGATION: Navigation = [
     {
       segment: "dashboard",
       title: "Tableau de bord",
       icon: <DashboardIcon />,
-      // content: <DashboardContent />,
     },
     {
       segment: "enseignants",
       title: "Enseignants",
       icon: <FaUserGraduate />,
-
-      // content: <EnseignantsContent />,
+    },
+    {
+      segment: "programmes",
+      title: "Programmes",
+      icon: <FaUserGraduate />,
     },
     {
       segment: "etudiants",
       title: "Etudiants",
       icon: <FaUserNurse />,
-      children: [
-        {
-          segment: "niveau1",
-          title: "Niveau 1",
+      children: programmes?.map((programme) => {
+        const programmeChild = {
+          segment: programme?.title.split(" ").join("").toLowerCase(),
+          title: programme?.title,
           icon: <FaSchool />,
-        },
-        {
-          segment: "niveau2",
-          title: "Niveau 2",
-          icon: <FaSchool />,
-        },
-        {
-          segment: "niveau3",
-          title: "Niveau 3",
-          icon: <FaSchool />,
-        },
-        {
-          segment: "niveau4",
-          title: "Niveau 4",
-          icon: <FaSchool />,
-        },
-      ],
+        };
+        return programmeChild;
+      }),
     },
     {
       segment: "laureats",
       title: "Laureats",
       icon: <FaUserGraduate />,
-      // content: <LaureatsContent />,
     },
     {
-      segment: "programmesActivitesPedagogiques",
-      title: "Programmes",
+      segment: "programmationActivitesPedagogiques",
+      title: "Programmation",
       icon: <DashboardIcon />,
       children: APTypes?.map((APType) => {
         const APTypeChild = {
@@ -146,14 +108,12 @@ export default function TableauDeBord() {
         };
         return programmeChild;
       }),
-      // content: <StageCliniquesSuiviContent />,
     },
 
     {
       segment: "espaceCollaboratif",
       title: "Espace Collaboratif",
       icon: <DashboardIcon />,
-      // content: <EspaceCollaboratifContent />,
     },
     {
       segment: "documentation",
@@ -164,19 +124,16 @@ export default function TableauDeBord() {
           segment: "listeDeTheses",
           title: "Liste De Thèses",
           icon: <DashboardIcon />,
-          // content: <ListeDeThesesContent />,
         },
         {
           segment: "listeDeMemoires",
           title: "Liste De Mémoires",
           icon: <DashboardIcon />,
-          // content: <ListeDeMemoiresContent />,
         },
         {
           segment: "rapportsAdministratifsFinancier",
           title: "Rapports Administratifs et Financier",
           icon: <DashboardIcon />,
-          // content: <rapportsAdministratifsFinancierThesesContent />,
         },
       ],
     },
@@ -233,118 +190,6 @@ export default function TableauDeBord() {
     },
   });
 
-  // function DemoPageContent({ pathname }: { pathname: string }) {
-  //   var content: React.ReactNode;
-  //   var title: string;
-
-  //   switch (pathname) {
-  //     case "/enseignants":
-  //       content = <EnseignantsContent />;
-
-  //       title = "Liste des Enseignants";
-  //       break;
-  //     case "/espaceCollaboratif":
-  //       content = <DiscussionForum />;
-
-  //       title = "Espace Collaboratif";
-
-  //       break;
-  //     case "stageCliniquesSuivi":
-  //       // content = <StageCliniquesSuiviContent />;
-
-  //       title = "Suive De Stage Cliniques";
-
-  //       break;
-  //     case "stageCliniquesProgrammation":
-  //       // content = <StageCliniquesProgrammationContent />;
-
-  //       title = "Programmation De Stage Cliniques";
-  //       break;
-  //     case "travauxDirigesSuivi":
-  //       // content = <TravauxDirigesSuiviContent />;
-
-  //       title = "Suivi De Travaux Dirigés";
-  //       break;
-  //     case "travauxDirigesProgrammation":
-  //       // content = <TravauxDirigesProgrammationContent />;
-  //       title = "Programmation De Travaux Dirigés";
-
-  //       break;
-  //     case "/programmesDeCoursTheoriques/coursTheoriques/niveau2":
-  //       content = <CoursTheoriquesContent niveau={NiveauEtudiants.NiVEAU2} />;
-  //       title = "Programme de cours niveau 2";
-  //       break;
-  //     case "/programmesDeCoursTheoriques/coursTheoriques/niveau3":
-  //       content = <CoursTheoriquesContent niveau={NiveauEtudiants.NiVEAU3} />;
-  //       title = "Programme de cours niveau 3";
-  //       break;
-  //     case "/programmesDeCoursTheoriques/coursTheoriques/niveau1":
-  //       content = <CoursTheoriquesContent niveau={NiveauEtudiants.NiVEAU1} />;
-  //       title = "Programme de cours niveau 1";
-  //       break;
-  //     case "/programmesDeCoursTheoriques/coursTheoriques/niveau4":
-  //       content = <CoursTheoriquesContent niveau={NiveauEtudiants.NiVEAU4} />;
-  //       title = "Programme de cours niveau 4";
-  //       break;
-  //     case "/laureats":
-  //       content = <LaureatsContent />;
-  //       title = "Liste des Laureats";
-  //       break;
-  //     case "/etudiants/niveau1":
-  //       content = <EtudiantsContent niveau={NiveauEtudiants.NiVEAU1} />;
-  //       title = "Liste des etudiants du Niveau 1";
-  //       break;
-  //     case "/etudiants/niveau2":
-  //       content = <EtudiantsContent niveau={NiveauEtudiants.NiVEAU2} />;
-  //       title = "Liste des etudiants du Niveau 2";
-  //       break;
-  //     case "/etudiants/niveau3":
-  //       content = <EtudiantsContent niveau={NiveauEtudiants.NiVEAU3} />;
-  //       title = "Liste des etudiants du Niveau 3";
-  //       break;
-  //     case "/etudiants/niveau4":
-  //       content = <EtudiantsContent niveau={NiveauEtudiants.NiVEAU4} />;
-  //       title = "Liste des etudiants du Niveau 4";
-  //       break;
-
-  //     case "/documentation/listeDeMemoires":
-  //       content = <ListesMemoiresContent />;
-
-  //       title = "Liste De Mémoires";
-  //       break;
-  //     case "/documentation/listeDeTheses":
-  //       content = <ListesThesesContent />;
-
-  //       title = "Liste De Thèses";
-  //       break;
-  //     case "/documentation/rapportsAdministratifsFinancier":
-  //       content = <RapportsAdministratifContent />;
-  //       title = "Rapports Administratif et Financiers";
-  //       break;
-
-  //     default:
-  //       content = <DashboardContent />;
-  //       title = "Tableau de bord";
-  //   }
-
-  //   return (
-  //     <Box
-  //       sx={{
-  //         py: 4,
-  //         display: "flex",
-  //         flexDirection: "column",
-  //         alignItems: "center",
-  //         textAlign: "center",
-  //       }}
-  //     >
-  //       <span className="text-2xl text-blue-700 font-bold">
-  //         {title.toUpperCase()}
-  //       </span>
-  //       {content}
-  //     </Box>
-  //   );
-  // }
-
   function DemoPageContent({ pathname }: { pathname: string }) {
     let content: React.ReactNode;
     let title: string;
@@ -361,6 +206,10 @@ export default function TableauDeBord() {
       {
         enseignants: {
           content: <EnseignantsContent />,
+          title: "Liste des Enseignants",
+        },
+        programmes: {
+          content: <ProgrammesContent />,
           title: "Liste des Enseignants",
         },
         espaceCollaboratif: {
@@ -401,7 +250,7 @@ export default function TableauDeBord() {
 
     // Check if the pathname follows the pattern "/programmesActivitesPedagogiques/:APType/:niveau"
     else if (
-      pathSegments[0] === "programmesActivitesPedagogiques" &&
+      pathSegments[0] === "programmationActivitesPedagogiques" &&
       apTypeSegment &&
       niveauSegment in niveauMap
     ) {
@@ -411,7 +260,7 @@ export default function TableauDeBord() {
           apType={apTypeSegment}
         />
       );
-      title = `Programme de ${apTypeSegment.replace(/([A-Z])/g, " $1").trim()} ${niveauSegment.replace("niveau", "Niveau ")}`;
+      title = `Programmation de ${apTypeSegment.replace(/([A-Z])/g, " $1").trim()} ${niveauSegment.replace("niveau", "Niveau ")}`;
     }
 
     // Handle student levels dynamically

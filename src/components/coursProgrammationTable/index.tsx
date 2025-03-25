@@ -15,7 +15,9 @@ import {
   Typography,
   useMediaQuery,
   Theme,
+  Button,
 } from "@mui/material";
+import RefreshIcon from "@mui/icons-material/Refresh";
 import { EnseignementWeeklyType } from "../../types/enseignements";
 import { ActivitePedagogique } from "../../types/entities/activitePedagogique";
 import { useGetEnseignements } from "../../api/EnseignementsApi";
@@ -100,12 +102,16 @@ const CoursProgrammationTable: React.FC<CoursTheoriquesContentPropsType> = ({
         </Tabs>
       )}
 
-      <button
+      <Button
+        variant="contained"
+        color="primary"
+        startIcon={<RefreshIcon />}
         onClick={getEnseignements}
-        className="bg-blue-600 rounded-2xl text-white font-bold p-2 my-2 shadow-sm cursor-pointer"
+        sx={{ mt: 2, mb: 2 }}
       >
-        reload
-      </button>
+        Recharger
+      </Button>
+
       {/* Render courses as cards on small screens and table on large screens */}
       {loading ? (
         <div>Loading</div>

@@ -6,7 +6,7 @@ export type Unite_d_enseignementsType = {
   code: string;
   titre: string;
   programme?: ProgrammeType;
-  activite_pedagogique?: ActivitePedagogique[];
+  activite_pedagogiques?: ActivitePedagogique[];
   documentId: string;
   createdAt: string;
   updatedAt: string;

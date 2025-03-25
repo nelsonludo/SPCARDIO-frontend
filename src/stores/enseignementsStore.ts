@@ -6,6 +6,9 @@ export const useEnseignementsStore = create<EnseignementsState>((set) => ({
   programmes: null,
   APTypes: null,
   activitesPedagogiques: null,
+  unite_d_enseignements: null,
+  setUniteEnseignements: (unite_d_enseignements) =>
+    set({ unite_d_enseignements }),
   setActivitesPedagogiques: (activitesPedagogiques) =>
     set({ activitesPedagogiques }),
   setProgrammes: (programmes) => set({ programmes }),

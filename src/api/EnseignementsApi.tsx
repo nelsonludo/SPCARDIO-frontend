@@ -179,3 +179,35 @@ export const useGetProgrammes = () => {
 
   return { loading, getProgrammes };
 };
+
+export const useGetUniteEnseignements = () => {
+  const [loading, setLoading] = useState(false);
+  const { axios } = useAxios();
+  const { setUniteEnseignements } = useEnseignementsStore();
+
+  const getUniteEnseignements = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get<any>(
+        `/unite-d-enseignements?populate[activite_pedagogiques][populate]=type_d_activite_pedagogique&populate=programme`
+      );
+
+      if (data && data.data) {
+        setUniteEnseignements(data.data);
+      } else {
+        throw new Error("No data found in the response");
+      }
+    } catch (err) {
+      const error = err as AxiosError<any>;
+      console.log(
+        "Full error response:",
+        error.response?.data || error.message
+      );
+      failedToast(error?.response?.data?.error?.message || error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { loading, getUniteEnseignements };
+};

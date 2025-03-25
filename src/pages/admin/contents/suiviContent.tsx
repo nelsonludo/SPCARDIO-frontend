@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useEnseignementsStore } from "../../../stores/enseignementsStore";
 import { useGetEnseignements } from "../../../api/EnseignementsApi";
 import { FaCheck } from "react-icons/fa";
+import Button from "@mui/material/Button";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import { Box, CircularProgress } from "@mui/material";
 
 interface SuiviContentPropsType {
   niveau: string;
@@ -9,13 +12,12 @@ interface SuiviContentPropsType {
 
 const SuiviContent: React.FC<SuiviContentPropsType> = ({ niveau }) => {
   const { activitesPedagogiques, APTypes } = useEnseignementsStore();
-  const { getEnseignements } = useGetEnseignements();
+  const { getEnseignements, loading } = useGetEnseignements();
 
   const [selectedAPType, setSelectedAPType] = useState<string | null>(null);
 
   useEffect(() => {
     if (!activitesPedagogiques) getEnseignements();
-    console.log(activitesPedagogiques);
   }, []);
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -53,10 +55,30 @@ const SuiviContent: React.FC<SuiviContentPropsType> = ({ niveau }) => {
           ))}
         </select>
       </div>
+      {/* Refresh button */}
+      <Button
+        variant="contained"
+        color="primary"
+        startIcon={<RefreshIcon />}
+        onClick={getEnseignements}
+        style={{
+          marginTop: "16px",
+          marginBottom: "16px",
+          width: "20%",
+          alignSelf: "center",
+        }}
+        sx={{ mt: 2, mb: 2 }}
+      >
+        Recharger
+      </Button>
 
       {/* Display filtered activities */}
       <div>
-        {filteredAPs?.length === 0 ? (
+        {loading ? (
+          <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+            <CircularProgress />
+          </Box>
+        ) : filteredAPs?.length === 0 ? (
           <p className="text-gray-500">
             aucun activité trouvé pour le type selectionné
           </p>

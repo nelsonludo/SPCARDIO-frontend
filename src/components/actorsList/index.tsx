@@ -2,8 +2,18 @@ import { useState } from "react";
 import { ActorsType } from "../../types/enums/actors-types";
 import { EnseignantsType } from "../../types/entities/enseignants";
 import BasicModal from "../simpleModal";
-import { useMediaQuery, Theme, Box, Typography } from "@mui/material";
+import {
+  useMediaQuery,
+  Theme,
+  Box,
+  Typography,
+  CircularProgress,
+  Button,
+} from "@mui/material";
 import { EtudiantType } from "../../types/entities/etudiants";
+import { useGetEtudiants } from "../../api/EtudiantsApi";
+import { useGetEnseignants } from "../../api/EnseignantsApi";
+import { RefreshCwIcon } from "lucide-react";
 
 type ActorsListPropsType = {
   type: ActorsType;
@@ -12,6 +22,8 @@ type ActorsListPropsType = {
 
 const ActorsList: React.FC<ActorsListPropsType> = ({ type, actor }) => {
   const [searchQuery, setSearchQuery] = useState("");
+  const { getEnseignants, loading: loadingEnseingants } = useGetEnseignants();
+  const { getEtudiants, loading: loadingEtudiants } = useGetEtudiants();
 
   // Filter actors based on search query
   const filteredActors = Array.isArray(actor)
@@ -61,9 +73,22 @@ const ActorsList: React.FC<ActorsListPropsType> = ({ type, actor }) => {
         />
       </div>
 
+      <Button
+        variant="contained"
+        color="primary"
+        startIcon={<RefreshCwIcon />}
+        onClick={type === ActorsType.ETUDIANT ? getEtudiants : getEnseignants}
+        sx={{ mt: 2, mb: 2 }}
+      >
+        Recharger
+      </Button>
       {/* List of actors */}
       <div className="shadow-md rounded-2xl p-2">
-        {filteredActors.length > 0 ? (
+        {loadingEtudiants || loadingEnseingants ? (
+          <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+            <CircularProgress />
+          </Box>
+        ) : filteredActors.length > 0 ? (
           <div className={isSmallScreen ? "grid grid-cols-1 gap-4" : ""}>
             {filteredActors.map((actor) => (
               <div
