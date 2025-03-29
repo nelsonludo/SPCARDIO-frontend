@@ -210,7 +210,7 @@ export default function TableauDeBord() {
         },
         programmes: {
           content: <ProgrammesContent />,
-          title: "Liste des Enseignants",
+          title: "Programme",
         },
         espaceCollaboratif: {
           content: <DiscussionForum />,

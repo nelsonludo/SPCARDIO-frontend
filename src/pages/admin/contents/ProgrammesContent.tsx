@@ -77,6 +77,9 @@ const ProgrammesContent: React.FC = () => {
   return (
     <Box sx={{ p: { xs: 2, md: 6 } }}>
       {/* Programme selection tabs */}
+      <span className="text-xl text-blue-700 font-bold">
+        Unitées d'enseignements
+      </span>
       {programmesList.length > 0 && (
         <Tabs
           value={selectedProgramme}
