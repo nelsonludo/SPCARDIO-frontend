@@ -75,8 +75,8 @@ const DashBoardContent: React.FC = () => {
 
   const tauxComplete = Math.floor(
     ((activitesPedagogiques ?? []).filter((AP) => AP.fini).length /
-      (activitesPedagogiques ?? []).length) *
-      100
+      Math.max(1, (activitesPedagogiques ?? []).length)) *
+      100 // Ensure denominator ≥ 1
   );
 
   // Data for the line chart
