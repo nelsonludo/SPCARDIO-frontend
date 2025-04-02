@@ -85,12 +85,12 @@ export const useGetEnseignements = () => {
           data.data.map((ap: ActivitePedagogique) => {
             return {
               ...ap,
-              residents: ap.residents.flatMap((resident) =>
+              residents: ap?.residents?.flatMap((resident) =>
                 resident.enseignants.map(
                   (enseignant: EnseignantsType) => enseignant.nom
                 )
               ),
-              enseignants: ap.enseignants.flatMap((enseignant) =>
+              enseignants: ap?.enseignants?.flatMap((enseignant) =>
                 enseignant.enseignants.map(
                   (enseignant: EnseignantsType) => enseignant.nom
                 )

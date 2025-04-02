@@ -37,7 +37,7 @@ const ProgrammesContent: React.FC = () => {
       Object.keys(unite_d_enseignements).length === 0
     )
       getUniteEnseignements();
-  }, []);
+  }, [programmes, unite_d_enseignements]);
 
   // Update programme list when data changes
   useEffect(() => {
