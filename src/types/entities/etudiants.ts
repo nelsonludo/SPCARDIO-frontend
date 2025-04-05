@@ -1,6 +1,7 @@
 export type EtudiantType = {
   id: number;
   nom: string;
+  matricule: string;
   profilePhoto?: string;
   niveau: string;
   anneeEntree: string;

@@ -20,6 +20,7 @@ interface Etudiant {
   nom: string;
   niveau: string;
   anneeEntree: string;
+  matricule: string;
   email: string;
   anneeDeSortie: string;
   titreMemoire: string;
@@ -29,6 +30,7 @@ interface Enseignant {
   grade: string;
   pays: string;
   departement: string;
+  matricule: string;
   faculte: string;
   universite: string;
 }
@@ -111,6 +113,7 @@ export async function parseCsvFile(file: File): Promise<CsvObject[]> {
             email: obj.email,
             anneeDeSortie: obj.anneeDeSortie,
             titreMemoire: obj.titreMemoire,
+            matricule: obj.matricule,
           } as Etudiant);
         } else if ("nom" in obj && "grade" in obj && "pays" in obj) {
           results.push({
@@ -120,6 +123,7 @@ export async function parseCsvFile(file: File): Promise<CsvObject[]> {
             departement: obj.departement,
             faculte: obj.faculte,
             universite: obj.universite,
+            matricule: obj.matricule,
           } as Enseignant);
         } else {
           results.push(null); // fallback to generic object
