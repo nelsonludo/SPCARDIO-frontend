@@ -14,6 +14,8 @@ import { EtudiantType } from "../../types/entities/etudiants";
 import { useGetEtudiants } from "../../api/EtudiantsApi";
 import { useGetEnseignants } from "../../api/EnseignantsApi";
 import { RefreshCwIcon } from "lucide-react";
+import FileImportModal from "../simpleModal/FileUploadModal";
+import { spcardioEntities } from "../../types/enums/entities";
 
 type ActorsListPropsType = {
   type: ActorsType;
@@ -28,13 +30,13 @@ const ActorsList: React.FC<ActorsListPropsType> = ({ type, actor }) => {
   // Filter actors based on search query
   const filteredActors = Array.isArray(actor)
     ? actor.filter((actor) => {
-        const query = searchQuery.toLowerCase();
+        const query = searchQuery?.toLowerCase();
         if (type === ActorsType.ENSEIGNANT) {
-          return (actor as EnseignantsType).nom.toLowerCase().includes(query);
+          return (actor as EnseignantsType)?.nom?.toLowerCase().includes(query);
         } else if (type === ActorsType.ETUDIANT) {
           return (
-            (actor as EtudiantType).nom.toLowerCase().includes(query) ||
-            (actor as EtudiantType).email?.toLowerCase().includes(query)
+            (actor as EtudiantType)?.nom?.toLowerCase()?.includes(query) ||
+            (actor as EtudiantType)?.email?.toLowerCase()?.includes(query)
           );
         }
         return false;
@@ -43,7 +45,7 @@ const ActorsList: React.FC<ActorsListPropsType> = ({ type, actor }) => {
 
   // Detect small screens
   const isSmallScreen = useMediaQuery((theme: Theme) =>
-    theme.breakpoints.down("md")
+    theme?.breakpoints?.down("md")
   );
 
   if (actor?.length === 0) {
@@ -82,17 +84,25 @@ const ActorsList: React.FC<ActorsListPropsType> = ({ type, actor }) => {
       >
         Recharger
       </Button>
+      <FileImportModal
+        dataType={
+          type === ActorsType.ETUDIANT
+            ? spcardioEntities.ETUDIANTS
+            : spcardioEntities.ENSEIGNANTS
+        }
+      />
+      {/* Header */}
       {/* List of actors */}
       <div className="shadow-md rounded-2xl p-2">
         {loadingEtudiants || loadingEnseingants ? (
           <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
             <CircularProgress />
           </Box>
-        ) : filteredActors.length > 0 ? (
+        ) : filteredActors?.length > 0 ? (
           <div className={isSmallScreen ? "grid grid-cols-1 gap-4" : ""}>
-            {filteredActors.map((actor) => (
+            {filteredActors?.map((actor) => (
               <div
-                key={actor.id}
+                key={actor?.id}
                 className={
                   isSmallScreen
                     ? "bg-white shadow-lg rounded-2xl p-4"
@@ -105,18 +115,18 @@ const ActorsList: React.FC<ActorsListPropsType> = ({ type, actor }) => {
                     <div className="flex items-center">
                       <img
                         src={
-                          ("profilePhoto" in actor && actor.profilePhoto) ||
+                          ("profilePhoto" in actor && actor?.profilePhoto) ||
                           "/images/user.png"
                         }
-                        alt={actor.nom}
+                        alt={actor?.nom}
                         className="h-16 w-16 rounded-full object-cover mr-4"
                       />
                       <div className="flex flex-col items-start">
                         <div className="text-lg font-semibold text-gray-700">
-                          {actor.nom}
+                          {actor?.nom}
                         </div>
                         <div className="text-sm text-gray-500">
-                          {"grade" in actor ? actor.grade : actor.email}
+                          {"grade" in actor ? actor?.grade : actor?.email}
                         </div>
                         {"grade" in actor ? (
                           <div className="mt-2 text-sm text-gray-400">
@@ -126,7 +136,7 @@ const ActorsList: React.FC<ActorsListPropsType> = ({ type, actor }) => {
                           </div>
                         ) : (
                           <div className="mt-2 text-sm text-gray-500">
-                            {"numero" in actor && actor.numero}
+                            {"numero" in actor && actor?.numero}
                           </div>
                         )}
                       </div>
@@ -138,21 +148,21 @@ const ActorsList: React.FC<ActorsListPropsType> = ({ type, actor }) => {
                     {/* Photo */}
                     <img
                       src={
-                        ("profilePhoto" in actor && actor.profilePhoto) ||
+                        ("profilePhoto" in actor && actor?.profilePhoto) ||
                         "/images/user.png"
                       }
-                      alt={actor.nom}
+                      alt={actor?.nom}
                       className="h-12 w-12 rounded-full object-cover"
                     />
                     {/* Info */}
                     <div className="m-4">
                       <div className="text-sm font-semibold text-gray-600">
-                        {actor.nom}
+                        {actor?.nom}
                       </div>
                     </div>
                     {/* Grade or Email */}
                     <div className="m-4 text-sm text-gray-500 font-medium">
-                      {"grade" in actor ? actor.grade : actor.email}
+                      {"grade" in actor ? actor?.grade : actor?.email}
                     </div>
                     {/* Grade specific button */}
                     {"grade" in actor ? (
@@ -161,7 +171,7 @@ const ActorsList: React.FC<ActorsListPropsType> = ({ type, actor }) => {
                       </div>
                     ) : (
                       <div className="m-4 text-sm text-gray-500">
-                        {"numero" in actor && actor.numero}
+                        {"numero" in actor && actor?.numero}
                       </div>
                     )}
                   </div>

@@ -27,6 +27,8 @@ import {
   useGetAPTypes,
   useGetEnseignements,
 } from "../../../api/EnseignementsApi";
+import { spcardioEntities } from "../../../types/enums/entities";
+import FileImportModal from "../../../components/simpleModal/FileUploadModal";
 
 // Register Chart.js components
 ChartJS.register(
@@ -154,14 +156,30 @@ const DashBoardContent: React.FC = () => {
           {progressDataPerAPType?.map((progress, index) => (
             <div key={index} className="bg-white shadow-lg p-6">
               <Typography variant="h6" className="mb-2">
-                {progress.label}
+                {progress?.label || "Unknown"}
               </Typography>
               <LinearProgress variant="determinate" value={progress.value} />
               <Typography variant="body2" className="mt-2 text-right">
-                {progress.value}%
+                {progress?.value || 0}%
               </Typography>
             </div>
           ))}
+        </div>
+
+        <span className="text-gray-500 text-sm"> Importer du contenu</span>
+        <div className="grid grid-cols-2 gap-6 mb-6">
+          {Object.values(spcardioEntities)
+            .filter(
+              (entity) =>
+                entity != spcardioEntities.ETUDIANTS &&
+                entity != spcardioEntities.ENSEIGNANTS
+            )
+            .map((entity, index) => (
+              <div key={index} className="bg-white shadow-lg p-6">
+                <span> Importer des {entity}</span>
+                <FileImportModal dataType={entity} />
+              </div>
+            ))}
         </div>
       </div>
     </div>
