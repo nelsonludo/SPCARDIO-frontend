@@ -129,7 +129,8 @@ src/
 
         Based on the content type the csv should be organised respecting these type definitions where each attribute should be a column header
 
-  ````Programme {
+  ```
+        Programme {
           title
       }
        UE {
@@ -163,9 +164,9 @@ src/
           matricule
           faculte
           universite
-      }```
+      }
 
-  ````
+  ```
 
 - Users can **view content(Unite d'enseignements based on programmes, enseignants, etudiants, programmation of courses(weekly timetables), articles library, courses completion follow up)**.
 
