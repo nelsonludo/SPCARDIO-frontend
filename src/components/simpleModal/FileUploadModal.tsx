@@ -84,12 +84,18 @@ const FileImportModal: React.FC<FileImportModalPropsType> = ({ dataType }) => {
 
       setLoading(true);
 
+      console.log(await extractedArrayFromFile);
+
       try {
         switch (dataType) {
           case spcardioEntities.PROGRAMMES:
             if (
               !(await extractedArrayFromFile)[0] ||
-              !("title" in (await extractedArrayFromFile)[0])
+              !(
+                extractedArrayFromFile &&
+                (await extractedArrayFromFile)?.[0] &&
+                "title" in (await extractedArrayFromFile)?.[0]!
+              )
             ) {
               throw new Error(
                 "Mauvais contenu dans le CSV - Programme doit contenir 'title'"
@@ -104,8 +110,10 @@ const FileImportModal: React.FC<FileImportModalPropsType> = ({ dataType }) => {
           case spcardioEntities.UNITES_D_ENSEIGNEMENTS:
             if (
               !(await extractedArrayFromFile)[0] ||
-              !("titre" in (await extractedArrayFromFile)[0]) ||
-              !("code" in (await extractedArrayFromFile)[0])
+              ((await extractedArrayFromFile)?.[0] &&
+                "titre" in (await extractedArrayFromFile)[0]!) ||
+              ((await extractedArrayFromFile)?.[0] &&
+                "code" in (await extractedArrayFromFile)[0]!)
             ) {
               throw new Error(
                 "Fichier invalide - UE doit contenir 'titre' et 'code'"
@@ -121,10 +129,14 @@ const FileImportModal: React.FC<FileImportModalPropsType> = ({ dataType }) => {
           case spcardioEntities.ACTIVITES_PEDAGOGIQUES:
             if (
               !(await extractedArrayFromFile)[0] ||
-              !("intitule" in (await extractedArrayFromFile)[0]) ||
-              !("date" in (await extractedArrayFromFile)[0]) ||
-              !("horaires" in (await extractedArrayFromFile)[0]) ||
-              !("lieu" in (await extractedArrayFromFile)[0])
+              ((await extractedArrayFromFile)?.[0] &&
+                "intitule" in (await extractedArrayFromFile)[0]!) ||
+              ((await extractedArrayFromFile)?.[0] &&
+                "date" in (await extractedArrayFromFile)[0]!) ||
+              ((await extractedArrayFromFile)?.[0] &&
+                "horaires" in (await extractedArrayFromFile)[0]!) ||
+              ((await extractedArrayFromFile)?.[0] &&
+                "lieu" in (await extractedArrayFromFile)[0]!)
             ) {
               throw new Error(
                 "Fichier invalide - AP doit contenir 'intitule', 'date', 'horaires', et 'lieu'"
@@ -142,8 +154,10 @@ const FileImportModal: React.FC<FileImportModalPropsType> = ({ dataType }) => {
           case spcardioEntities.TYPES_D_ACTIVITES_PEDAGOGIQUES:
             if (
               !(await extractedArrayFromFile)[0] ||
-              !("code" in (await extractedArrayFromFile)[0]) ||
-              !("titre" in (await extractedArrayFromFile)[0])
+              ((await extractedArrayFromFile)?.[0] &&
+                "code" in (await extractedArrayFromFile)[0]!) ||
+              ((await extractedArrayFromFile)?.[0] &&
+                "titre" in (await extractedArrayFromFile)[0]!)
             ) {
               throw new Error(
                 "Fichier invalide - TAP doit contenir 'code' et 'titre'"
@@ -163,10 +177,14 @@ const FileImportModal: React.FC<FileImportModalPropsType> = ({ dataType }) => {
           case spcardioEntities.ETUDIANTS:
             if (
               !(await extractedArrayFromFile)[0] ||
-              !("nom" in (await extractedArrayFromFile)[0]) ||
-              !("niveau" in (await extractedArrayFromFile)[0]) ||
-              !("anneeEntree" in (await extractedArrayFromFile)[0]) ||
-              !("email" in (await extractedArrayFromFile)[0])
+              ((await extractedArrayFromFile)?.[0] &&
+                "nom" in (await extractedArrayFromFile)[0]!) ||
+              ((await extractedArrayFromFile)?.[0] &&
+                "niveau" in (await extractedArrayFromFile)[0]!) ||
+              ((await extractedArrayFromFile)?.[0] &&
+                "anneeEntree" in (await extractedArrayFromFile)[0]!) ||
+              ((await extractedArrayFromFile)?.[0] &&
+                "email" in (await extractedArrayFromFile)[0]!)
             ) {
               throw new Error(
                 "Fichier invalide - Etudiant doit contenir 'nom', 'niveau', 'anneeEntree', et 'email'"
@@ -182,9 +200,12 @@ const FileImportModal: React.FC<FileImportModalPropsType> = ({ dataType }) => {
           case spcardioEntities.ENSEIGNANTS:
             if (
               !(await extractedArrayFromFile)[0] ||
-              !("nom" in (await extractedArrayFromFile)[0]) ||
-              !("grade" in (await extractedArrayFromFile)[0]) ||
-              !("pays" in (await extractedArrayFromFile)[0])
+              ((await extractedArrayFromFile)?.[0] &&
+                "nom" in (await extractedArrayFromFile)[0]!) ||
+              ((await extractedArrayFromFile)?.[0] &&
+                "grade" in (await extractedArrayFromFile)[0]!) ||
+              ((await extractedArrayFromFile)?.[0] &&
+                "pays" in (await extractedArrayFromFile)[0]!)
             ) {
               throw new Error(
                 "Fichier invalide - Enseignant doit contenir 'nom', 'grade', et 'pays'"

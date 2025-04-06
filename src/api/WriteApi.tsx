@@ -206,6 +206,10 @@ export const usecreateEtudiants = () => {
               etudiant && "titreMemoire" in etudiant
                 ? etudiant.titreMemoire
                 : undefined,
+            matricule:
+              etudiant && "matricule" in etudiant
+                ? etudiant.matricule
+                : undefined,
           },
         })
       )
@@ -269,6 +273,10 @@ export const usecreateEnseignants = () => {
             email:
               enseignant && "email" in enseignant
                 ? enseignant.email
+                : undefined,
+            matricule:
+              enseignant && "matricule" in enseignant
+                ? enseignant.matricule
                 : undefined,
           },
         })

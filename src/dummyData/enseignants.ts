@@ -10,6 +10,7 @@ const predefinedEnseignants: EnseignantsType[] = [
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
     universite: "Université de Yaoundé 1",
     pays: "Cameroun",
+    matricule: "",
   },
   {
     id: 2,
@@ -20,6 +21,7 @@ const predefinedEnseignants: EnseignantsType[] = [
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
     universite: "Université de Yaoundé 1",
     pays: "Cameroun",
+    matricule: "",
   },
   {
     id: 3,
@@ -30,6 +32,7 @@ const predefinedEnseignants: EnseignantsType[] = [
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
     universite: "Université de Yaoundé 1",
     pays: "Cameroun",
+    matricule: "",
   },
   {
     id: 4,
@@ -40,6 +43,7 @@ const predefinedEnseignants: EnseignantsType[] = [
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
     universite: "Université de Yaoundé 1",
     pays: "Cameroun",
+    matricule: "",
   },
   {
     id: 5,
@@ -50,6 +54,7 @@ const predefinedEnseignants: EnseignantsType[] = [
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
     universite: "Université de Yaoundé 1",
     pays: "Cameroun",
+    matricule: "",
   },
   {
     id: 6,
@@ -60,6 +65,7 @@ const predefinedEnseignants: EnseignantsType[] = [
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
     universite: "Université de Yaoundé 1",
     pays: "Cameroun",
+    matricule: "",
   },
   {
     id: 7,
@@ -70,6 +76,7 @@ const predefinedEnseignants: EnseignantsType[] = [
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
     universite: "Université de Yaoundé 1",
     pays: "Cameroun",
+    matricule: "",
   },
   {
     id: 8,
@@ -80,6 +87,7 @@ const predefinedEnseignants: EnseignantsType[] = [
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
     universite: "Université de Yaoundé 1",
     pays: "Cameroun",
+    matricule: "",
   },
   {
     id: 9,
@@ -90,6 +98,7 @@ const predefinedEnseignants: EnseignantsType[] = [
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
     universite: "Université de Yaoundé 1",
     pays: "Cameroun",
+    matricule: "",
   },
   {
     id: 10,
@@ -100,6 +109,7 @@ const predefinedEnseignants: EnseignantsType[] = [
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
     universite: "Université de Yaoundé 1",
     pays: "Cameroun",
+    matricule: "",
   },
   {
     id: 11,
@@ -110,6 +120,7 @@ const predefinedEnseignants: EnseignantsType[] = [
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
     universite: "Université de Yaoundé 1",
     pays: "Cameroun",
+    matricule: "",
   },
   {
     id: 12,
@@ -120,6 +131,7 @@ const predefinedEnseignants: EnseignantsType[] = [
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
     universite: "Université de Yaoundé 1",
     pays: "Cameroun",
+    matricule: "",
   },
   {
     id: 13,
@@ -130,6 +142,7 @@ const predefinedEnseignants: EnseignantsType[] = [
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
     universite: "Université de Yaoundé 1",
     pays: "Cameroun",
+    matricule: "",
   },
   {
     id: 14,
@@ -140,6 +153,7 @@ const predefinedEnseignants: EnseignantsType[] = [
     faculte: "Faculté de Médecine et des Sciences Biomédicales",
     universite: "Université de Yaoundé 1",
     pays: "Cameroun",
+    matricule: "",
   },
 ];
 

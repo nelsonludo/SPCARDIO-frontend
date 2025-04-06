@@ -143,7 +143,8 @@ const CoursProgrammationTable: React.FC<CoursTheoriquesContentPropsType> = ({
                             </Typography>
                             <Typography>
                               <strong>Résidents:</strong>{" "}
-                              {course.residents?.length > 0
+                              {course?.residents?.length &&
+                              course?.residents?.length > 0
                                 ? course.residents?.join(", ")
                                 : "—"}
                             </Typography>
@@ -211,7 +212,8 @@ const CoursProgrammationTable: React.FC<CoursTheoriquesContentPropsType> = ({
                           <TableCell>{course.intitule}</TableCell>
                           <TableCell>{course.horaires}</TableCell>
                           <TableCell>
-                            {course.residents?.length > 0
+                            {course?.residents?.length &&
+                            course?.residents?.length > 0
                               ? course.residents?.join(", ")
                               : "—"}
                           </TableCell>
