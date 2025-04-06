@@ -127,46 +127,47 @@ src/
 
   #### **CSV File content**
 
-        Based on the content type the csv should be organised respecting these type definitions where each attribute should be a column header
+Based on the content type the csv should be organised respecting these type definitions where each attribute should be a column header
 
-  ```
-        Programme {
-          title
-      }
-       UE {
-          titre
-          code
-      }
-       AP {
-          intitule
-          date
-          horaires
-          lieu
-      }
-       TAP {
-          code
-          titre
-      }
-       Etudiant {
-          nom
-          niveau
-          anneeEntree
-          matricule
-          email
-          anneeDeSortie
-          titreMemoire
-      }
-       Enseignant {
-          nom
-          grade
-          pays
-          departement
-          matricule
-          faculte
-          universite
-      }
+```
+     Programme {
+        title
+    }
+     UE {
+        titre
+        code
+    }
+     AP {
+        intitule
+        date
+        horaires
+        lieu
+    }
+     TAP {
+        code
+        titre
+    }
+     Etudiant {
+        nom
+        niveau
+        anneeEntree
+        matricule
+        email
+        anneeDeSortie
+        titreMemoire
+    }
+     Enseignant {
+        nom
+        grade
+        pays
+        departement
+        matricule
+        faculte
+        universite
+    }
+```
 
-  ```
+**NB: After creating content from a csv, content with entries based on relations need to be updated in the backend application. For example: for each activite pedagogique a type d'activite pedagogique as well as enseignants and residents need to be manually assigned, same goes for programmes for UE.**
 
 - Users can **view content(Unite d'enseignements based on programmes, enseignants, etudiants, programmation of courses(weekly timetables), articles library, courses completion follow up)**.
 
