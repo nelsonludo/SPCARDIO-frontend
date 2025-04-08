@@ -3,7 +3,8 @@ import { AuthState } from "../types/auth";
 
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
-  isAuthenticated: false,
-  setUser: (user) => set({ user, isAuthenticated: true }),
-  unsetUser: () => set({ user: null, isAuthenticated: false }),
+  loading: true,
+  setLoading: (loading) => set({ loading: loading }),
+  setUser: (user) => set({ user }),
+  unsetUser: () => set({ user: null }),
 }));

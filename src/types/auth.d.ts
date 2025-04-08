@@ -9,7 +9,8 @@ export type UserRole =
 
 export type AuthState = {
   user: User | null;
-  isAuthenticated: boolean;
+  loading: boolean | null;
+  setLoading: (loading: boolean | null) => void;
   setUser: (user: User | null) => void;
   unsetUser: () => void;
 };

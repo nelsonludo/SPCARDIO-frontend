@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,6 +7,7 @@ import { FaEnvelope, FaLock } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useGetProfile, useSignin } from "../../api/AuthApi";
 import { TokenHelper } from "../../utils/tokensHelper";
+import { useAuthStore } from "../../stores/authStore";
 
 // Zod schemas for form validation
 const loginSchema = z.object({
@@ -24,6 +25,7 @@ const LoginSignupTab: React.FC = () => {
   const { signIn } = useSignin();
   const { getProfile } = useGetProfile();
   const navigate = useNavigate();
+  const { user } = useAuthStore();
 
   const {
     register: loginRegister,
@@ -38,10 +40,14 @@ const LoginSignupTab: React.FC = () => {
     const tokenHelper = new TokenHelper();
     const token = tokenHelper.getToken(); // ✅ get JWT
     //temporary solution: only send the getProfile if token contains an actual token and not "null.undefined" which is a string of size 14
-    if (token.length > 14) await getProfile();
-
-    navigate("/admin");
+    if (token && token != "null.undefined") {
+      if (await getProfile()) navigate("/admin");
+    }
   };
+
+  useEffect(() => {
+    if (user) navigate("/admin");
+  }, [user]);
 
   return (
     <div className="flex items-center justify-center h-screen p-6 bg-emerald-200">
