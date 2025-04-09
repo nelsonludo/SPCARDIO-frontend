@@ -6,9 +6,9 @@ import {
   predefinedEtudiantsNiveau3,
   predefinedEtudiantsNiveau4,
 } from "../../../dummyData/etudiants";
-import { useGetEtudiants } from "../../../api/EtudiantsApi";
+
 import { useEtudiantsStore } from "../../../stores/etudiantsStore";
-import { useEffect } from "react";
+
 import { EtudiantType } from "../../../types/entities/etudiants";
 
 type EtudiantsContentPropsType = {
@@ -16,12 +16,7 @@ type EtudiantsContentPropsType = {
 };
 
 const EtudiantsContent: React.FC<EtudiantsContentPropsType> = ({ niveau }) => {
-  const { getEtudiants } = useGetEtudiants();
   const { etudiants } = useEtudiantsStore();
-
-  useEffect(() => {
-    getEtudiants();
-  }, []);
 
   const niveau1: EtudiantType[] =
     etudiants?.filter((etudiant) => etudiant.niveau === "1") ||

@@ -82,16 +82,16 @@ export const useGetEnseignements = () => {
 
       if (data && data.data) {
         const transformedData = restructureAPData(
-          data.data.map((ap: ActivitePedagogique) => {
+          data.data?.map((ap: ActivitePedagogique) => {
             return {
               ...ap,
               residents: ap?.residents?.flatMap((resident) =>
-                resident.enseignants.map(
+                resident.enseignants?.map(
                   (enseignant: EnseignantsType) => enseignant.nom
                 )
               ),
               enseignants: ap?.enseignants?.flatMap((enseignant) =>
-                enseignant.enseignants.map(
+                enseignant.enseignants?.map(
                   (enseignant: EnseignantsType) => enseignant.nom
                 )
               ),
@@ -99,7 +99,6 @@ export const useGetEnseignements = () => {
           })
         );
 
-        console.log(transformedData);
         setActivitesPedagogiques(data.data);
         setEnseignements(transformedData);
       } else {

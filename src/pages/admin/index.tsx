@@ -12,9 +12,9 @@ import LaureatsContent from "./contents/LaureatsContent";
 import EtudiantsContent from "./contents/EtudiantsContent";
 
 import { FaSchool, FaUserGraduate, FaUserNurse } from "react-icons/fa";
-import { NiveauEtudiants } from "../../types/enums/actors-types";
+import { NiveauEtudiants, UserRoles } from "../../types/enums/actors-types";
 import CoursTheoriquesContent from "./contents/CoursTheoriqueContent";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import DiscussionForum from "./contents/EspaceCollaboratifContent";
 import ListesMemoiresContent from "./contents/ListesDeMemoiresContent";
 import ListesThesesContent from "./contents/ListesDeThesesContent";
@@ -24,9 +24,15 @@ import { useAuthStore } from "../../stores/authStore";
 import { useLogout } from "../../api/AuthApi";
 
 import { useEnseignementsStore } from "../../stores/enseignementsStore";
-import { useGetAPTypes, useGetProgrammes } from "../../api/EnseignementsApi";
+import {
+  useGetAPTypes,
+  useGetEnseignements,
+  useGetProgrammes,
+} from "../../api/EnseignementsApi";
 import SuiviContent from "./contents/suiviContent";
 import ProgrammesContent from "./contents/ProgrammesContent";
+import { useGetEtudiants } from "../../api/EtudiantsApi";
+import { useGetEnseignants } from "../../api/EnseignantsApi";
 
 export default function TableauDeBord() {
   const { user } = useAuthStore();
@@ -34,45 +40,35 @@ export default function TableauDeBord() {
   const { getAPTypes } = useGetAPTypes();
   const { getProgrammes } = useGetProgrammes();
 
-  useEffect(() => {
-    getAPTypes();
-    getProgrammes();
-  }, []);
-
   const { programmes, APTypes } = useEnseignementsStore();
+  const navigate = useNavigate();
 
-  const NAVIGATION: Navigation = [
-    {
-      segment: "dashboard",
-      title: "Tableau de bord",
-      icon: <DashboardIcon />,
-    },
-    {
-      segment: "enseignants",
-      title: "Enseignants",
-      icon: <FaUserGraduate />,
-    },
+  const { getEnseignants } = useGetEnseignants();
+  const { getEnseignements } = useGetEnseignements();
+  const { getEtudiants } = useGetEtudiants();
+
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      await Promise.all([
+        getEnseignements(),
+        getAPTypes(),
+        getProgrammes(),
+        getEnseignants(),
+      ]);
+    };
+    fetchInitialData();
+  }, []); // Empty dependency array ensures this runs once on mount
+
+  useEffect(() => {
+    if (user?.role === UserRoles.ADMIN) {
+      Promise.all([getEtudiants()]);
+    }
+  }, [user]); // Empty dependency array ensures this runs once on mount
+
+  const publicNavigation = [
     {
       segment: "programmes",
       title: "Programmes",
-      icon: <FaUserGraduate />,
-    },
-    {
-      segment: "etudiants",
-      title: "Etudiants",
-      icon: <FaUserNurse />,
-      children: programmes?.map((programme) => {
-        const programmeChild = {
-          segment: programme?.title.split(" ").join("").toLowerCase(),
-          title: programme?.title,
-          icon: <FaSchool />,
-        };
-        return programmeChild;
-      }),
-    },
-    {
-      segment: "laureats",
-      title: "Laureats",
       icon: <FaUserGraduate />,
     },
     {
@@ -139,6 +135,41 @@ export default function TableauDeBord() {
     },
   ];
 
+  const adminNavigation = [
+    {
+      segment: "dashboard",
+      title: "Tableau de bord",
+      icon: <DashboardIcon />,
+    },
+    {
+      segment: "enseignants",
+      title: "Enseignants",
+      icon: <FaUserGraduate />,
+    },
+    {
+      segment: "etudiants",
+      title: "Etudiants",
+      icon: <FaUserNurse />,
+      children: programmes?.map((programme) => {
+        const programmeChild = {
+          segment: programme?.title.split(" ").join("").toLowerCase(),
+          title: programme?.title,
+          icon: <FaSchool />,
+        };
+        return programmeChild;
+      }),
+    },
+    {
+      segment: "laureats",
+      title: "Laureats",
+      icon: <FaUserGraduate />,
+    },
+  ];
+  const NAVIGATION: Navigation =
+    user?.role === UserRoles.ADMIN
+      ? [...adminNavigation, ...publicNavigation]
+      : [...publicNavigation];
+
   type I3SBrandType = {
     title?: string;
     logo?: React.ReactNode;
@@ -147,13 +178,13 @@ export default function TableauDeBord() {
   const I3SBrand: I3SBrandType = {
     title: "SPCARDIO.",
     logo: (
-      <Link to={"/home"}>
+      <button onClick={() => navigate("/home")}>
         <img
           src="/images/uniYaounde1Logo.png"
           alt={""}
           className="rounded-full "
         />
-      </Link>
+      </button>
     ),
   };
 
@@ -164,6 +195,10 @@ export default function TableauDeBord() {
     colorSchemes: {
       light: {
         palette: {
+          primary: {
+            main: "rgb(25, 118, 210)", // Added primary color
+          },
+
           background: {
             default: "#eefff4",
             paper: "#c7ebd3",
@@ -172,9 +207,15 @@ export default function TableauDeBord() {
       },
       dark: {
         palette: {
+          primary: {
+            main: "#90caf9", // Added primary color for dark mode
+          },
           background: {
             default: "#2A4364",
             paper: "#112E4D",
+          },
+          text: {
+            primary: "#c9c9c9", // Changed from black to white for better contrast
           },
         },
       },
@@ -183,13 +224,12 @@ export default function TableauDeBord() {
       values: {
         xs: 0,
         sm: 600,
-        md: 600,
+        md: 600, // Note: md and sm have same value - is this intentional?
         lg: 1200,
         xl: 1536,
       },
     },
   });
-
   function DemoPageContent({ pathname }: { pathname: string }) {
     let content: React.ReactNode;
     let title: string;
@@ -310,7 +350,16 @@ export default function TableauDeBord() {
   return (
     // preview-start
     <AppProvider
-      session={user ? { user } : null}
+      session={
+        user
+          ? {
+              user: {
+                ...user,
+                id: user.id.toString(), // Convert number to string
+              },
+            }
+          : null
+      }
       authentication={authentication}
       navigation={NAVIGATION}
       router={router}

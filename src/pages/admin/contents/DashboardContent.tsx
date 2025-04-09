@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useMemo } from "react";
 import {
   Card,
   CardContent,
@@ -21,12 +21,6 @@ import {
 import { useEnseignementsStore } from "../../../stores/enseignementsStore";
 import { useEnseignantsStore } from "../../../stores/enseignantsStore";
 import { useEtudiantsStore } from "../../../stores/etudiantsStore";
-import { useGetEnseignants } from "../../../api/EnseignantsApi";
-import { useGetEtudiants } from "../../../api/EtudiantsApi";
-import {
-  useGetAPTypes,
-  useGetEnseignements,
-} from "../../../api/EnseignementsApi";
 import { spcardioEntities } from "../../../types/enums/entities";
 import FileImportModal from "../../../components/simpleModal/FileUploadModal";
 
@@ -45,55 +39,56 @@ const DashBoardContent: React.FC = () => {
   const { APTypes, activitesPedagogiques } = useEnseignementsStore();
   const { enseignants } = useEnseignantsStore();
   const { etudiants } = useEtudiantsStore();
-  const { getEnseignants } = useGetEnseignants();
-  const { getEnseignements } = useGetEnseignements();
-  const { getEtudiants } = useGetEtudiants();
-  const { getAPTypes } = useGetAPTypes();
-
-  useEffect(() => {
-    if (!APTypes) getAPTypes();
-    if (!enseignants) getEnseignants();
-    if (!etudiants) getEtudiants();
-    if (!activitesPedagogiques) getEnseignements();
-  }, []);
 
   // Data for progress bars
-  const progressDataPerAPType = APTypes?.map((APType) => {
-    const totalActivities = (activitesPedagogiques ?? []).filter(
-      (AP) => AP.type_d_activite_pedagogique?.code === APType.code
-    ).length;
+  const progressDataPerAPType = useMemo(
+    () =>
+      APTypes?.map((APType) => {
+        const totalActivities = (activitesPedagogiques ?? []).filter(
+          (AP) => AP.type_d_activite_pedagogique?.code === APType.code
+        ).length;
 
-    const completedActivities = (activitesPedagogiques ?? []).filter(
-      (AP) => AP.type_d_activite_pedagogique?.code === APType.code && AP.fini
-    ).length;
+        const completedActivities = (activitesPedagogiques ?? []).filter(
+          (AP) =>
+            AP.type_d_activite_pedagogique?.code === APType.code && AP.fini
+        ).length;
 
-    const progress =
-      totalActivities === 0
-        ? 0
-        : Math.floor((completedActivities / totalActivities) * 100);
+        const progress =
+          totalActivities === 0
+            ? 0
+            : Math.floor((completedActivities / totalActivities) * 100);
 
-    return { label: APType.titre, value: progress };
-  });
+        return { label: APType.titre, value: progress };
+      }),
+    [APTypes, activitesPedagogiques]
+  );
 
-  const tauxComplete = Math.floor(
-    ((activitesPedagogiques ?? []).filter((AP) => AP.fini).length /
-      Math.max(1, (activitesPedagogiques ?? []).length)) *
-      100 // Ensure denominator ≥ 1
+  const tauxComplete = useMemo(
+    () =>
+      Math.floor(
+        ((activitesPedagogiques ?? []).filter((AP) => AP.fini).length /
+          Math.max(1, (activitesPedagogiques ?? []).length)) *
+          100 // Ensure denominator ≥ 1
+      ),
+    [activitesPedagogiques]
   );
 
   // Data for the line chart
-  const chartData = {
-    labels: APTypes?.map((APType) => APType.titre) || [],
-    datasets: [
-      {
-        label: "pourcentage de progression",
-        data: progressDataPerAPType?.map((progress) => progress.value) || [],
-        borderColor: "rgba(75, 192, 192, 1)",
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
-        fill: false,
-      },
-    ],
-  };
+  const chartData = useMemo(
+    () => ({
+      labels: APTypes?.map((APType) => APType.titre) || [],
+      datasets: [
+        {
+          label: "pourcentage de progression",
+          data: progressDataPerAPType?.map((progress) => progress.value) || [],
+          borderColor: "rgba(75, 192, 192, 1)",
+          backgroundColor: "rgba(75, 192, 192, 0.2)",
+          fill: false,
+        },
+      ],
+    }),
+    [progressDataPerAPType]
+  );
   // Detect small screens
   const isSmallScreen = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down("md")
